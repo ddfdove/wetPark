@@ -1,0 +1,91 @@
+<template>
+    <div>
+        <highcharts :options="chartOptions" ref="chart"></highcharts>
+    </div>
+</template>
+
+<script setup>
+import { ref, reactive } from "vue"
+
+const chartOptions = ref({
+    chart: {
+        type: 'bar',
+        backgroundColor: '#0b1c2e',
+        // width:400,
+        height: 260,
+        // width:400
+    },
+    title: {
+        text: null
+    },
+    xAxis: {
+       
+        categories: ['A区','B区','C区'],
+        title: {
+            text: null
+        },
+        crosshair:true,
+        // gridLineWidth: 1,
+        lineWidth: 0.5,
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        // gridLineColor:'rgb(64,64,64)',
+        labels: {
+            style: {
+                color: '#919191',
+                fontSize: "12px"
+            }
+        },
+        
+    },
+    yAxis: {
+        // categories: ['0', '100', '200', '300','400','500','600'],
+        //   min: 0,
+        title: {
+            text: null,
+        },
+        labels: {
+            overflow: 'justify',
+            style: {
+                color: '#919191',
+                fontSize: "12px"
+            }
+        },
+        // gridLineWidth: 0,
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor:'rgb(45,42,42)',
+        min:0 ,//最小值
+		tickInterval:5, //间隔
+		max:25 //最大值
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: '0',
+            dataLabels: {
+                enabled: true,
+                color:'rgb(80,135,236)'
+            },
+            borderColor:'',//去边框
+            groupPadding: 0.1
+        },
+        // column:{
+		// 	borderColor: "",//去边框
+        //     shadow: false		//去阴影
+		// }
+    },
+      legend: {
+        enabled:false
+      },
+    credits: {
+        enabled: false
+    },
+    exporting: {enabled: false},
+    series: [{
+        name: '种类',
+        data: [10,14,23],
+        color:'rgb(80,135,236)',
+        pointPadding: 0,
+        groupPadding: 0.25
+    }]
+})
+
+</script>
