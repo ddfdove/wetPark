@@ -1,5 +1,5 @@
 <template>
-  <div class="container" ref="screen">
+  <div class="sceen" ref="screen">
     <div class="nav">
       <div class="left">
         <ul>
@@ -39,7 +39,7 @@ function getScale(w = 1920, h = 1080) {
 }
 //监听视口变化
 window.onresize = () => {
-  screen.value.style.transform = `scale(${getScale()}) `
+  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%) `
 }
 </script>
 
@@ -52,11 +52,14 @@ window.onresize = () => {
   box-sizing: border-box;
 }
 
-.container {
+.sceen {
   background-color: rgb(14, 17, 23);
-  height: 1000px;
+  height: 1080px;
   width: 1920px;
-
+  transform-origin: top left;
+  position: fixed;
+  top:50%;
+  left:50%;
 }
 
 .router-link-active {

@@ -101,14 +101,18 @@
           <span style="font-size: 22px;">卫星图</span>
           <div>
             <div>
-              <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+              <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick1">
                 <el-tab-pane label="生态停车场" name="first">
                   <div>
                     <img src="../../assets/pictures/v2_sah5y2.png" style="width: 100%;height: 100%;">
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="卫生间" name="second">卫生间</el-tab-pane>
-                <el-tab-pane label="石笼坝" name="third">石笼坝</el-tab-pane>
+                <el-tab-pane label="卫生间" name="second">
+                  <Satellite style="height: 160px;"></Satellite>
+                </el-tab-pane>
+                <el-tab-pane label="石笼坝" name="third">
+                  <Freehand style="height: 180px;"></Freehand>
+                </el-tab-pane>
               </el-tabs>
             </div>
             <div></div>
@@ -117,14 +121,18 @@
         <li id="freehand">
           <span style="font-size: 22px;">手绘图</span>
           <div>
-            <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+            <el-tabs v-model="activeName2" class="demo-tabs" @tab-click="handleClick2">
               <el-tab-pane label="生态停车场" name="first">
                 <div>
                   <img src="../../assets/pictures/v2_sah5y2.png" style="width: 100%;height: 100%;">
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="卫生间" name="second">卫生间</el-tab-pane>
-              <el-tab-pane label="石笼坝" name="third">石笼坝</el-tab-pane>
+              <el-tab-pane label="卫生间" name="second">
+                  
+                </el-tab-pane>
+              <el-tab-pane label="石笼坝" name="third">
+                <Freehand style="height: 180px;"></Freehand>
+              </el-tab-pane>
             </el-tabs>
           </div>
         </li>
@@ -143,10 +151,13 @@ import PopulationChart from './population.vue'
 import PeopleChart from './people.vue'
 import WaterChart from './water.vue'
 import AirChart from './air.vue'
+import Freehand from './freehand.vue'
+import Satellite from './satellite.vue'
 
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import moment from 'moment'
 import "moment/dist/locale/zh-cn";
+
 
 let date = ref(moment().format('YYYY年MM月DD日'))
 let week = ref(moment().format('dddd'))
@@ -388,10 +399,13 @@ const activeName = ref('first')
         // margin: 25px;
         padding-top: 15px;
       }
-
+      .demo-tabs{
+          height: 220px;
+          // background-color: #fff;
+        }
       #satellite {
         border-top: 2px solid rgb(28, 44, 64);
-
+        
         .demo-tabs>.el-tabs__content {
           padding: 32px;
           color: #6b778c;
@@ -401,7 +415,6 @@ const activeName = ref('first')
 
         ::v-deep .el-tabs__item {
           color: #FFFFFF;
-
         }
 
         /**选中 */

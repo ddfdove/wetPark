@@ -52,7 +52,7 @@ const chartOptions = ref({
         gridLineWidth: 2,
         // gridLineDashStyle: 'ShortDash',//网格线样式
         gridLineColor: 'rgb(93,102,112)',
-        min: 0,//最小值
+        min: -250,//最小值
         tickInterval: 50, //间隔
         max: 250 //最大值
     },
@@ -85,8 +85,8 @@ const chartOptions = ref({
     },
     exporting: {enabled: false},
     series: [{
-        name: '数据一',
-        data: [100, 140, 230, 100, 130],
+        name: '增加值',
+        data: [100, -140, 230, -100, 130],
         color: 'rgb(80,135,236)',
         pointPadding: 0,
         groupPadding: 0.2,
@@ -94,7 +94,7 @@ const chartOptions = ref({
         borderRadiusTopRight: 100,
 
     }, {
-        name: '数据二',
+        name: '减少值',
         data: [150, 100, 200, 140, 100],
         color: 'rgb(104,187,196)',
         pointPadding: 0,
