@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import Nav from './components/nav.vue'
+import Nav from './components/nav/index.vue'
 import { ref, onMounted } from 'vue'
 // 获取数据大屏展示内容盒子的DOM元素
 let screen = ref()
