@@ -35,7 +35,8 @@ const chartOptions = ref({
             shadow: false,		//去阴影
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b><br>{point.percentage:1f} ',
+                // format: '<b>{point.name}</b><br>{point.percentage:1f} ',
+                format: '<b>{point.name}</b><br>{point.y} ',
                 distance: -40,
                 filter: {
                     property: 'percentage',
@@ -45,15 +46,12 @@ const chartOptions = ref({
             }
         }
     },
-    //     plotOptions: {
-    //       pie: {
-    //           borderRadius: '50%',
-    //           dataLabels: {
-    //               enabled: true
-    //           },
-    //           groupPadding: 0.1
-    //       }
-    //   },
+    tooltip: {
+        enable:false,
+        headerFormat: '',
+        padding:16,
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+    },
     credits: {
         enabled: false
     },
@@ -61,9 +59,9 @@ const chartOptions = ref({
     series: [{
         name: '鸟类',
         data: [
-            { name: '一级鸟类', y: 25 },
-            { name: '二级鸟类', y: 38 },
-            { name: '其他鸟类', y: 37 },
+            { name: '一级鸟类', y: 100 },
+            { name: '二级鸟类', y: 150 },
+            { name: '其他鸟类', y: 138 },
         ]
     }]
 })

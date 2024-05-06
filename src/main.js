@@ -17,6 +17,13 @@ import pyramid3d from "highcharts/modules/pyramid3d";
 import exportingInit from 'highcharts/modules/exporting' 
 import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsDrilldown from 'highcharts/modules/drilldown';
+// 导入视频播放组件
+import VueVideoPlayer from '@videojs-player/vue'
+import 'video.js/dist/video-js.css'
+
+
+
+
 
 // 注册所需外部资源
 HighchartsMore(Highcharts)
@@ -38,4 +45,6 @@ const app = createApp(App)
 app.use(router)
 app.use(HighchartsVue)
 app.use(ElementPlus)
+// 视频播放组件
+app.use(VueVideoPlayer)
 app.mount('#app')

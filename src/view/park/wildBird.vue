@@ -77,12 +77,22 @@ const chartOptions = ref({
       legend: {
         enabled:false
       },
+      tooltip: {
+        // enable:false,
+        shared: true,
+        headerFormat: '{point.key}<br>',
+        padding:10,
+        style: {
+            color: 'rgb(124,124,124)',
+        },
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp {point.y} <br>'
+    },
     credits: {
         enabled: false
     },
     exporting: {enabled: false},
     series: [{
-        name: '种类',
+        name: '数量',
         data: [360,355,234,572,549,342],
         color:'rgb(63,149,194)'
     }]

@@ -62,6 +62,27 @@ const chartOptions = ref({
             enableMouseTracking: false
         }
     },
+    legend: {
+        enabled:true,
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'top',
+        // symbolHeight:14,
+        // symbolWidth:20,
+        // symbolRadius:5,
+        itemStyle:{'color':'#FFFFFF'}
+    },
+    tooltip: {
+        // enable:false,
+        shared: true,
+        padding:16,
+        headerFormat: '{point.key}<br>',
+        style: {
+            color: 'rgb(124,124,124)',
+          
+        },
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+    },
     credits: {
         enabled: false
     },

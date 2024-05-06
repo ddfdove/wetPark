@@ -63,7 +63,7 @@ import { ref, onMounted } from 'vue'
       // padding:0 8px;
       width: 120px;
       line-height: 40px;
-      font-size: 12px;
+      font-size: 18px;
       text-align: center;
       background-color: rgb(13,40,56);
       border: 2px solid ;
@@ -80,7 +80,7 @@ import { ref, onMounted } from 'vue'
     height: 60px;
     line-height: 60px;
     text-align: center;
-    font-size: 26px;
+    font-size: 30px;
     color: rgb(140,162,170);
   }
   .right{

@@ -101,17 +101,17 @@
           <span style="font-size: 22px;">卫星图</span>
           <div>
             <div>
-              <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick1">
-                <el-tab-pane label="生态停车场" name="first">
+              <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
+                <el-tab-pane label="生态停车场" name="park1">
                   <div>
                     <img src="../../assets/pictures/v2_sah5y2.png" style="width: 100%;height: 100%;">
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="卫生间" name="second">
+                <el-tab-pane label="卫生间" name="toilet1">
                   <Satellite style="height: 160px;"></Satellite>
                 </el-tab-pane>
-                <el-tab-pane label="石笼坝" name="third">
-                  <Freehand style="height: 180px;"></Freehand>
+                <el-tab-pane label="石笼坝" name="shilongba1">
+                  <Satellite style="height: 160px;"></Satellite>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -121,17 +121,17 @@
         <li id="freehand">
           <span style="font-size: 22px;">手绘图</span>
           <div>
-            <el-tabs v-model="activeName2" class="demo-tabs" @tab-click="handleClick2">
-              <el-tab-pane label="生态停车场" name="first">
+            <el-tabs v-model="activeName2" class="demo-tabs" @tab-click="handleClick2" >
+              <el-tab-pane label="生态停车场" name="park2" >
                 <div>
                   <img src="../../assets/pictures/v2_sah5y2.png" style="width: 100%;height: 100%;">
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="卫生间" name="second">
-                  
-                </el-tab-pane>
-              <el-tab-pane label="石笼坝" name="third">
+              <el-tab-pane label="卫生间" name="toilet2">
                 <Freehand style="height: 180px;"></Freehand>
+                </el-tab-pane>
+              <el-tab-pane label="石笼坝" name="shilongba2">
+                <Satellite style="height: 160px;"></Satellite>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -164,6 +164,23 @@ let week = ref(moment().format('dddd'))
 let timer = ref(0)
 //存储当前时间
 let time = ref(moment().format('h:mm:ss a'))
+//卫星图手绘图数据
+const activeName1 = ref('park1')
+const activeName2 = ref('park2')
+// const tabsList = ref([
+//     {
+//         label: '生态停车场',
+//         name: 'park',
+//     },  
+//     {
+//         label: '卫生间',
+//         name: 'toilet',
+//     },
+//     {
+//         label: '石笼坝',
+//         name: 'shilongba',
+//     },
+// ])
 //组件挂载完毕更新当前的事件
 onMounted(() => {
   timer.value = setInterval(() => {
@@ -406,12 +423,12 @@ const activeName = ref('first')
       #satellite {
         border-top: 2px solid rgb(28, 44, 64);
         
-        .demo-tabs>.el-tabs__content {
-          padding: 32px;
-          color: #6b778c;
-          font-size: 32px;
-          font-weight: 600;
-        }
+        // .demo-tabs>.el-tabs__content {
+        //   padding: 32px;
+        //   color: #6b778c;
+        //   font-size: 32px;
+        //   font-weight: 600;
+        // }
 
         ::v-deep .el-tabs__item {
           color: #FFFFFF;
@@ -439,7 +456,7 @@ const activeName = ref('first')
         //   margin-left: 0;
         // }
       }
-
+    
       #freehand {
         .demo-tabs>.el-tabs__content {
           padding: 32px;

@@ -11,7 +11,7 @@ const chartOptions = ref({
     chart: {
         type: 'column',
         backgroundColor: '#0b1c2e',
-        width:480,
+        width: 480,
         height: 220
     },
     title: {
@@ -23,7 +23,7 @@ const chartOptions = ref({
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         // gridLineWidth: 1,
         lineWidth: 0,
         labels: {
@@ -52,9 +52,9 @@ const chartOptions = ref({
         gridLineWidth: 2,
         // gridLineDashStyle: 'ShortDash',//网格线样式
         gridLineColor: 'rgb(93,102,112)',
-        min: -250,//最小值
-        tickInterval: 50, //间隔
-        max: 250 //最大值
+        min: 0,//最小值
+        tickInterval: 200, //间隔
+        max: 1000 //最大值
     },
     plotOptions: {
         column: {
@@ -62,7 +62,7 @@ const chartOptions = ref({
             dataLabels: {
                 enabled: false
             },
-            borderColor:'',//去边框
+            borderColor: '',//去边框
             shadow: false,		//去阴影
             groupPadding: 0.1,
             // color:'red'
@@ -80,26 +80,37 @@ const chartOptions = ref({
     legend: {
         enabled: false
     },
+    tooltip: {
+        // enable:false,
+        shared: true,
+        padding: 16,
+        headerFormat: '{point.key}<br>',
+        style: {
+            color: 'rgb(124,124,124)',
+
+        },
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+    },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '增加值',
-        data: [100, -140, 230, -100, 130],
+        data: [600, 900, 400, 600, 500],
         color: 'rgb(80,135,236)',
         pointPadding: 0,
         groupPadding: 0.2,
         borderRadiusTopLeft: 100,
         borderRadiusTopRight: 100,
-
-    }, {
-        name: '减少值',
-        data: [150, 100, 200, 140, 100],
-        color: 'rgb(104,187,196)',
-        pointPadding: 0,
-        groupPadding: 0.2
     }
+        // }, {
+        //     name: '减少值',
+        //     data: [150, 100, 200, 140, 100],
+        //     color: 'rgb(104,187,196)',
+        //     pointPadding: 0,
+        //     groupPadding: 0.2
+        // }
     ]
 })
 

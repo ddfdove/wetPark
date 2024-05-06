@@ -28,7 +28,7 @@ const chartOptions = ref({
             dataLabels: {
                 enabled: false,
                 // format: '<b>{point.name}</b><br>{point.percentage:1f} ',
-                format:'值：{point.y} 占比 {point.percentage}%'
+                format:' <span style="color:{point.color}">\u25CF</span> <b>  {point.name}: {point.percentage:.1f}% '
                 // distance: -60,
                 // filter: {
                 //     property: 'percentage',
@@ -38,13 +38,11 @@ const chartOptions = ref({
             }
         }
     },
-    // tooltip: {
-    //     enable:false,
-    //     headerFormat: '',
-    //     pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
-    //         'Area (square km): <b>{point.y}</b><br/>' +
-    //         'Population density (people per square km): <b>{point.z}</b><br/>'
-    // },
+    tooltip: {
+        enable:false,
+        headerFormat: '',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+    },
     credits: {
         enabled: false
     },
@@ -69,11 +67,11 @@ const chartOptions = ref({
         //           },
         data: [{
             name: '数据一',
-            y: 40,
+            y: 100,
             // sliced:true
         }, {
             name: '数据二',
-            y: 32,
+            y: 150,
            
         }],
         colors: [

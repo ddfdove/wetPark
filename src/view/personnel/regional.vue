@@ -19,12 +19,12 @@ const chartOptions = ref({
         text: null
     },
     xAxis: {
-       
-        categories: ['A区','B区','C区'],
+
+        categories: ['A区', 'B区', 'C区'],
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         // gridLineWidth: 1,
         lineWidth: 0.5,
         // gridLineDashStyle: 'ShortDash',//网格线样式
@@ -35,7 +35,7 @@ const chartOptions = ref({
                 fontSize: "12px"
             }
         },
-        
+
     },
     yAxis: {
         // categories: ['0', '100', '200', '300','400','500','600'],
@@ -52,37 +52,48 @@ const chartOptions = ref({
         },
         // gridLineWidth: 0,
         // gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(45,42,42)',
-        min:0 ,//最小值
-		tickInterval:5, //间隔
-		max:25 //最大值
+        gridLineColor: 'rgb(45,42,42)',
+        min: 0,//最小值
+        tickInterval: 5, //间隔
+        max: 25 //最大值
     },
     plotOptions: {
         bar: {
             borderRadius: '0',
             dataLabels: {
                 enabled: true,
-                color:'rgb(80,135,236)'
+                color: 'rgb(80,135,236)'
             },
-            borderColor:'',//去边框
+            borderColor: '',//去边框
             groupPadding: 0.1
         },
         // column:{
-		// 	borderColor: "",//去边框
+        // 	borderColor: "",//去边框
         //     shadow: false		//去阴影
-		// }
+        // }
     },
-      legend: {
-        enabled:false
-      },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        // enable:false,
+        shared: true,
+        padding: 16,
+        headerFormat: '{point.key}<br>',
+        style: {
+            color: 'rgb(124,124,124)',
+
+        },
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+    },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '种类',
-        data: [10,14,23],
-        color:'rgb(80,135,236)',
+        data: [10, 14, 23],
+        color: 'rgb(80,135,236)',
         pointPadding: 0,
         groupPadding: 0.25
     }]

@@ -27,8 +27,8 @@ const chartOptions = ref({
         title: {
             text: null
         },
-        crosshair:{
-            snap:true,
+        crosshair: {
+            snap: true,
             label: {
                 enabled: true,
                 align: 'right',
@@ -37,7 +37,7 @@ const chartOptions = ref({
                 // '<span class="f32">' +
                 // '<span style="display:inline-block;height:32px;vertical-align:text-top;" ' +
                 // 'class="flag {value}"></span></span>'
-              }
+            }
         },
         labels: {
             style: {
@@ -59,10 +59,10 @@ const chartOptions = ref({
             }
         },
         gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(64,64,64)',
-        min:0 ,//最小值
-		tickInterval:200, //间隔
-		max:1000 //最大值
+        gridLineColor: 'rgb(64,64,64)',
+        min: 0,//最小值
+        tickInterval: 200, //间隔
+        max: 1000 //最大值
     },
     plotOptions: {
         line: {
@@ -72,16 +72,39 @@ const chartOptions = ref({
             enableMouseTracking: false
         }
     },
+    legend: {
+        enabled: true,
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'top',
+        // symbolHeight:14,
+        // symbolWidth:20,
+        // symbolRadius:5,
+        itemStyle: { 'color': '#FFFFFF' }
+    },
+    tooltip: {
+        // enable:false,
+        shared: true,
+        padding: 16,
+        headerFormat: '{point.key}<br>',
+        style: {
+            color: 'rgb(124,124,124)',
+
+        },
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+    },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
+        cursor: 'pointer',
         name: '识别次数',
         lineColor: 'rgb(215,117,91)',
 
         data: [88, 156, 222, 567, 994]
     }, {
+        cursor: 'pointer',
         name: '鸟类种数',
         data: [55, 88, 156, 253, 312],
         color: 'rgb( 250,215,130)'

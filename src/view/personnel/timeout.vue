@@ -35,7 +35,8 @@ const chartOptions = ref({
             // borderRadius: 10,
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b><br>{point.percentage:1f} ',
+                format: '<b>{point.name}</b><br>{point.y} ',
+                // format: '<b>{point.name}</b><br>{point.percentage:1f} ',
                 // distance: -40,
                 filter: {
                     property: 'percentage',
@@ -50,17 +51,16 @@ const chartOptions = ref({
         layout: 'vertical',
         align: 'right',
         verticalAlign: 'middle',
+        symbolHeight:14,
+        symbolWidth:20,
+        symbolRadius:0,
         itemStyle:{'color':'#FFFFFF'}
     },
-    //     plotOptions: {
-    //       pie: {
-    //           borderRadius: '50%',
-    //           dataLabels: {
-    //               enabled: true
-    //           },
-    //           groupPadding: 0.1
-    //       }
-    //   },
+    tooltip: {
+        enable:false,
+        headerFormat: '',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+    },
     credits: {
         enabled: false
     },
@@ -70,11 +70,19 @@ const chartOptions = ref({
             shadow: false,		//去阴影
         name: '超时订单',
         data: [
-            { name: '验收超时', y: 25 },
-            { name: '派单超时', y: 38 },
-            { name: '上门超时', y: 12 },
-            { name: '接单超时', y: 25 },
-        ]
+            { name: '验收超时', y: 224 },
+            { name: '派单超时', y: 100 },
+            { name: '上门超时', y: 119 },
+            { name: '接单超时', y: 150 },
+        ],
+        colors: [
+           
+           'rgb(255,207,72)',
+           'rgb(88,148,255)',
+           'rgb(22,132,252)',
+           'rgb(96,181,101)',
+           'rgb(104,187,196)'
+       ]
     }]
 })
 

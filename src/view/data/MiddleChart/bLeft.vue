@@ -34,7 +34,8 @@ const chartOptions = ref({
             shadow: false,		//去阴影
             dataLabels: {
                 enabled: false,
-                format: '<b>{point.name}</b><br>{point.percentage:1f} ',
+                // format: '<b>{point.name}</b><br>{point.percentage:1f} ',
+                format:'{point.name}: {point.percentage:.1f}% '
                 // distance: -60,
                 // filter: {
                 //     property: 'percentage',
@@ -44,7 +45,11 @@ const chartOptions = ref({
             }
         }
     },
-    
+    tooltip: {
+        enable:false,
+        headerFormat: '',
+        pointFormat: '{point.percentage}% '
+    },
     credits: {
         enabled: false
     },
