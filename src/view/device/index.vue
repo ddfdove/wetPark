@@ -347,7 +347,7 @@ onMounted(() => {
     //   addTMap(viewer, 'vec')
     //   addTMap(viewer, 'cva')
     addTMap(viewer, 'img')
-    addTMap(viewer, 'cia')
+    // addTMap(viewer, 'cia')
     // addTMap(viewer, 'ter')
     // addTMap(viewer, 'cta')
     // addTMap(viewer, 'ibo')
@@ -369,11 +369,11 @@ onMounted(() => {
     //     })
     //     viewer.imageryLayers.addImageryProvider(atLayer);
     // }
-    // // addAMapImagery(viewer, 'vec')		// 加载高德矢量底图
+    // addAMapImagery(viewer, 'vec')		// 加载高德矢量底图
     // addAMapImagery(viewer, 'img')		// 加载高德影像底图
     // addAMapImagery(viewer, 'marker')	// 加载高德标注图层
 
-    const position = Cesium.Cartesian3.fromDegrees(101.689187, 36.653172, 2000.0)
+    const position = Cesium.Cartesian3.fromDegrees(101.691631,36.6529,2000)
     // 设置相机位置
     viewer.camera.setView({
         destination: position,
@@ -386,8 +386,8 @@ onMounted(() => {
         }
     });
 
-    const billboard = viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(101.689187, 36.653172, 2000.0),
+    const billboard1 = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(101.694013,36.652789,1000),
         billboard: {
             image: '../../../src/assets/pictures/摄像头1.png',
             scale: 0.2,
@@ -397,13 +397,81 @@ onMounted(() => {
         },
         label: {
             text: '路口摄像头',
-            font: '700 30px Helvetica',// 15pt monospace
+            font: '700 24px Helvetica',// 15pt monospace
             // fillColor: Cesium.Color.ANTIQUEWHITE,
             // fillColor:new Cesium.Color(206,206,206),
             pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
         },
     })
-    viewer.zoomTo(billboard)
+    const billboard2 = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(101.691266,36.652651,1000),
+        billboard: {
+            image: '../../../src/assets/pictures/摄像头1.png',
+            scale: 0.2,
+            // height:70,
+            // width:60
+            //   distanceDisplayCondition:1000,
+        },
+        label: {
+            text: '路口摄像头',
+            font: '700 22px Helvetica',// 15pt monospace
+            // fillColor: Cesium.Color.ANTIQUEWHITE,
+            // fillColor:new Cesium.Color(206,206,206),
+            pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
+        },
+    })
+    const billboard3 = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(101.692532,36.653907,1000),
+        billboard: {
+            image: '../../../src/assets/pictures/摄像头1.png',
+            scale: 0.2,
+            // height:70,
+            // width:60
+            //   distanceDisplayCondition:1000,
+        },
+        label: {
+            text: '路口摄像头',
+            font: '700 22px Helvetica',// 15pt monospace
+            // fillColor: Cesium.Color.ANTIQUEWHITE,
+            // fillColor:new Cesium.Color(206,206,206),
+            pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
+        },
+    })
+    const billboard4 = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(101.690365,36.653529,1000),
+        billboard: {
+            image: '../../../src/assets/pictures/摄像头1.png',
+            scale: 0.2,
+            // height:70,
+            // width:60
+            //   distanceDisplayCondition:1000,
+        },
+        label: {
+            text: '路口摄像头',
+            font: '700 22px Helvetica',// 15pt monospace
+            // fillColor: Cesium.Color.ANTIQUEWHITE,
+            // fillColor:new Cesium.Color(206,206,206),
+            pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
+        },
+    })
+    const billboard5 = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(101.692554,36.653391,1000),
+        billboard: {
+            image: '../../../src/assets/pictures/摄像头1.png',
+            scale: 0.2,
+            // height:70,
+            // width:60
+            //   distanceDisplayCondition:1000,
+        },
+        label: {
+            text: '鸟类监控摄像头',
+            font: '700 22px Helvetica',// 15pt monospace
+            // fillColor: Cesium.Color.ANTIQUEWHITE,
+            // fillColor:new Cesium.Color(206,206,206),
+            pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
+        },
+    })
+    // viewer.zoomTo(billboard)
 
 })
 </script>

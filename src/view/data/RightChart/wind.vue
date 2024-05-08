@@ -36,6 +36,11 @@ const chartOptions = reactive({
     legend: {
         enabled: false
     },
+    tooltip: {
+        enable:false,
+        headerFormat: '',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+    },
     credits: {
         enabled: false
     },

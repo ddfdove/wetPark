@@ -20,35 +20,46 @@
         </ul>
       </div>
     </div> -->
+      <!-- <Keep-alive>
       <router-view></router-view>
+    </Keep-alive> -->
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+      <!-- <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive> -->
     </div>
-    
-
   </div>
-
 </template>
 
 <script setup lang="ts">
-import Nav from './components/nav/index.vue'
-import { ref, onMounted } from 'vue'
+import Nav from "./components/nav/index.vue";
+import { ref, onMounted, KeepAlive } from "vue";
+import { useRoute } from "vue-router";
 // 获取数据大屏展示内容盒子的DOM元素
-let screen = ref()
+let screen = ref();
+const $route = useRoute();
 onMounted(() => {
-  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%)`
-})
+  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%)`;
+  // console.log($route.meta.title);
+  // console.log($route.meta.keepAlive);
+});
 //定义大屏缩放比例
 function getScale(w = 1920, h = 1080) {
-  const ww = window.innerWidth / w
-  const wh = window.innerHeight / h
-  return ww < wh ? ww : wh
+  const ww = window.innerWidth / w;
+  const wh = window.innerHeight / h;
+  return ww < wh ? ww : wh;
 }
 //监听视口变化
 window.onresize = () => {
-  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%) `
-}
+  screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%) `;
+};
 </script>
 
-<style lang="less"  >
+<style lang="less">
 * {
   padding: 0;
   margin: 0;
@@ -71,7 +82,6 @@ window.onresize = () => {
     left: 50%;
   }
 }
-
 
 // .router-link-active {
 //   text-decoration: none; //去除默认样式
