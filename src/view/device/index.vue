@@ -395,28 +395,28 @@ onMounted(() => {
 
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
-  const imageLayers = viewer.imageryLayers
-  viewer.imageryLayers.get(0).show = false;//清楚Cesium默认加载的影像地图数据(默认是加载的bing地图)
-        function addAMapImagery(viewer, type, option) {
-      let url = ''
-      if(type === 'img') {
-        url = 'https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'
-      } else if(type === 'vec') {
-        url = "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
-      } else if(type === 'marker') {
-        url = 'http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8'
-      }
-      const atLayer = new Cesium.UrlTemplateImageryProvider({
-        url,
-        minimumLevel: 3,
-        maximumLevel: 18,
-        ...option
-      })
-      viewer.imageryLayers.addImageryProvider(atLayer);
-    }
-    // addAMapImagery(viewer, 'vec')		// 加载高德矢量底图
-    addAMapImagery(viewer, 'img')		// 加载高德影像底图
-    // addAMapImagery(viewer, 'marker')	// 加载高德标注图层
+//   const imageLayers = viewer.imageryLayers
+//   viewer.imageryLayers.get(0).show = false;//清楚Cesium默认加载的影像地图数据(默认是加载的bing地图)
+    //     function addAMapImagery(viewer, type, option) {
+    //   let url = ''
+    //   if(type === 'img') {
+    //     url = 'https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'
+    //   } else if(type === 'vec') {
+    //     url = "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
+    //   } else if(type === 'marker') {
+    //     url = 'http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8'
+    //   }
+    //   const atLayer = new Cesium.UrlTemplateImageryProvider({
+    //     url,
+    //     minimumLevel: 3,
+    //     maximumLevel: 18,
+    //     ...option
+    //   })
+    //   viewer.imageryLayers.addImageryProvider(atLayer);
+    // }
+    // // addAMapImagery(viewer, 'vec')		// 加载高德矢量底图
+    // addAMapImagery(viewer, 'img')		// 加载高德影像底图
+    // // addAMapImagery(viewer, 'marker')	// 加载高德标注图层
   const imgLayer = new Cesium.UrlTemplateImageryProvider({
     url: "http://36.133.97.79:8231///www/wwwlogs/mx/upload/map/tiles/{z}/{x}/{y}.png",
     // url: "map/tiles5/{z}/{x}/{y}.png",
@@ -429,7 +429,7 @@ onMounted(() => {
   const imgLayer2 = new Cesium.UrlTemplateImageryProvider({
     // url: "http://36.133.97.79:8231///www/wwwlogs/mx/upload/map/tiles/{z}/{x}/{y}.png",
     // url: "map/tiles5/{z}/{x}/{y}.png",
-    url: "src/titles3/{z}/{x}/{y}.png",
+    url: "map/tiles2/{z}/{x}/{y}.png",
     zoom: 18,
     zooms: [3, 18],
     //   zooms: [14, 15],
@@ -440,7 +440,7 @@ onMounted(() => {
     // minimumLevel: 6,
     // maximumLevel: 18
   });
-//   viewer.imageryLayers.addImageryProvider(imgLayer2);
+  viewer.imageryLayers.addImageryProvider(imgLayer2);
 
   const position = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
   // 设置相机位置
