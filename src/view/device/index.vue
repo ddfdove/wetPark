@@ -417,6 +417,8 @@ onMounted(() => {
     // // addAMapImagery(viewer, 'vec')		// 加载高德矢量底图
     // addAMapImagery(viewer, 'img')		// 加载高德影像底图
     // // addAMapImagery(viewer, 'marker')	// 加载高德标注图层
+
+    
   const imgLayer = new Cesium.UrlTemplateImageryProvider({
     url: "http://36.133.97.79:8231///www/wwwlogs/mx/upload/map/tiles/{z}/{x}/{y}.png",
     // url: "map/tiles5/{z}/{x}/{y}.png",
@@ -429,12 +431,7 @@ onMounted(() => {
   const imgLayer2 = new Cesium.UrlTemplateImageryProvider({
     // url: "http://36.133.97.79:8231///www/wwwlogs/mx/upload/map/tiles/{z}/{x}/{y}.png",
     // url: "map/tiles5/{z}/{x}/{y}.png",
-    url: "map/tiles2/{z}/{x}/{y}.png",
-    zoom: 18,
-    zooms: [3, 18],
-    //   zooms: [14, 15],
-    zIndex: 10,
-    tileSize: 256,
+    url: "map/tiles/{z}/{x}/{y}.png",
     // tilingScheme: new Cesium.WebMercatorTilingScheme(),
     // fileExtension: 'png',
     // minimumLevel: 6,
