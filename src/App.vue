@@ -2,32 +2,7 @@
   <div class="boxContainer">
     <div class="screen" ref="screen">
       <Nav></Nav>
-      <!-- <div class="nav">
-      <div class="left">
-        <ul>
-          <li><router-link to="/park">园区展示</router-link></li>
-          <li><router-link to="/device">设备管理</router-link></li>
-          <li><router-link to="/bird">鸟类检测</router-link></li>
-
-        </ul>
-      </div>
-      <div class="middle">海湖湿地公园智慧屏</div>
-      <div class="right">
-        <ul>
-          <li><router-link to="personnel">人员分布</router-link></li>
-          <li><router-link to="data">数据分析</router-link></li>
-          <li><router-link to="message">消息推送</router-link></li>
-        </ul>
-      </div>
-    </div> -->
-      <!-- <Keep-alive>
-     
-    </Keep-alive> -->
-      <!-- <router-view v-slot="{ Component }">
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
-      </router-view> -->
+    
       <!-- <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive> -->

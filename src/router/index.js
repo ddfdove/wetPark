@@ -20,7 +20,10 @@ const routes = [
   {
     path: "/device",
     component: () => import("../view/device/index.vue"),
-   
+    meta: {
+      keepAlive: true,
+      title: "device",
+    },
   },
   {
     path: "/bird",

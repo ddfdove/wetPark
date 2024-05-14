@@ -11,6 +11,9 @@ export default defineConfig({
       "@": path.resolve("./src") // 相对路径别名配置，使用 @ 代替 src
     },
   },
+  devServer:{
+    proxy: 'http://36.133.97.79:8231'
+  },
   css: {
     preprocessorOptions: {
       scss: {
