@@ -5,8 +5,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue"
-import { Chart } from 'highcharts-vue'
+import { ref } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'spline',
@@ -95,5 +94,4 @@ const chartOptions = ref({
 
     }]
 })
-
 </script>

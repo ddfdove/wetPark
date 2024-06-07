@@ -5,9 +5,7 @@
 </template>
 
 <script setup>
-// @ is an alias to /src 
 import { ref, reactive } from "vue"
-
 const chartOptions = reactive({
     chart: {
         type: 'pyramid',

@@ -102,8 +102,6 @@ const chartOptions = ref({
         name: '数据二',
         data: [150,100,230,140,130],
         color: 'rgb(114,205,215)',
-        pointPadding: 0,
-        groupPadding: 0.2
     }
     ]
 })

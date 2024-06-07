@@ -55,30 +55,20 @@ const chartOptions = ref({
         name: '鸟类',
         // name: null,
         borderRadius: 1,
-        // itemStyle: {
-        //               normal: {
-        //                   borderColor: '#fff',
-        //                   borderWidth: '5'
-        //               },
-        //               emphasis: {
-        //                   borderColor: '#fff',
-        //                   borderWidth: '5'
-        //               }
-        //           },
         data: [{
             name: '数据一',
             y: 100,
-            // sliced:true
+            color: 'rgb(88,148,255)'
         }, {
             name: '数据二',
             y: 150,
-           
+            color:'rgb(114,205,215)'
         }],
-        colors: [
-            'rgb(88,148,255)',
-            'rgb(114,205,215)',
+        // colors: [
+        //    ,
+        //     ,
            
-        ]
+        // ]
     }]
 })
 

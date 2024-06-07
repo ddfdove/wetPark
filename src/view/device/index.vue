@@ -45,7 +45,7 @@ onMounted(() => {
     // minimumLevel: 1,
     // maximumLevel: 18
   });
-  viewer.imageryLayers.addImageryProvider(imgLayer);
+  // viewer.imageryLayers.addImageryProvider(imgLayer);
 
   function addAMapImagery(viewer, type, option) {
     let url = "";
@@ -108,7 +108,7 @@ onMounted(() => {
     viewer.imageryLayers.addImageryProvider(atLayer);
   }
   // addAMapImagery(viewer, 'gdvec')		// 加载高德矢量底图
-  // addAMapImagery(viewer, 'gdimg')		// 加载高德影像底图
+  addAMapImagery(viewer, 'gdimg')		// 加载高德影像底图
   // addAMapImagery(viewer, 'gdmarker')	// 加载高德标注图层
   // addAMapImagery(viewer, 'tmsing')	// 加载离线瓦片图高德标注图层
   // addAMapImagery(viewer, 'tdtimg')	// 加载天地图影像图层
@@ -133,7 +133,7 @@ onMounted(() => {
   });
 
   // addPolygon(); // 添加面
-  // addCamera(); //添加摄像头
+  addCamera(); //添加摄像头
   function addPolygon() {
     const url = "/src/assets/geiJsonData/wetPark.geojson";
     Cesium.Resource.fetchJson(url).then((res) => {

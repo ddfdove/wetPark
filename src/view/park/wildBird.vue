@@ -18,12 +18,12 @@ const chartOptions = ref({
         text: null
     },
     xAxis: {
-       
-        categories: ['黑水鸭','绿头鸭','斑头雁','白骨顶','灰雁','赤麻鸭'],
+
+        categories: ['黑水鸭', '绿头鸭', '斑头雁', '白骨顶', '灰雁', '赤麻鸭'],
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         // gridLineWidth: 1,
         lineWidth: 0,
         labels: {
@@ -32,7 +32,7 @@ const chartOptions = ref({
                 fontSize: "12px"
             }
         },
-        
+
     },
     yAxis: {
         // categories: ['0', '100', '200', '300','400','500','600'],
@@ -49,39 +49,48 @@ const chartOptions = ref({
         },
         gridLineWidth: 1,
         gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(64,64,64)',
-        min:0 ,//最小值
-		tickInterval:100, //间隔
-		max:600 //最大值
+        gridLineColor: 'rgb(64,64,64)',
+        min: 0,//最小值
+        tickInterval: 100, //间隔
+        max: 600 //最大值
     },
     plotOptions: {
-        bar: {
-            borderRadius: '0',
-            dataLabels: {
-                enabled: true,
-                color:'rgb(63,149,166)'
+        // bar: {
+        //     dataLabels: {
+        //         enabled: true,
+        //         color: 'rgb(63,149,166)',
+        //         style: {
+        //             fontSize: "12px",
+        //         }
+        //     },
+        //     borderRadius: '0',
+        //     borderColor: '',//去边框
+        //     groupPadding: 0.1
+        // },
+        series: {
+            marker: {
+                enabled: true   //是否显示折线图上的点（折线图配置）
             },
-            borderColor:'',//去边框
+            dataLabels: {
+                enabled: true,  //是否在图表上各个数据点显示对应数据
+                color: 'rgb(63,149,166)',
+                formatter: function () {//格式化
+                    return this.y;
+                }
+            },
+            borderRadius: '0',
+            borderColor: '',//去边框
             groupPadding: 0.1
         },
-        // column:{
-        //     borderRadius: '0',
-		// 	borderColor: "",//去边框
-        //     shadow: false,		//去阴影
-        //     dataLabels:{
-        //         enabled:true,
-        //         color:'red'
-        //     }
-		// }
     },
-      legend: {
-        enabled:false
-      },
-      tooltip: {
+    legend: {
+        enabled: false
+    },
+    tooltip: {
         // enable:false,
         shared: true,
         headerFormat: '{point.key}<br>',
-        padding:10,
+        padding: 10,
         style: {
             color: 'rgb(124,124,124)',
         },
@@ -90,11 +99,11 @@ const chartOptions = ref({
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '数量',
-        data: [360,355,234,572,549,342],
-        color:'rgb(63,149,194)'
+        data: [360, 355, 234, 572, 549, 342],
+        color: 'rgb(63,149,194)'
     }]
 })
 

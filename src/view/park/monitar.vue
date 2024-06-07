@@ -65,12 +65,27 @@ const chartOptions = ref({
         max: 1000 //最大值
     },
     plotOptions: {
-        line: {
+        spline: {
             dataLabels: {
-                enabled: true
+                enabled: false
             },
             enableMouseTracking: false
-        }
+        },
+        // series: {
+        //     marker: {
+        //         enabled: true   //是否显示折线图上的点（折线图配置）
+        //     },
+        //     dataLabels: {
+        //         enabled: false,  //是否在图表上各个数据点显示对应数据
+        //         color: 'rgb(63,149,166)',
+        //         formatter: function () {//格式化
+        //             return this.y;
+        //         }
+        //     },
+        //     borderRadius: '0',
+        //     borderColor: '',//去边框
+        //     groupPadding: 0.1
+        // },
     },
     legend: {
         enabled: true,
