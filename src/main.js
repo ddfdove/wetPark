@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 //引入路由进行注册
 import router from './router/index'
 import App from './App.vue'
+import '../styles/index.css'
 //引入highcharts
 import HighchartsVue from 'highcharts-vue';
 import Highcharts from "highcharts"; 
