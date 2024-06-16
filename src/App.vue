@@ -40,6 +40,7 @@ window.onresize = () => {
   width: 100vw;
   height: 100vh;
   background-color: rgb(14, 17, 23);
+
   .screen {
     height: 1080px;
     width: 1920px;
@@ -48,10 +49,11 @@ window.onresize = () => {
     position: fixed;
     top: 50%;
     left: 50%;
-    .content{
+
+    .content {
       height: 1000px;
-       padding-top: 20px;
-       width: 1920px;
+      padding-top: 20px;
+      width: 1920px;
     }
   }
 }

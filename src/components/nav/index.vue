@@ -43,7 +43,7 @@ const $route = useRoute();
   width: 100%;
   display: flex;
   padding: 20px 0;
-  background-image: url('../../assets/images/cut/头部.png');
+  background-image: url('/cut/头部.png');
   background-size: cover;
 
   .left {
@@ -61,11 +61,11 @@ const $route = useRoute();
       line-height: 45px;
       font-size: 18px;
       text-align: center;
-      background-image: url('../../assets/images/cut/左-1.png');
+      background-image: url('/cut/左-1.png');
       background-size: cover;
 
       &.active-link {
-        background-image: url('../../assets/images/cut/右-1选中.png'); // 设置活动状态下的背景图像
+        background-image: url('/cut/右-1选中.png'); // 设置活动状态下的背景图像
       }
 
       span {
@@ -118,11 +118,11 @@ const $route = useRoute();
       line-height: 45px;
       font-size: 18px;
       text-align: center;
-      background-image: url('../../assets//images/cut/右-1.png');
+      background-image: url('/cut/右-1.png');
       background-size: cover;
 
       &.active-link {
-        background-image: url('../../assets/images/cut/左-1选中.png'); // 设置活动状态下的背景图像
+        background-image: url('/cut/左-1选中.png'); // 设置活动状态下的背景图像
       }
 
       span {

@@ -10,10 +10,10 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'bar',
-        backgroundColor: '#0b1c2e',
+        backgroundColor: '#030025',
         // width:400,
-        height: 260,
-        // width:400
+        height: 300,
+        // width: 400
     },
     title: {
         text: null
@@ -50,9 +50,9 @@ const chartOptions = ref({
                 fontSize: "12px"
             }
         },
-        // gridLineWidth: 0,
+        gridLineDashStyle: 'solid',//网格线样式
         // gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: 'rgb(45,42,42)',
+        gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 5, //间隔
         max: 25 //最大值

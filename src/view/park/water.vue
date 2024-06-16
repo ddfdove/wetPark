@@ -10,9 +10,9 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'spline',
-        backgroundColor: '#0b1c2e',
+        backgroundColor: '#030025',
         // width:400,
-        height: 220
+        height: 190
     },
     title: {
         text: null
@@ -27,12 +27,12 @@ const chartOptions = ref({
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         labels: {
-            rotation:0,
+            rotation: 0,
             style: {
-                color: '#919191',
-                fontSize: "10px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         }
     },
@@ -44,15 +44,16 @@ const chartOptions = ref({
         },
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "10px"
+                color: '#ffffff',
+                fontSize: "14px",
             }
         },
-        gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(64,64,64)',
-        min:-20 ,//最小值
-		tickInterval:10, //间隔
-		max:40 //最大值
+        gridLineDashStyle: 'solid',//网格线样式
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor: '#221f3f',
+        min: -20,//最小值
+        tickInterval: 10, //间隔
+        max: 40 //最大值
     },
     plotOptions: {
         line: {
@@ -63,39 +64,39 @@ const chartOptions = ref({
         }
     },
     legend: {
-        enabled:true,
+        enabled: true,
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'top',
         // symbolHeight:14,
         // symbolWidth:20,
         // symbolRadius:5,
-        itemStyle:{'color':'#FFFFFF'}
+        itemStyle: { 'color': '#FFFFFF' }
     },
     tooltip: {
         // enable:false,
         shared: true,
-        padding:16,
+        padding: 16,
         headerFormat: '{point.key}<br>',
         style: {
             color: 'rgb(124,124,124)',
-          
+
         },
         pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '分钟',
-        lineColor: 'rgb(198,109,85)',
+        lineColor: '#00eaff',
 
         data: [5.2, -16.2, -11.2, -4.5, -1.2]
     }, {
         name: '小时',
         data: [0.9, 33.6, 30.7, 21.6, 13.5],
-        color: 'rgb( 197,171,108)'
+        color: '#0091ff'
 
     }]
 })

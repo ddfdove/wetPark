@@ -10,13 +10,14 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'bar',
-        backgroundColor: '#0b1c2e',
+        backgroundColor: '#030632',
         // width:400,
-        height: 240
+        height: 200
     },
     title: {
         text: null
     },
+
     xAxis: {
 
         categories: ['黑水鸭', '绿头鸭', '斑头雁', '白骨顶', '灰雁', '赤麻鸭'],
@@ -28,8 +29,8 @@ const chartOptions = ref({
         lineWidth: 0,
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         },
 
@@ -43,13 +44,14 @@ const chartOptions = ref({
         labels: {
             overflow: 'justify',
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         },
         gridLineWidth: 1,
-        gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: 'rgb(64,64,64)',
+        gridLineDashStyle: 'solid',//网格线样式
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 100, //间隔
         max: 600 //最大值
@@ -73,13 +75,14 @@ const chartOptions = ref({
             },
             dataLabels: {
                 enabled: true,  //是否在图表上各个数据点显示对应数据
-                color: 'rgb(63,149,166)',
+                color: '#ffffff',
                 formatter: function () {//格式化
                     return this.y;
                 }
             },
-            borderRadius: '0',
-            borderColor: '',//去边框
+            borderRadius: 8, // 设置圆角
+            pointWidth: 8, // 设置每个数据的宽度
+            borderColor: '', // 去边框
             groupPadding: 0.1
         },
     },
@@ -102,8 +105,21 @@ const chartOptions = ref({
     exporting: { enabled: false },
     series: [{
         name: '数量',
-        data: [360, 355, 234, 572, 549, 342],
-        color: 'rgb(63,149,194)'
+        data: [360, 355, 234, 533, 521, 342],
+        color: {
+            linearGradient: {
+                x1: 1,
+                y1: 0,
+                x2: 0,
+                y2: 0
+            },
+            stops: [
+                [0, '#2861AF'],
+                [0.13, '#2861AF'],
+                [0.72, '#3981D4'],
+                [1, '#3981D4']
+            ]
+        }
     }]
 })
 

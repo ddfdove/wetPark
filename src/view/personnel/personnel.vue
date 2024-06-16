@@ -10,8 +10,8 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'column',
-        backgroundColor: '#0b1c2e',
-        width:480,
+        backgroundColor: '#030025',
+        width: 480,
         height: 220
     },
     title: {
@@ -23,7 +23,7 @@ const chartOptions = ref({
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         // gridLineWidth: 1,
         lineWidth: 0,
         labels: {
@@ -50,8 +50,9 @@ const chartOptions = ref({
             }
         },
         gridLineWidth: 2,
+        gridLineDashStyle: 'solid',//网格线样式
         // gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: 'rgb(93,102,112)',
+        gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 50, //间隔
         max: 250 //最大值
@@ -62,7 +63,7 @@ const chartOptions = ref({
             dataLabels: {
                 enabled: false
             },
-            borderColor:'',//去边框
+            borderColor: '',//去边框
             shadow: false,		//去阴影
             groupPadding: 0.1,
             // color:'red'
@@ -76,7 +77,7 @@ const chartOptions = ref({
         //         width:5
         //     }
         // }
-        
+
     },
     legend: {
         enabled: false
@@ -84,18 +85,18 @@ const chartOptions = ref({
     tooltip: {
         // enable:false,
         shared: true,
-        padding:16,
+        padding: 16,
         headerFormat: '{point.key}<br>',
         style: {
             color: 'rgb(124,124,124)',
-          
+
         },
         pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '数据一',
         data: [100, 140, 230, 100, 130],

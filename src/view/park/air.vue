@@ -10,9 +10,9 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'spline',
-        backgroundColor: '#0b1c2e',
+        backgroundColor: '#030025',
         // width:400,
-        height: 220
+        height: 190
     },
     title: {
         text: null
@@ -27,11 +27,11 @@ const chartOptions = ref({
         title: {
             text: null
         },
-        crosshair:true,
+        crosshair: true,
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "10px"
+                color: '#ffffff',
+                fontSize: "14px",
             }
         }
     },
@@ -43,15 +43,16 @@ const chartOptions = ref({
         },
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "10px"
+                color: '#ffffff',
+                fontSize: "14px",
             }
         },
-        gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(64,64,64)',
-        min:0 ,//最小值
-		tickInterval:100, //间隔
-		max:400 //最大值
+        gridLineDashStyle: 'solid',//网格线样式
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor: '#221f3f',
+        min: 0,//最小值
+        tickInterval: 100, //间隔
+        max: 400 //最大值
     },
     plotOptions: {
         line: {
@@ -64,43 +65,43 @@ const chartOptions = ref({
     tooltip: {
         // enable:false,
         shared: true,
-        padding:16,
+        padding: 16,
         headerFormat: '{point.key}<br>',
         style: {
-            color: 'rgb(124,124,124)',
-          
+            color: '#030025',
+
         },
         pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     legend: {
-        enabled:true,
+        enabled: true,
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'top',
         // symbolHeight:14,
         // symbolWidth:20,
         // symbolRadius:5,
-        itemStyle:{'color':'#FFFFFF'}
+        itemStyle: { 'color': '#FFFFFF' }
     },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '2020',
-        lineColor: 'rgb(198,109,85)',
+        lineColor: '#1dc36a',
 
         data: [300, 3, 4]
     }, {
         name: '2021',
         data: [400, 4, 40],
-        color: 'rgb( 197,171,108)'
+        color: '#00eaff'
 
     },
     {
         name: '2022',
         data: [357, 12, 0],
-        color: 'rgb( 197,171,108)'
+        color: '#0091ff'
 
     }]
 })

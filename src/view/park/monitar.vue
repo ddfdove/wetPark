@@ -6,13 +6,14 @@
 
 <script setup>
 import { ref, reactive } from "vue"
+import HighCharts from 'highcharts'
 
 const chartOptions = ref({
     chart: {
-        type: 'spline',
-        backgroundColor: '#0b1c2e',
+        type: 'areaspline',
+        backgroundColor: '#030632',
         // width:400,
-        height: 260
+        height: 200
     },
     title: {
         text: null
@@ -27,6 +28,7 @@ const chartOptions = ref({
         title: {
             text: null
         },
+
         crosshair: {
             snap: true,
             label: {
@@ -41,8 +43,8 @@ const chartOptions = ref({
         },
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         }
     },
@@ -54,38 +56,25 @@ const chartOptions = ref({
         },
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         },
-        gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: 'rgb(64,64,64)',
+        gridLineDashStyle: 'solid',//网格线样式
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 200, //间隔
         max: 1000 //最大值
     },
     plotOptions: {
-        spline: {
+        areaspline: {
             dataLabels: {
                 enabled: false
             },
-            enableMouseTracking: false
-        },
-        // series: {
-        //     marker: {
-        //         enabled: true   //是否显示折线图上的点（折线图配置）
-        //     },
-        //     dataLabels: {
-        //         enabled: false,  //是否在图表上各个数据点显示对应数据
-        //         color: 'rgb(63,149,166)',
-        //         formatter: function () {//格式化
-        //             return this.y;
-        //         }
-        //     },
-        //     borderRadius: '0',
-        //     borderColor: '',//去边框
-        //     groupPadding: 0.1
-        // },
+            enableMouseTracking: false,
+            fillOpacity: 0.5
+        }
     },
     legend: {
         enabled: true,
@@ -115,15 +104,38 @@ const chartOptions = ref({
     series: [{
         cursor: 'pointer',
         name: '识别次数',
-        lineColor: 'rgb(215,117,91)',
+        color: '#00eaff',
+        fillColor: {
+            linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+            },
+            stops: [
+                [0, 'rgba(0, 238, 255, 0.5)'],
+                [1, 'rgba(0, 234, 255, 0)']
+            ]
+        },
 
-        data: [88, 156, 222, 567, 994]
+        data: [88, 232, 876, 312, 94]
     }, {
         cursor: 'pointer',
         name: '鸟类种数',
-        data: [55, 88, 156, 253, 312],
-        color: 'rgb( 250,215,130)'
-
+        data: [842, 512, 132, 332, 958],
+        color: '#0091ff',
+        fillColor: {
+            linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+            },
+            stops: [
+                [0, 'rgba(0, 145, 255, 0.4)'],
+                [1, 'rgba(0, 145, 255, 0)']
+            ]
+        },
     }]
 })
 

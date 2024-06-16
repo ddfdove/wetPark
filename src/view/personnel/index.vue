@@ -5,97 +5,105 @@
     <ul class="top">
       <li id="left">
         <div class="lTop">
-          <span
-            style="color: #409EFF; font-size: 14px;display: block; padding: 15px 0 0 20px;margin-bottom: 50px;">今日派单统计</span>
-          <ul style="display: flex; justify-content: space-around; text-align: center; font-size: 12px;">
-            <li>
-              <span style="color: rgb(148,194,234);">已派单</span>
-              <div style="color: #FFFFFF;font-size: 30px;margin-top: 20px;">120</div>
+          <div class="title">
+            <span>今日派单统计</span>
+          </div>
+          <ul class="statisticTop flex">
+            <li class="flex-1" v-for="(item, index) in statistic" :key="index"
+              :style="{ backgroundImage: `url(${item.image})` }">
+              <div>{{ item.description }}</div>
+              <span>{{ item.quantity }}</span>
             </li>
-            <li>
-              <span style="color: rgb(148,194,234);">待接单</span>
-              <div style="color: #FFFFFF;font-size: 30px;margin-top: 20px;">35</div>
-            </li>
-            <li>
-              <span style="color: rgb(148,194,234);">待验收</span>
-              <div style="color: #FFFFFF;font-size: 30px;margin-top: 20px;">36</div>
-            </li>
-            <li>
-              <span style="color: rgb(148,194,234);">已完成</span>
-              <div style="color: #FFFFFF;font-size: 30px;margin-top: 20px;">52</div>
-            </li>
-
           </ul>
         </div>
         <div class="lBottom">
-          <span
-            style="color: #409EFF; font-size: 14px;display: block; padding: 15px 0 0 20px;margin-bottom: 50px;">超时工单统计</span>
+          <div class="title">
+            <span>超时工单统计</span>
+          </div>
           <Timeout></Timeout>
         </div>
       </li>
       <li id="middle">
         <div class="mtop">
-          <span style="color: #409EFF; font-size: 14px;display: inline-block; padding: 15px 0 0 20px;margin-bottom: 20px;">人员分布情况</span>
-          <span style=" font-size: 14px;display: inline-block; padding: 15px 0 0 380px;margin-bottom: 20px;">总数:
-            850</span>
+          <div class="title">
+            <span>人员分布情况</span>
+          </div>
+
         </div>
         <div class="mMiddle">
-          <img src="../../assets/pictures/ditu.png" alt="">
+          <img src="@/assets/images/ditu.png" alt="">
         </div>
         <div class="mBottom">
-        <Personnel></Personnel>
+          <Personnel></Personnel>
         </div>
       </li>
       <li id="right">
-        <span
-          style="color: #409EFF; font-size: 14px;display: block; padding: 15px 0 0 20px;margin-bottom: 50px;">区域人员分布</span>
+        <div class="title">
+          <span>区域人员分布</span>
+        </div>
         <div style="padding: 80px 90px ;">
           <Regional></Regional>
-        </div> 
-        </li>
+        </div>
+      </li>
     </ul>
     <div class="bottom">
-
       <div id="bLeft">
-        <span
-          style="color: #409EFF; font-size: 14px;display: block; padding: 15px 0 0 20px;margin-bottom: 20px;">人流量</span>
-        <Visitors></Visitors>
+        <div class="title">
+          <span>人流量</span>
+        </div>
+        <Visitors class="visitors"></Visitors>
       </div>
       <div id="bRight">
-        <span
-          style="color: #409EFF; font-size: 14px;display: block; padding: 15px 0 0 20px;margin-bottom: 50px;">园区工单排行榜TOP6</span>
-        <div class="garden" style="padding: 40px;">
-          <Garden></Garden>
+        <div class="title">
+          <span>园区工单排行榜TOP6</span>
         </div>
-        </div>
+        <Garden class="garden"></Garden>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import Timeout from './timeout.vue';
 import Visitors from './visitors.vue';
 import Personnel from './personnel.vue'
 import Regional from './regional.vue'
 import Garden from './garden.vue'
 
+let statistic = ref([
+  {
+    description: '总面积',
+    quantity: '120',
+    image: '/cut/park/park1.png'
+  },
+  {
+    description: '固定资产',
+    quantity: '5675.2',
+    image: '/cut/park/park2.png'
+  },
+  {
+    description: '野生动物种类',
+    quantity: '800',
+    image: '/cut/park/park3.png'
+  },
+  {
+    description: '设备',
+    quantity: '3000',
+    image: '/cut/park/park4.png'
+  },
+])
 </script>
 
 <style lang="less" scoped>
-* {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  text-decoration: none;
-  box-sizing: border-box;
-  color: #FFFFFF;
-}
-
 .container {
   display: flex;
   flex-direction: column;
-  margin: 40px 10px;
+  height: 100%;
+  width: 100%;
+  background-color: #030025;
+  color: #FFFFFF;
 
   // height: 1000px;
   .top {
@@ -112,26 +120,72 @@ import Garden from './garden.vue'
 
       .lTop {
         flex: 1.5;
-        background-color: rgb(11, 28, 46);
-        margin-top: 10px;
-        margin-right: 10px;
-        margin-left: 30px;
-        border-radius: 5px;
+
+        .statisticTop {
+          display: flex;
+          height: 100px;
+          margin-top: 40px;
+          // padding: 50px 20px 10px 20px;
+
+          li {
+            background-size: 98% 100%;
+            background-repeat: no-repeat;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 5px;
+
+            div {
+              color: #00A3FF;
+
+            }
+
+            span {
+              font-size: 25px;
+              margin: 5px 40px 0 0
+            }
+
+          }
+
+          #area {
+
+            text-align: center;
+
+            #lTop {
+              width: 100px;
+              margin-left: 60px;
+              border: 1px solid rgb(46, 191, 191);
+              border-radius: 2px;
+            }
+
+            #lBottom {
+              margin-top: 30px;
+              border-right: 1px solid rgb(28, 44, 64);
+
+              #bl {
+                font-size: 40px;
+                margin-right: 5px;
+              }
+
+              #br {
+                color: rgb(35, 104, 191);
+              }
+            }
+          }
+
+        }
       }
 
       .lBottom {
         flex: 2;
-        background-color: rgb(11, 28, 46);
-        margin-top: 10px;
-        margin-right: 10px;
-        margin-left: 30px;
-        border-radius: 5px;
-        // padding-right: 40px;
+        padding: 0 10px;
       }
     }
 
     #middle {
-      background-color: rgb(11, 28, 46);
+
       margin-top: 10px;
       margin-right: 10px;
       border-radius: 5px;
@@ -142,8 +196,11 @@ import Garden from './garden.vue'
         height: 40px;
 
       }
+
       .mMiddle {
         flex: 3.5;
+        padding: 10px;
+
         // margin-bottom: 0px;
         img {
           width: 100%;
@@ -153,16 +210,17 @@ import Garden from './garden.vue'
 
       .mBottom {
         flex: 5;
-        padding-top: 40px ;
-        padding-left: 80px;
+        margin: 10px;
+        padding: 30px 0 0 60px;
+        border: 1px solid #021f66;
       }
     }
 
     #right {
-      background-color: rgb(11, 28, 46);
+
       margin-top: 10px;
       margin-right: 40px;
-      border-radius: 5px;
+
     }
   }
 
@@ -170,24 +228,31 @@ import Garden from './garden.vue'
     flex: 4.2;
     // height: 460px;
     display: flex;
-    overflow: hidden;
 
     #bLeft {
       flex: 1.95;
-      background-color: rgb(11, 28, 46);
-      margin-top: 20px;
-      margin-right: 10px;
-      margin-left: 30px;
-      border-radius: 5px;
+
+
+      .visitors {
+        margin-top: 20px;
+        margin-right: 10px;
+        margin-left: 10px;
+        border: 1px solid #021f66;
+      }
 
     }
 
     #bRight {
       flex: 1;
-      background-color: rgb(11, 28, 46);
-      margin-top: 20px;
-      margin-right: 40px;
-      border-radius: 5px;
+
+      .garden {
+        border: 1px solid #021f66;
+
+        margin: 20px 10px 0 40px;
+      }
+
+
+
     }
   }
 }

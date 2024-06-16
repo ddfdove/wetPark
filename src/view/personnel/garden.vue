@@ -10,16 +10,16 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'column',
-        backgroundColor: '#0b1c2e',
-        width:500,
-        height: 260
+        backgroundColor: '#030025',
+        width: 500,
+        height: 320
     },
     title: {
         text: null
     },
     xAxis: {
 
-        categories: ['北京', '上海', '深圳', '广州', '杭州','厦门','珠海'],
+        categories: ['北京', '上海', '深圳', '广州', '杭州', '厦门', '珠海'],
         title: {
             text: null
         },
@@ -48,9 +48,9 @@ const chartOptions = ref({
                 fontSize: "12px"
             }
         },
-        // gridLineWidth: 0,
+        gridLineDashStyle: 'solid',//网格线样式
         // gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: 'rgb(64,64,64)',
+        gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 1000, //间隔
         max: 6000 //最大值
@@ -60,9 +60,9 @@ const chartOptions = ref({
             borderRadius: '50',
             dataLabels: {
                 enabled: true,
-                color:'rgb(255,204,0)'
+                color: 'rgb(255,204,0)'
             },
-            borderColor:'',//去边框
+            borderColor: '',//去边框
             shadow: false,		//去阴影
             groupPadding: 0.1,
             // color:'red'
@@ -83,11 +83,11 @@ const chartOptions = ref({
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
-        type:'column',
+        type: 'column',
         name: '数据一',
-        data: [4950,5768,3421,5887,4655,5490,2907],
+        data: [4950, 5768, 3421, 5887, 4655, 5490, 2907],
         color: 'rgb(74,77,240)',
         pointPadding: 0.3,
         groupPadding: 0.2,
@@ -95,9 +95,9 @@ const chartOptions = ref({
         // borderRadiusTopRight: 100,
 
     }, {
-        type:'line',
+        type: 'line',
         name: '数据二',
-        data: [4950,5768,3421,5887,4655,5490,2907],
+        data: [4950, 5768, 3421, 5887, 4655, 5490, 2907],
         color: 'rgb(173,68,114)',
         pointPadding: 0,
         groupPadding: 0.2
