@@ -1,35 +1,32 @@
 <template>
   <div class="container flex">
     <div class="left">
-      <div>
-        <div class="title">
-          <span>公园简介</span>
-        </div>
+      <panelboard :chTitle="'公园简介'" :enTitle="'Park Introduction'">
         <div class="introduce">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;海湖湿地公园位于西宁市海晏路绿地云香郡北侧，公园内绿草繁盛，河道绵延，有休闲广场、桥栈、拱桥等景观，是一个集湿地保育、科普宣教、合理利用、管理服务等多功能与一体的湿地生态展示示范基地
+          海湖湿地公园位于西宁市海晏路绿地云香郡北侧，公园内绿草繁盛，河道绵延，有休闲广场、桥栈、拱桥等景观，是一个集湿地保育、科普宣教、合理利用、管理服务等多功能与一体的湿地生态展示示范基地
         </div>
-      </div>
+      </panelboard>
       <ul>
         <li class="flex-1 detection">
-          <div class="title">
-            <span>监测数据</span>
-          </div>
-          <div class="monitarChart">
-            <MonitarChart id="monitarChart"></MonitarChart>
-          </div>
-
+          <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
+            <div class="monitarChart">
+              <MonitarChart id="monitarChart" :dataList></MonitarChart>
+            </div>
+          </panelboard>
         </li>
         <li class="flex-1">
-          <div class="title">
-            <span>野生鸟类种类</span>
-          </div>
-          <BirdChart></BirdChart>
+          <panelboard :chTitle="'野生鸟类种类'" :enTitle="'Wild bird species'">
+            <div class="monitarChart">
+              <mvcProgress :dataList="birdList"></mvcProgress>
+            </div>
+          </panelboard>
         </li>
         <li class="flex-1">
-          <div class="title">
-            <span>种群趋势分析</span>
-          </div>
-          <PopulationChart></PopulationChart>
+          <panelboard :chTitle="'种群趋势分析'" :enTitle="'Population trend analysis'">
+            <div class="monitarChart">
+              <PopulationChart :dataList></PopulationChart>
+            </div>
+          </panelboard>
         </li>
       </ul>
 
@@ -38,173 +35,168 @@
       <ul class="statisticTop flex">
         <li class="flex-1" v-for="(item, index) in statistic" :key="index"
           :style="{ backgroundImage: `url(${item.image})` }">
-          <div>{{ item.description }}</div>
-          <span>{{ item.quantity }}</span>
+          <div style="  color: #00A3FF;margin-bottom: 5px;font-size: 18px;">{{ item.description }}</div>
+          <div>
+            <span style="font-size: 25px;margin-right: 5px; ">{{ item.quantity }}</span>
+            <span style="font-size: 12px;">{{ item.unit }}</span>
+          </div>
         </li>
       </ul>
       <div class="animal">
-        <div class="title">
-          <span>公园简介</span>
-        </div>
-        <img src="/cut/bird/bird5.png" alt="">
+        <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'" style="margin-top:38px;">
+          <div class="video-container">
+            <!-- controls="controls" -->
+            <div class="date-time">2024年06月15日 星期六 15:44:01</div>
+            <video width="100%" height="100%" autoplay poster="../../assets/images/cut/bird/bird5.png">
+              <source src="">
+              你的浏览器不支持HTML5视频。
+            </video>
+          </div>
+        </panelboard>
       </div>
       <ul class="statisticBottom">
         <li>
-          <div class="title">
-            <span>人流量</span>
-          </div>
-          <PeopleChart class="border"></PeopleChart>
+          <panelboard :chTitle="'人流量'" :enTitle="'Human traffic'">
+            <div class="monitarChart">
+              <PeopleChart class="border" :dataList></PeopleChart>
+            </div>
+          </panelboard>
         </li>
         <li>
-          <div class="title">
-            <span>水质检测</span>
-          </div>
-          <WaterChart class="border"></WaterChart>
+          <panelboard :chTitle="'水质检测'" :enTitle="'Water quality'">
+            <div class="monitarChart">
+              <WaterChart class="border" :dataList></WaterChart>
+            </div>
+          </panelboard>
         </li>
         <li>
-          <div class="title">
-            <span>空气湿度检测</span>
-          </div>
-          <AirChart class="border"></AirChart>
+          <panelboard :chTitle="'空气湿度检测'" :enTitle="'Air humidity'">
+            <div class="monitarChart">
+              <AirChart class="border" :dataList></AirChart>
+            </div>
+          </panelboard>
         </li>
-
       </ul>
-
     </div>
     <div class="right">
       <div class="rTop">
-        <div class="title">
-          <span>城市时间</span>
-        </div>
-        <div class="weather">
-          <div class="picture">
-            <img src="@/assets/images/xining.jpg" alt="">
-          </div>
-          <div class="fontsize">
-            <div class="city">
-              <ul>
-                <li id="address">西宁城西</li>
-                <li><el-button class="custom-button">[切换城市]</el-button>
-                </li>
-              </ul>
+        <panelboard :chTitle="'城市时间'" :enTitle="'City Time'">
+          <div class="weather">
+            <div class="picture">
+              <img src="@/assets/images/xining.jpg" alt="">
             </div>
-            <div class="date">
-              <ul>
-                <li>{{ date }}</li>
-                <li>{{ week }}</li>
-                <li>{{ time }}</li>
-              </ul>
+            <div class="fontsize">
+              <div class="city">
+                <ul>
+                  <li id="address">西宁城西</li>
+                  <!-- <li><el-button class="custom-button">[切换城市]</el-button>
+                  </li> -->
+                </ul>
+              </div>
+              <div class="date">
+                <ul>
+                  <li>{{ date }}</li>
+                  <li>{{ week }}</li>
+                  <li>{{ time }}</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        </panelboard>
       </div>
       <div class="rMiddle">
-        <div class="title">
-          <span>地图详情</span>
-        </div>
-        <ul class="map">
-          <li id="satellite">
-            <span style="font-size: 22px;">卫星图</span>
-            <div>
+        <panelboard :chTitle="'地区摄像'" :enTitle="'Regional Photography'">
+          <ul class="map">
+            <li id="satellite">
+              <span style="font-size: 22px;">摄像头</span>
               <div>
-                <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
-                  <el-tab-pane label="生态停车场" name="park1">
-                    <div>
-                      <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
-                    </div>
-                  </el-tab-pane>
-                  <el-tab-pane label="卫生间" name="toilet1">
-                    <Satellite style="height: 160px;"></Satellite>
-                  </el-tab-pane>
-                  <el-tab-pane label="石笼坝" name="shilongba1">
-                    <Satellite style="height: 160px;"></Satellite>
-                  </el-tab-pane>
-                </el-tabs>
-              </div>
-              <div></div>
-            </div>
-          </li>
-          <!-- <li id="freehand">
-          <span style="font-size: 22px;">手绘图</span>
-          <div>
-            <el-tabs v-model="activeName2" class="demo-tabs" @tab-click="handleClick2">
-              <el-tab-pane label="生态停车场" name="park2">
-                <div>
-                  <img src="../../assets/pictures/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                  <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
+                    <el-tab-pane label="生态停车场" name="park1">
+                      <div style="height: 240px;">
+                        <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                      </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="卫生间" name="toilet1">
+                      <Satellite style="height: 240px;"></Satellite>
+                    </el-tab-pane>
+                    <el-tab-pane label="石笼坝" name="shilongba1">
+                      <Satellite style="height: 240px;"></Satellite>
+                    </el-tab-pane>
+                    <el-tab-pane label="沙湖" name="shahu">
+                      <Satellite style="height: 240px;"></Satellite>
+                    </el-tab-pane>
+                    <el-tab-pane label="双湖佳境" name="shuanghu">
+                      <Satellite style="height: 240px;"></Satellite>
+                    </el-tab-pane>
+                  </el-tabs>
                 </div>
-              </el-tab-pane>
-              <el-tab-pane label="卫生间" name="toilet2">
-                <Freehand style="height: 180px;"></Freehand>
-              </el-tab-pane>
-              <el-tab-pane label="石笼坝" name="shilongba2">
-                <Satellite style="height: 160px;"></Satellite>
-              </el-tab-pane>
-            </el-tabs>
-          </div>
-        </li> -->
-        </ul>
+            </li>
+          </ul>
+        </panelboard>
+
       </div>
       <div class="rBottom">
-        <div class="title">
-          <span>地点检测</span>
-        </div>
-        <div class="flex area">
-          <div style="margin: 0 10px 0 10px;">
-            <span>区域:</span>
-            <el-dropdown @command="handleCommand" popper-class="custom-dropdown">
-              <span class="el-dropdown-link">
-                <span style="margin-right: 10px;">西岸5号</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="a">Action 1</el-dropdown-item>
-                  <el-dropdown-item command="b">Action 2</el-dropdown-item>
-                  <el-dropdown-item command="c">Action 3</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+        <panelboard :chTitle="'地点检测'" :enTitle="'Location Detection'">
+          <div class="flex area">
+            <div style="margin: 0 10px 0 10px;">
+              <span>区域:</span>
+              <el-dropdown @command="handleCommand" popper-class="custom-dropdown">
+                <span class="el-dropdown-link">
+                  <span style="margin-right: 10px;">西岸5号</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
+                    <el-dropdown-item command="a"style="color:#ffffff">西岸1号</el-dropdown-item>
+                    <el-dropdown-item command="b"style="color:#ffffff">西岸2号</el-dropdown-item>
+                    <el-dropdown-item command="c"style="color:#ffffff">西岸3号</el-dropdown-item>
+                    <el-dropdown-item command="c"style="color:#ffffff">西岸4号</el-dropdown-item>
+                    <el-dropdown-item command="c"style="color:#ffffff">西岸5号</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+            <div>
+              <span class="text-sm" style="margin-right: 10px;">时间:</span>
+              <el-dropdown @command="handleCommand" class="leading-10 h-10">
+                <span class="el-dropdown-link">
+                  <span style="margin-right: 10px;">上午</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
+                    <el-dropdown-item command="a"style="color:#ffffff">上午</el-dropdown-item>
+                    <el-dropdown-item command="b"style="color:#ffffff">中午</el-dropdown-item>
+                    <el-dropdown-item command="c"style="color:#ffffff">下午</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <span>—</span>
+              <el-dropdown @command="handleCommand" class="leading-10 h-10">
+                <span class="el-dropdown-link" style="margin-left: 10px;">
+                  <span style="margin-right: 10px;">中午</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
+                    <el-dropdown-item command="a"style="color:#ffffff">上午</el-dropdown-item>
+                    <el-dropdown-item command="b"style="color:#ffffff">中午</el-dropdown-item>
+                    <el-dropdown-item command="c"style="color:#ffffff">下午</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
           </div>
-          <div>
-            <span class="text-sm" style="margin-right: 10px;">时间:</span>
-            <el-dropdown @command="handleCommand" class="leading-10 h-10">
-              <span class="el-dropdown-link">
-                <span style="margin-right: 10px;">西岸5号</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="a">Action 1</el-dropdown-item>
-                  <el-dropdown-item command="b">Action 2</el-dropdown-item>
-                  <el-dropdown-item command="c">Action 3</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-            <span>—</span>
-            <el-dropdown @command="handleCommand" class="leading-10 h-10">
-              <span class="el-dropdown-link" style="margin-left: 10px;">
-                <span style="margin-right: 10px;">西岸5号</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="a">Action 1</el-dropdown-item>
-                  <el-dropdown-item command="b">Action 2</el-dropdown-item>
-                  <el-dropdown-item command="c">Action 3</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div>
-        <div class="bird">
-          <ul>
-            <li v-for="(item, index) in birds.slice(0, 5)" :key="index">
-              <div>
-                <span class="font-25">{{ item.quantity }}</span>
-                <span class="font-18">只</span>
-              </div>
-              <h5 class="font-18">{{ item.name }}</h5>
-            </li>
+          <div class="bird">
+            <ul>
+              <li v-for="(item, index) in birds.slice(0, 5)" :key="index">
+                <div>
+                  <span class="font-25">{{ item.quantity }}</span>
+                  <span class="font-18">只</span>
+                </div>
+                <h5 class="font-18">{{ item.name }}</h5>
+              </li>
 
-          </ul>
-        </div>
+            </ul>
+          </div>
+        </panelboard>
       </div>
     </div>
   </div>
@@ -220,32 +212,42 @@ import AirChart from './air.vue'
 import Freehand from './freehand.vue'
 import Satellite from './satellite.vue'
 
+import panelboard from "@/components/panelboard/index.vue"
+import mvcProgress from "./components/mvc-progress.vue"
+
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import moment from 'moment'
 import "moment/dist/locale/zh-cn";
 
+
+
 let statistic = ref([
   {
     description: '总面积',
     quantity: '120',
-    image: '/cut/park/park1.png'
+    unit: '公顷',
+    image: '/cut/rect.png'
   },
   {
-    description: '固定资产',
-    quantity: '5675.2',
-    image: '/cut/park/park2.png'
+    description: '人流量',
+    quantity: '5675',
+    unit: '人',
+    image: '/cut/rect.png'
   },
   {
     description: '野生动物种类',
     quantity: '800',
-    image: '/cut/park/park3.png'
+    unit: '种',
+    image: '/cut/rect.png'
   },
   {
     description: '设备',
     quantity: '3000',
-    image: '/cut/park/park4.png'
+    unit: '台',
+    image: '/cut/rect.png'
+
   },
 ])
 const birds = ref([
@@ -271,6 +273,27 @@ const birds = ref([
   },
 
 ])
+const birdList = ref([
+  {
+    name: "黑水鸭",
+    value: 200,
+  }, {
+    name: "绿头鸭",
+    value: 100,
+  }, {
+    name: "班头鸭",
+    value: 400,
+  }, {
+    name: "白骨顶",
+    value: 300,
+  }, {
+    name: "灰燕",
+    value: 200,
+  }, {
+    name: "刺麻鸭",
+    value: 140,
+  }
+])
 let date = ref(moment().format('YYYY年MM月DD日'))
 let week = ref(moment().format('dddd'))
 let timer = ref(0)
@@ -279,6 +302,10 @@ let time = ref(moment().format('h:mm:ss '))
 //卫星图手绘图数据
 const activeName1 = ref('park1')
 const activeName2 = ref('park2')
+
+//图表数据定义
+//种群趋势图表数据
+const populationList=ref([])
 //组件挂载完毕更新当前的事件
 onMounted(() => {
   timer.value = setInterval(() => {
@@ -316,26 +343,6 @@ const handleCommand = (command) => {
     background-repeat: no-repeat;
   }
 
-  // :deep(.el-dropdown-menu) {
-  //   background-color: #b91616;
-  // }
-
-  // :deep(.el-dropdown-menu .el-dropdown-item) {
-  //   background-color: #ae2222
-  // }
-
-  // :deep(.el-dropdown-menu .el-dropdown-item:hover) {
-  //   background-color: #ba2828
-  //     /* 设置悬停时的背景颜色 */
-  // }
-
-  .title {
-    margin: 10px 0;
-
-    span {
-      margin-left: 10px;
-    }
-  }
 
   .left {
     flex: 1.1;
@@ -387,15 +394,7 @@ const handleCommand = (command) => {
         align-items: center;
         padding-top: 5px;
 
-        div {
-          color: #00A3FF;
-
-        }
-
-        span {
-          font-size: 25px;
-          margin: 5px 40px 0 0
-        }
+        div {}
 
       }
 
@@ -430,25 +429,31 @@ const handleCommand = (command) => {
     .animal {
       flex: 2;
 
-      .title {
-        margin: 10px 0;
+      .video-container {
+        position: relative;
+        width: 100%;
+        height: 460px;
+        padding-top: 10px;
 
-        span {
-          margin-left: 30px;
+        // border:1px dashed grey;
+        .date-time {
+          position: absolute;
+          left: 40px;
+          top: 37px;
+          color: #fff;
+          font-size: 25px;
         }
       }
 
-      img {
-        width: 100%;
-        height: 450px;
-        // margin-left: 20px;
-      }
     }
 
     .statisticBottom {
       flex: 1;
       display: flex;
+      // padding-top: 10px;
+      height: 200px;
 
+      // margin-top: 0px;
       li {
         flex: 1;
         display: inline-block;
@@ -457,16 +462,6 @@ const handleCommand = (command) => {
           border: 1px solid #021f66;
           margin: 0 5px;
         }
-
-        .title {
-          margin: 10px 0;
-
-          span {
-            margin-left: -10px;
-          }
-        }
-
-
       }
     }
   }
@@ -565,10 +560,8 @@ const handleCommand = (command) => {
     .map {
       display: flex;
       flex-direction: column;
-      padding: 0px 25px 10px 25px;
-      margin-bottom: 23px;
-
-
+      padding: 0px 25px 0px 25px;
+      margin-bottom: 90px;
       li {
         flex: 1;
         padding-top: 15px;

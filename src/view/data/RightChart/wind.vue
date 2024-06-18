@@ -8,19 +8,26 @@
 import { ref, reactive } from "vue"
 const chartOptions = reactive({
     chart: {
-        type: 'pyramid',
+        type: 'pyramid3d',
         marginRight: 100,
         // width:460,
         height: 260,
-        backgroundColor: '#0b1c2e',
+        spacing:[0,0,0,0],
+        backgroundColor: 'rgba(0,0,0,0)',
+        options3d: {
+            enabled: true,
+            alpha: 10,
+            depth: 60,
+            viewDistance: 50
+        }
     },
     title: {
-        text:null,
+        text: null,
         x: -50
     },
     plotOptions: {
         series: {
-            borderColor:'',//去边框
+            borderColor: '',//去边框
             shadow: false,		//去阴影
             reversed: false,
             dataLabels: {
@@ -29,20 +36,26 @@ const chartOptions = reactive({
                 // color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                 softConnector: true
             }
-        }
+        },
+        // width: '60%',
+        //     height: '80%',
+        //     center: ['50%', '45%']
     },
     legend: {
         enabled: false
     },
     tooltip: {
-        enable:false,
+        enable: false,
         headerFormat: '',
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+        backgroundColor: 'rgba(0, 170, 255, 0.5)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
+        pointFormat: ' <b> {point.name}</b>: {point.y} '
     },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
+    exporting: { enabled: false },
     series: [{
         name: '数据',
         data: [

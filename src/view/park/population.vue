@@ -2,12 +2,36 @@
     <div>
         <highcharts :options="chartOptions" ref="chart"></highcharts>
     </div>
+    <span style="color:"></span>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from "vue"
+
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            {
+                name: '一级鸟类',
+                y: 100,
+
+                // sliced: true
+            },
+            {
+                name: '二级鸟类',
+                y: 150,
 
 
+            },
+            {
+                name: '其他鸟类',
+                y: 138,
+
+            }
+        ]
+    }
+})
 const chartOptions = ref({
     chart: {
         type: 'pie',
@@ -15,28 +39,28 @@ const chartOptions = ref({
             enabled: true,
             alpha: 45,
             beta: 0,
-            depth: 50, // 增加饼图的深度
+            // depth: 50, // 增加饼图的深度
             viewDistance: 25 // 调整视角距离
         },
-        backgroundColor: '#030632',
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         height: 180,
-        spacing: [0, 0, 0, 0] // 去掉图表的内边距
+        spacing: [0, 0, 20, 0] // 去掉图表的内边距
     },
     title: {
-        text: null
+        text: ''
+    },
+    subtitle: {
+        text: ''
     },
     plotOptions: {
         pie: {
             allowPointSelect: true,
             cursor: 'pointer',
-            borderColor: '', //去边框
-            shadow: false, //去阴影
-            size: '120%', // 设置饼图大小
-            // center: ['50%', '50%'], // 设置饼图中心位置
+            depth: 40, // 增加饼图的深度
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b><br>{point.y} ',
-                distance: -40,
+                format: '<b>{point.name}</b><br><span style="color:{point.color}">{point.y}</span>',
+                // distance: 0,
                 filter: {
                     property: 'percentage',
                     operator: '>',
@@ -50,10 +74,16 @@ const chartOptions = ref({
         }
     },
     tooltip: {
-        enabled: true,
+        enable: true,
         headerFormat: '',
-        padding: 16,
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+        backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
+        style: {
+            color: '#ffffff',
+
+        },
+        pointFormat: ' <b> {point.name}</b>: {point.y} '
     },
     credits: {
         enabled: false
@@ -63,49 +93,15 @@ const chartOptions = ref({
     },
     series: [{
         name: '鸟类',
-        data: [
-            { name: '一级鸟类', y: 100 },
-            { name: '二级鸟类', y: 150 },
-            { name: '其他鸟类', y: 138 }
+        size: '110%',
+        innerSize: '70%',
+        data: dataList,
+        colors: [
+            '#f25e00',
+            '#0084e6',
+            '#10a34c'
         ]
     }]
-    // series: [{
-    //     name: '鸟类',
-    //     data: [
-    //         {
-    //             name: '一级鸟类',
-    //             y: 100,
-    //             color: {
-    //                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 0 },
-    //                 stops: [
-    //                     [0, '#D0B154'],
-    //                     [1, '#BBCA6E']
-    //                 ]
-    //             }
-    //         },
-    //         {
-    //             name: '二级鸟类',
-    //             y: 150,
-    //             color: {
-    //                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 0 },
-    //                 stops: [
-    //                     [0, '#A8E186'],
-    //                     [1, '#9AF297']
-    //                 ]
-    //             }
-    //         },
-    //         {
-    //             name: '其他鸟类',
-    //             y: 138,
-    //             color: {
-    //                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 0 },
-    //                 stops: [
-    //                     [0, '#92FCA2'],
-    //                     [1, '#6DC6FD']
-    //                 ]
-    //             }
-    //         }
-    //     ]
-    // }]
-});
+})
+
 </script>

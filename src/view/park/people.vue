@@ -7,22 +7,25 @@
 <script setup>
 import { ref } from "vue"
 
-
+// 定义组件的 props
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            { name: '2021', data: [123, 32, 15] },
+            { name: '2020', data: [233, 12, 23] }
+        ]
+    }
+});
 const chartOptions = ref({
     chart: {
         type: 'spline',
         backgroundColor: '#030025',
-        // width:400,
-        height: 190
+        height: 200
     },
     title: {
         text: null
     },
-    // style: {
-    // color: 'red',
-    // fontSize: "12px",
-
-    //  },
     xAxis: {
         categories: ['摄像头', '水质检测', '门禁'],
         title: {
@@ -61,6 +64,11 @@ const chartOptions = ref({
                 enabled: true
             },
             enableMouseTracking: false
+        },
+        series: {
+            marker: {
+                enabled: false
+            }
         }
     },
     legend: {
@@ -78,27 +86,32 @@ const chartOptions = ref({
         shared: true,
         padding: 16,
         headerFormat: '{point.key}<br>',
+        backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
         style: {
-            color: 'rgb(124,124,124)',
-
+            color: '#ccc',
+            // letterSpacing: '2px',
+            fontSize: '14px',
         },
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+        // <span style="color:{point.color}">\u25CF</span> //数据圆点点
+        pointFormat: ' <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     credits: {
         enabled: false
     },
     exporting: { enabled: false },
     series: [{
-        name: '2021',
-        lineColor: '#00eaff',
-
-        data: [123, 32, 15]
+        name: dataList[0].name,
+        data: dataList[0].data,
+        color: '#00eaff',
     }, {
-        name: '2020',
-        data: [233, 12, 23],
+        name: dataList[1].name,
+        data: dataList[1].data,
         color: '#0091ff'
 
     }]
+    
 })
 
 </script>

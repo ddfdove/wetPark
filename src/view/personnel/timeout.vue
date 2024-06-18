@@ -5,14 +5,72 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue"
+import { ref, reactive, onMounted } from "vue"
+
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            {
+                name: '上午',
+                y: 224,
+                h: 50,
+            },
+            {
+                name: '中午',
+                y: 100,
+                h: 30,
+                sliced: true,
+            },
+            {
+                name: '下午',
+                y: 119,
+                h: 50,
+            },
+            {
+                name: '晚上',
+                y: 150,
+                h: 50,
+            },
+        ]
+    }
+})
+
 
 const chartOptions = ref({
     chart: {
         type: 'pie',
-        backgroundColor: '#030025',
+        backgroundColor: 'rgba(0,0,0,0)',
+        spacing: [0, 0, 10, 0], // 去掉图表的内边距
         // width:400,
-        height: 240
+        height: 260,
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        },
+        // events: {
+        //     load: function () {
+        //         const each = highcharts.each
+        //         const points = this.series[0].points
+        //         each(points, function (p) {
+        //             const ran = p.options.h // 获取自定义的高度值
+        //             p.graphic.attr({
+        //                 translateY: -ran
+        //             })
+        //             if (p.graphic.side1) {
+        //                 p.graphic.side1.attr({
+        //                     translateY: -ran
+        //                 })
+        //             }
+        //             if (p.graphic.side2) {
+        //                 p.graphic.side2.attr({
+        //                     translateY: -ran
+        //                 })
+        //             }
+        //         })
+        //     }
+        // },
     },
     title: {
         text: null,
@@ -31,57 +89,62 @@ const chartOptions = ref({
             allowPointSelect: true,
             cursor: 'pointer',
             showInLegend: true,
-            // colors,
-            // borderRadius: 10,
+            depth: 80,
             dataLabels: {
-                enabled: true,
+                enabled: false,
                 format: '<b>{point.name}</b><br>{point.y} ',
                 // format: '<b>{point.name}</b><br>{point.percentage:1f} ',
                 // distance: -40,
-                filter: {
-                    property: 'percentage',
-                    operator: '>',
-                    value: 4
-                }
+                // filter: {
+                //     property: 'percentage',
+                //     operator: '>',
+                //     value: 4
+                // }
             }
         }
     },
     legend: {
         enabled: true,
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
-        symbolHeight: 14,
-        symbolWidth: 20,
-        symbolRadius: 0,
-        itemStyle: { 'color': '#FFFFFF' }
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom',
+        symbolHeight: 8,
+        symbolWidth: 8,
+        // symbolRadius: 0,
+        itemStyle: { 'color': '#FFFFFF', },
+        labelFormatter: function () {
+            return `
+        
+            <span style="font-size: 14px;">${this.name}</span> </br> </br>
+            <span style="color:${this.color}; font-size: 20px; padding:10px">${this.y}</span>
+       
+      `;
+        }
     },
     tooltip: {
-        enable: false,
+        enable: true,
         headerFormat: '',
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y} '
+        backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
+        style: {
+            color: '#ffffff',
+
+        },
+        pointFormat: ' <b> {point.name}</b>: {point.y} '
     },
     credits: {
         enabled: false
     },
     exporting: { enabled: false },
     series: [{
-        borderColor: '',//去边框
-        shadow: false,		//去阴影
         name: '超时订单',
-        data: [
-            { name: '验收超时', y: 224 },
-            { name: '派单超时', y: 100 },
-            { name: '上门超时', y: 119 },
-            { name: '接单超时', y: 150 },
-        ],
+        data: dataList,
         colors: [
-
             'rgb(255,207,72)',
-            'rgb(88,148,255)',
+            '#e02b41',
             'rgb(22,132,252)',
             'rgb(96,181,101)',
-            'rgb(104,187,196)'
         ]
     }]
 })

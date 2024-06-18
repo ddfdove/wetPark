@@ -8,6 +8,18 @@
 import { ref, reactive } from "vue"
 import HighCharts from 'highcharts'
 
+
+// 定义组件的 props
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            { name: '识别次数', data: [88, 232, 876, 312, 94] },
+            { name: '鸟类种数', data: [842, 512, 132, 332, 958] }
+        ]
+    }
+});
+
 const chartOptions = ref({
     chart: {
         type: 'areaspline',
@@ -74,6 +86,11 @@ const chartOptions = ref({
             },
             enableMouseTracking: false,
             fillOpacity: 0.5
+        },
+        series: {
+            marker: {
+                enabled: false
+            }
         }
     },
     legend: {
@@ -101,42 +118,32 @@ const chartOptions = ref({
         enabled: false
     },
     exporting: { enabled: false },
-    series: [{
-        cursor: 'pointer',
-        name: '识别次数',
-        color: '#00eaff',
-        fillColor: {
-            linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-            },
-            stops: [
-                [0, 'rgba(0, 238, 255, 0.5)'],
-                [1, 'rgba(0, 234, 255, 0)']
-            ]
+    series: [
+        {
+            name: dataList[0].name,
+            data: dataList[0].data,
+            color: '#00eaff',
+            fillColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, 'rgba(0, 238, 255, 0.5)'],
+                    [1, 'rgba(0, 234, 255, 0)']
+                ]
+            }
         },
+        {
+            name: dataList[1].name,
+            data: dataList[1].data,
+            color: '#0091ff',
+            fillColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, 'rgba(0, 145, 255, 0.4)'],
+                    [1, 'rgba(0, 145, 255, 0)']
+                ]
+            }
+        }
+    ]
 
-        data: [88, 232, 876, 312, 94]
-    }, {
-        cursor: 'pointer',
-        name: '鸟类种数',
-        data: [842, 512, 132, 332, 958],
-        color: '#0091ff',
-        fillColor: {
-            linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-            },
-            stops: [
-                [0, 'rgba(0, 145, 255, 0.4)'],
-                [1, 'rgba(0, 145, 255, 0)']
-            ]
-        },
-    }]
 })
-
 </script>

@@ -1,7 +1,11 @@
 <template>
-  <div id="cesiumContainer"></div>
-  <!-- <Left></Left> -->
+  <div class="container">
+    <div id="cesiumContainer"></div>
+    <div class="overlay"></div> <!-- 透明覆盖层 -->
+  <Left></Left>
   <!-- <Device></Device> -->
+  </div>
+ 
  
 </template>
 
@@ -107,8 +111,8 @@ onMounted(() => {
     });
     viewer.imageryLayers.addImageryProvider(atLayer);
   }
-  // addAMapImagery(viewer, 'gdvec')		// 加载高德矢量底图
-  addAMapImagery(viewer, 'gdimg')		// 加载高德影像底图
+  addAMapImagery(viewer, 'gdvec')		// 加载高德矢量底图
+  // addAMapImagery(viewer, 'gdimg')		// 加载高德影像底图
   // addAMapImagery(viewer, 'gdmarker')	// 加载高德标注图层
   // addAMapImagery(viewer, 'tmsing')	// 加载离线瓦片图高德标注图层
   // addAMapImagery(viewer, 'tdtimg')	// 加载天地图影像图层
@@ -118,7 +122,13 @@ onMounted(() => {
   // addAMapImagery(viewer, 'tximg')	// 加载腾讯影像图层
   // const terrainProvider = Cesium.createWorldTerrain();
   // viewer.scene.terrainProvider = terrainProvider;
-
+  
+  viewer.entities.add({
+    rectangle: {
+      coordinates: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
+      material: Cesium.Color.fromCssColorString('rgba(3, 0, 37, 0.8)'), // 设置背景颜色和透明度
+    },
+  });
   const position = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
    // 设置相机位置
    viewer.camera.setView({
@@ -186,9 +196,9 @@ onMounted(() => {
   function addCamera() {
     const url = "/src/assets/geiJsonData/billboard.geojson";
     Cesium.Resource.fetchJson(url).then((res) => {
-      console.log(res);
-      console.log(res.features);
-      console.log(res.type);
+      // console.log(res);
+      // console.log(res.features);
+      // console.log(res.type);
       //   const { polygon } = CesiumPlugin.Geo.GeoJsonToGraphics(res);
       const point = res.features;
       point.forEach((item) => {
@@ -201,12 +211,12 @@ onMounted(() => {
           ),
           label: {
             text: properties.name,
-            font: "700 20px Helvetica", // 15pt monospace
-            pixelOffset: new Cesium.Cartesian2(0, 40), //偏移量
+            font: "700 14px Helvetica", // 15pt monospace
+            pixelOffset: new Cesium.Cartesian2(0, -60), //偏移量
           },
           billboard: {
-            image: "../../../src/assets/pictures/摄像头1.png",
-            scale: 0.2,
+            image: "/cut/camera.png",
+            scale: 1,
           },
         });
       });
@@ -216,21 +226,26 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-
-
-* {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  text-decoration: none;
-  box-sizing: border-box;
+.container{
+  z-index:999;
+  background-color:  rgba(0, 102, 255, 0.2);
+ 
 }
-
-/deep/#cesiumContainer {
+#cesiumContainer {
   width: 1920px;
   height: 1000px;
-  margin: 0;
-  padding: 0;
-  // height: 100%;
+  // background-color: #001529; /* 设置背景颜色 */
+ 
+}
+.overlay {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // background-color: #030025; /* 设置背景颜色 */
+  opacity: 0.8;
+  pointer-events: none; /* 确保点击事件传递到下面的Cesium容器 */
+  z-index: 10;
 }
 </style>

@@ -5,59 +5,51 @@
     <ul class="top">
       <li id="left">
         <div class="lTop">
-          <div class="title">
-            <span>今日派单统计</span>
-          </div>
-          <ul class="statisticTop flex">
-            <li class="flex-1" v-for="(item, index) in statistic" :key="index"
-              :style="{ backgroundImage: `url(${item.image})` }">
-              <div>{{ item.description }}</div>
-              <span>{{ item.quantity }}</span>
-            </li>
-          </ul>
+          <panelboard :chTitle="'季度人流排行'" :enTitle="'Quarterly traffic ranking'">
+            <ul class="statisticTop flex">
+              <li class="flex-1" v-for="(item, index) in statistic" :key="index"
+                :style="{ backgroundImage: `url(${item.image})` }">
+                <div style="color: #00A3FF;">{{ item.description }}</div>
+                <span :style="{ color: `${item.color}` }">{{ item.quantity }}</span>
+              </li>
+            </ul>
+          </panelboard>
         </div>
         <div class="lBottom">
-          <div class="title">
-            <span>超时工单统计</span>
-          </div>
-          <Timeout></Timeout>
+          <panelboard :chTitle="'时段排行'" :enTitle="'Time period ranking'">
+            <Timeout></Timeout>
+          </panelboard>
         </div>
       </li>
       <li id="middle">
         <div class="mtop">
-          <div class="title">
-            <span>人员分布情况</span>
-          </div>
-
-        </div>
-        <div class="mMiddle">
-          <img src="@/assets/images/ditu.png" alt="">
+          <panelboard :chTitle="'人员分布情况'" :enTitle="'Personnel distribution'">
+            <div style="padding: 10px;">
+              <img src="@/assets/images/ditu.png" alt="">
+            </div>
+           
+          </panelboard>
         </div>
         <div class="mBottom">
           <Personnel></Personnel>
         </div>
       </li>
       <li id="right">
-        <div class="title">
-          <span>区域人员分布</span>
-        </div>
-        <div style="padding: 80px 90px ;">
-          <Regional></Regional>
-        </div>
+        <panelboard :chTitle="'区域人员分布'" :enTitle="'Staff Distribution'">
+          <mvcProgress :list="personList"></mvcProgress>
+        </panelboard>
       </li>
     </ul>
     <div class="bottom">
       <div id="bLeft">
-        <div class="title">
-          <span>人流量</span>
-        </div>
-        <Visitors class="visitors"></Visitors>
+        <panelboard :chTitle="'人流量'" :enTitle="'Human traffic'">
+          <Visitors class="visitors"></Visitors>
+        </panelboard>
       </div>
       <div id="bRight">
-        <div class="title">
-          <span>园区工单排行榜TOP6</span>
-        </div>
-        <Garden class="garden"></Garden>
+        <panelboard :chTitle="'景区人流排行Top5'" :enTitle="'ScenicSpot flow ranking'" >
+          <Garden class="garden"></Garden>
+        </panelboard>
       </div>
     </div>
   </div>
@@ -65,34 +57,55 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import Timeout from './timeout.vue';
 import Visitors from './visitors.vue';
 import Personnel from './personnel.vue'
 import Regional from './regional.vue'
 import Garden from './garden.vue'
 
+import panelboard from "../../components/panelboard/index.vue"
+import mvcProgress from "./components/mvc-progress.vue"
+
 let statistic = ref([
   {
-    description: '总面积',
+    description: '一季度',
     quantity: '120',
-    image: '/cut/park/park1.png'
+    image: '/cut/square.png',
+    color: '#ffffff'
   },
   {
-    description: '固定资产',
-    quantity: '5675.2',
-    image: '/cut/park/park2.png'
+    description: '二季度',
+    quantity: '5675',
+    image: '/cut/square.png',
+    color: '#FFC300'
   },
   {
-    description: '野生动物种类',
+    description: '三季度',
     quantity: '800',
-    image: '/cut/park/park3.png'
+    image: '/cut/square.png',
+    color: '#FF8D1A'
   },
   {
-    description: '设备',
+    description: '四季度',
     quantity: '3000',
-    image: '/cut/park/park4.png'
+    image: '/cut/square.png',
+    color: '#00FF85'
   },
+])
+const personList = reactive([
+  {
+    name: "A区",
+    value: 10,
+  },
+  {
+    name: "B区",
+    value: 14,
+  },
+  {
+    name: "C区",
+    value: 23,
+  }
 ])
 </script>
 
@@ -139,12 +152,15 @@ let statistic = ref([
 
             div {
               color: #00A3FF;
+              font-size: 25px;
 
             }
 
             span {
               font-size: 25px;
-              margin: 5px 40px 0 0
+              // margin: 5px 20px 0 0
+              margin-top: 10px;
+              text-align: center;
             }
 
           }
@@ -185,32 +201,27 @@ let statistic = ref([
     }
 
     #middle {
-
+      // width: 770px;
       margin-top: 10px;
       margin-right: 10px;
-      border-radius: 5px;
+      // border-radius: 5px;
       display: flex;
       flex-direction: column;
 
       .mTop {
-        height: 40px;
+        // padding: 10px 30px;
 
-      }
-
-      .mMiddle {
-        flex: 3.5;
-        padding: 10px;
-
-        // margin-bottom: 0px;
         img {
+         
           width: 100%;
           height: 100%;
         }
+
       }
 
       .mBottom {
         flex: 5;
-        margin: 10px;
+        margin: 0px;
         padding: 30px 0 0 60px;
         border: 1px solid #021f66;
       }
@@ -247,8 +258,8 @@ let statistic = ref([
 
       .garden {
         border: 1px solid #021f66;
-
-        margin: 20px 10px 0 40px;
+      
+        margin: 20px 5px 0 0px;
       }
 
 

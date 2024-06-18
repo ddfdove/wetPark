@@ -7,21 +7,29 @@
 <script setup>
 import { ref, reactive } from "vue"
 
+
+// 定义组件的 props
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            { name: '2020', data: [300, 3, 4] },
+            { name: '2021', data: [400, 4, 40] },
+            { name: '2022', data: [357, 12, 0], }
+        ]
+    }
+});
 const chartOptions = ref({
     chart: {
         type: 'spline',
         backgroundColor: '#030025',
-        // width:400,
-        height: 190
+        // width:240,
+        height: 200,
+        space: [0, 0, 0, 0]
     },
     title: {
         text: null
     },
-    // style: {
-    // color: 'red',
-    // fontSize: "12px",
-
-    //  },
     xAxis: {
         categories: ['设备总数', '保修数', '新增数'],
         title: {
@@ -35,7 +43,6 @@ const chartOptions = ref({
             }
         }
     },
-
     yAxis: {
         categories: ['0', '100', '200', '300', '400'],
         title: {
@@ -60,6 +67,11 @@ const chartOptions = ref({
                 enabled: true
             },
             enableMouseTracking: false
+        },
+        series: {
+            marker: {
+                enabled: false
+            }
         }
     },
     tooltip: {
@@ -67,11 +79,15 @@ const chartOptions = ref({
         shared: true,
         padding: 16,
         headerFormat: '{point.key}<br>',
+        backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
         style: {
-            color: '#030025',
-
+            color: '#ccc',
+            // letterSpacing: '2px',
+            fontSize: '14px',
         },
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
+        pointFormat: ' <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     legend: {
         enabled: true,
@@ -88,21 +104,18 @@ const chartOptions = ref({
     },
     exporting: { enabled: false },
     series: [{
-        name: '2020',
-        lineColor: '#1dc36a',
-
-        data: [300, 3, 4]
+        name: dataList[0].name,
+        data: dataList[0].data,
+        color: '#1dc36a',
     }, {
-        name: '2021',
-        data: [400, 4, 40],
+        name: dataList[1].name,
+        data: dataList[1].data,
         color: '#00eaff'
-
     },
     {
-        name: '2022',
-        data: [357, 12, 0],
+        name: dataList[2].name,
+        data: dataList[2].data,
         color: '#0091ff'
-
     }]
 })
 

@@ -24,7 +24,7 @@
           <router-link to="data"><span>数据分析</span></router-link>
         </li>
         <li :class="{ 'active-link': $route.path === '/message' }">
-          <router-link to="message"><span>消息推送</span></router-link>
+          <router-link to="message"><span></span></router-link>
         </li>
       </ul>
     </div>

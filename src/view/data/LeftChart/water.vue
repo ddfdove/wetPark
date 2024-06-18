@@ -9,9 +9,16 @@ import { ref, reactive } from "vue"
 const chartOptions = ref({
     chart: {
         type: 'variablepie',
-        backgroundColor: '#0b1c2e',
-        // width:400,
-        height: 240
+        backgroundColor: 'rgba(0,0,0,0)',
+        spacing:[0,0,0,0],
+        height: 220,
+        // options3d: {
+        //     enabled: true,
+        //     alpha: 45,
+        //     beta: 0,
+        //     // depth: 50, // 增加饼图的深度
+        //     viewDistance: 25 // 调整视角距离
+        // },
     },
     title: {
         text: null,
@@ -24,6 +31,7 @@ const chartOptions = ref({
             borderColor: '',//去边框
             shadow: false,		//去阴影
             groupPadding: 0.1,
+            depth: 50, // 增加饼图的深度
             innerSize: '20%',
             zMin: 0,
             dataLabels: {
@@ -41,7 +49,10 @@ const chartOptions = ref({
     tooltip: {
         enable: false,
         headerFormat: '',
-        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b>: {point.y}'
+        backgroundColor: 'rgba(0, 170, 255, 0.5)', // 提示框背景色
+        borderWidth: 1, // 提示框边框宽度
+        borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
+        pointFormat: ' <b> {point.name}</b>: {point.y}'
 
     },
     credits: {

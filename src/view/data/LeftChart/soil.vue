@@ -5,28 +5,58 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref, reactive } from "vue"
+import HighCharts from 'highcharts'
+
+
+// 定义组件的 props
+const {dataList} = defineProps({
+    dataList: {
+        type: Array,
+        default: () => [
+            { name: '识别次数', data: [88, 232, 876, 312, 94] },
+            { name: '鸟类种数', data: [842, 512, 132, 332, 958] }
+        ]
+    }
+});
+
 const chartOptions = ref({
     chart: {
-        type: 'spline',
-        backgroundColor: '#0b1c2e',
+        type: 'areaspline',
+        backgroundColor: '#030632',
         // width:400,
-        height: 220
+        height: 240
     },
     title: {
         text: null
     },
-    
+    // style: {
+    // color: 'red',
+    // fontSize: "12px",
+
+    //  },
     xAxis: {
         categories: ['今日', '本月', '本季度', '上季度', '全年'],
         title: {
             text: null
         },
-        crosshair:true,
+
+        crosshair: {
+            snap: true,
+            label: {
+                enabled: true,
+                align: 'right',
+                // 格式化文本内容
+                // formatter: '{chart.options.countries.(value).ucCode}<br>' +
+                // '<span class="f32">' +
+                // '<span style="display:inline-block;height:32px;vertical-align:text-top;" ' +
+                // 'class="flag {value}"></span></span>'
+            }
+        },
         labels: {
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         }
     },
@@ -37,61 +67,83 @@ const chartOptions = ref({
             text: null
         },
         labels: {
-            // enabled: false,
             style: {
-                color: '#919191',
-                fontSize: "12px"
+                color: '#ffffff',
+                fontSize: "14px"
             }
         },
-        gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor:'rgb(64,64,64)',
-        min:0 ,//最小值
-		tickInterval:200, //间隔
-		max:1000 //最大值
+        gridLineDashStyle: 'solid',//网格线样式
+        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineColor: '#221f3f',
+        min: 0,//最小值
+        tickInterval: 200, //间隔
+        max: 1000 //最大值
     },
     plotOptions: {
-        line: {
+        areaspline: {
             dataLabels: {
-                enabled: true
+                enabled: false
             },
-            enableMouseTracking: false
+            enableMouseTracking: false,
+            fillOpacity: 0.5
+        },
+        series: {
+            marker: {
+                enabled: false
+            }
         }
     },
     legend: {
-        enabled:true,
+        enabled: true,
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'top',
         // symbolHeight:14,
         // symbolWidth:20,
         // symbolRadius:5,
-        itemStyle:{'color':'#FFFFFF'}
+        itemStyle: { 'color': '#FFFFFF' }
     },
     tooltip: {
         // enable:false,
         shared: true,
-        padding:16,  //修改tooltip浮窗的padding从而达到修改浮窗宽高的目的
+        padding: 16,
         headerFormat: '{point.key}<br>',
         style: {
             color: 'rgb(124,124,124)',
-          
+
         },
         pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br>'
     },
     credits: {
         enabled: false
     },
-    exporting: {enabled: false},
-    series: [{
-        name: '识别次数',
-        lineColor: 'rgb(215,117,91)',
+    exporting: { enabled: false },
+    series: [
+        {
+            name: dataList[0].name,
+            data: dataList[0].data,
+            color: '#00eaff',
+            fillColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, 'rgba(0, 238, 255, 0.5)'],
+                    [1, 'rgba(0, 234, 255, 0)']
+                ]
+            }
+        },
+        {
+            name: dataList[1].name,
+            data: dataList[1].data,
+            color: '#0091ff',
+            fillColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, 'rgba(0, 145, 255, 0.4)'],
+                    [1, 'rgba(0, 145, 255, 0)']
+                ]
+            }
+        }
+    ]
 
-        data: [88, 156, 222, 567, 994]
-    }, {
-        name: '鸟类种数',
-        data: [55, 88, 156, 253, 312],
-        color: 'rgb( 250,215,130)'
-
-    }]
 })
 </script>
