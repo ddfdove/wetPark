@@ -2,21 +2,21 @@
   <div class="container">
     <ul class="left">
       <li>
-        <panelboard :chTitle="'土壤监测'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'土壤监测'" :enTitle="'Soil monitoring'">
           <div class="soil">
             <SoilChart></SoilChart>
           </div>
         </panelboard>
       </li>
       <li>
-        <panelboard :chTitle="'水文监测'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'水文监测'" :enTitle="'Hydrological monitoring'">
           <div class="hydrology">
             <HydrologyChart></HydrologyChart>
           </div>
         </panelboard>
       </li>
       <li>
-        <panelboard :chTitle="'水质监测'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'水质监测'" :enTitle="'Water quality monitoring'">
           <div class="water">
             <WaterChart></WaterChart>
           </div>
@@ -24,27 +24,11 @@
       </li>
     </ul>
     <div class="middle">
-      <!-- <ul class="mTop">
-       <li >
-        <TleftChart></TleftChart>
-       </li>
-       <li>
-        <TrightChart></TrightChart>
-       </li>
-      </ul>
-      <ul class="mBottom">
-        <li>
-          <BleftChart></BleftChart>
-        </li>
-        <li>
-          <BrightChart></BrightChart>
-        </li>
-      </ul> -->
       <div class="mTop">
         <img src="/cut/wind.png" alt="">
       </div>
       <div class="mBottom">
-        <panel-board :chTitle="'设备'" :enTitle="'Device Management'">
+        <panel-board :chTitle="'设备'" :enTitle="'Equipment'">
           <div class="table-border">
             <el-table :data="tableData" :max-height="400" :header-row-style="headerRowStyle"
               :header-cell-style="headerCellStyle" :row-style="rowStyle" :cell-style="cellStyle"
@@ -58,7 +42,7 @@
     </div>
     <ul class="right">
       <li>
-        <panelboard :chTitle="'大气湿度'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'大气湿度'" :enTitle="'Atmospheric humidity'">
           <div class="soil">
             <SoilChart></SoilChart>
           </div>
@@ -66,14 +50,14 @@
 
       </li>
       <li>
-        <panelboard :chTitle="'风力风向'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'风力风向'" :enTitle="'Wind force and direction'">
           <div class="hydrology" style="padding-left: 40px;">
             <WindChart></WindChart>
           </div>
         </panelboard>
       </li>
       <li>
-        <panelboard :chTitle="'降雨量'" :enTitle="'Park Introduction'">
+        <panelboard :chTitle="'降雨量'" :enTitle="'Rainfall'">
           <div class="water">
             <SoilChart></SoilChart>
           </div>
