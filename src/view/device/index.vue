@@ -49,7 +49,7 @@ onMounted(() => {
     // minimumLevel: 1,
     // maximumLevel: 18
   });
-  viewer.imageryLayers.addImageryProvider(imgLayer);
+  // viewer.imageryLayers.addImageryProvider(imgLayer);
 
   function addAMapImagery(viewer, type, option) {
     let url = "";
@@ -111,7 +111,7 @@ onMounted(() => {
     });
     viewer.imageryLayers.addImageryProvider(atLayer);
   }
-  // addAMapImagery(viewer, 'gdvec')		// 加载高德矢量底图
+  addAMapImagery(viewer, 'gdvec')		// 加载高德矢量底图
   // addAMapImagery(viewer, 'gdimg')		// 加载高德影像底图
   // addAMapImagery(viewer, 'gdmarker')	// 加载高德标注图层
   // addAMapImagery(viewer, 'tmsing')	// 加载离线瓦片图高德标注图层
