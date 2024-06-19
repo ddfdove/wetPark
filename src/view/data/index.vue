@@ -103,37 +103,36 @@ const tableList = ref([
 ]);
 const tableData = ref([
   {
-    garden: "梁兴家庭农场",
-    area: "沧州市南皮县",
+    garden: "海湖湿地游乐园",
+    area: "西宁市城西区",
     device: "130/132",
-    landArea: '235'
-  },
- 
-  {
-    garden: "梁兴家庭农场",
-    area: "沧州市南皮县",
-    device: "130/132",
-    landArea: '235'
+    landArea:'1836.45亩'
   },
   {
-    garden: "梁兴家庭农场",
-    area: "沧州市南皮县",
+    garden: "海湖湿地游客中心",
+    area: "西宁市城西区",
     device: "130/132",
-    landArea: '235'
+    landArea:'1836.45亩'
   },
   {
-    garden: "梁兴家庭农场",
-    area: "沧州市南皮县",
+    garden: "海湖湿地双湖",
+    area: "西宁市城西区",
     device: "130/132",
-    landArea: '235'
+    landArea:'1836.45亩'
   },
   {
-    garden: "梁兴家庭农场",
-    area: "沧州市南皮县",
+    garden: "海湖湿地游乐园",
+    area: "西宁市城西区",
     device: "130/132",
-    landArea: '235'
+    landArea:'1836.45亩'
   },
-
+  {
+    garden: "海湖湿地游乐园",
+    area: "西宁市城西区",
+    device: "130/132",
+    landArea:'1836.45亩'
+  },
+  
 ]);
 const headerRowStyle = ({ row, rowIndex }) => {
   return {

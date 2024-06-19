@@ -194,7 +194,7 @@ onMounted(() => {
     });
   }
   function addCamera() {
-    const url = "/src/assets/geiJsonData/billboard.geojson";
+    const url = "/geiJsonData/billboard.geojson";
     Cesium.Resource.fetchJson(url).then((res) => {
       // console.log(res);
       // console.log(res.features);
@@ -212,11 +212,13 @@ onMounted(() => {
           label: {
             text: properties.name,
             font: "700 14px Helvetica", // 15pt monospace
-            pixelOffset: new Cesium.Cartesian2(0, -60), //偏移量
+            pixelOffset: new Cesium.Cartesian2(0, -66), //偏移量
           },
           billboard: {
             image: "/cut/camera.png",
-            scale: 1,
+            // scale: 0.8,
+            width:36,
+            height:96,
           },
         });
       });
