@@ -123,7 +123,15 @@ onMounted(() => {
   // addAMapImagery(viewer, 'tximg')	// 加载腾讯影像图层
   // const terrainProvider = Cesium.createWorldTerrain();
   // viewer.scene.terrainProvider = terrainProvider;
-  
+  //  外层添加实体设置颜色
+  //  viewer.entities.add({
+  //     name:'yanse',
+  //     rectangle: {
+  //       coordinates: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
+  //       material: Cesium.Color.fromCssColorString('rgba(3, 0, 37, 0.6)'), // 设置背景颜色和透明度
+  //     },
+  //   });
+  addBillboards();
   const position = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
   // 设置相机位置
   viewer.camera.setView({
@@ -137,15 +145,12 @@ onMounted(() => {
     },
   });
 
+
   // addPolygon(); // 添加面
   // addCamera(); //添加摄像头
   function addPolygon() {
-    const url = "/src/assets/geiJsonData/wetPark.geojson";
+    const url = "/geiJsonData/wetPark.geojson";
     Cesium.Resource.fetchJson(url).then((res) => {
-      console.log(res);
-      console.log(res.features);
-      console.log(res.type);
-      //   const { polygon } = CesiumPlugin.Geo.GeoJsonToGraphics(res);
       const polygon = res.features;
       polygon.forEach((item) => {
         const { geometry, properties } = item;
@@ -157,9 +162,10 @@ onMounted(() => {
         const polygonEntity = viewer.entities.add({
           polygon: {
             hierarchy: new Cesium.PolygonHierarchy(positions),
-            material: Cesium.Color.fromCssColorString(
-              properties.color
-            ).withAlpha(0.3),
+            // material: Cesium.Color.fromCssColorString(
+            //   properties.color
+            // ).withAlpha(0.3),
+            material: Cesium.Color.TRANSPARENT,
             perPositionHeight: true,
           },
         });
@@ -183,73 +189,77 @@ onMounted(() => {
             text: properties.name,
             font: "700 16px Helvetica", // 15pt monospace
           },
+          billboard: {
+            image: "/cut/camera.png",
+            width: 36,
+            height: 96,
+          },
         });
         // new CesiumPlugin.DIVLabel(viewer, center, properties.name);
       });
     });
   }
   function addBillboards() {
-  const url = "/geiJsonData/billboard.geojson";
-  Cesium.Resource.fetchJson(url).then((res) => {
-    const billboards = res.features;
-    billboards.forEach((item) => {
-      const { geometry, properties } = item;
-      viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(geometry.coordinates[0], geometry.coordinates[1], geometry.coordinates[2]),
-        name: 'camera', // 设置实体的名称为 'camera'
-        label: {
-          text: properties.name,
-          font: "700 14px Helvetica",
-          pixelOffset: new Cesium.Cartesian2(0, -66),
-        },
-        billboard: {
-          image: "/cut/camera.png",
-          width: 36,
-          height: 96,
-        },
+    const url = "/geiJsonData/billboard.geojson";
+    Cesium.Resource.fetchJson(url).then((res) => {
+      const billboards = res.features;
+      billboards.forEach((item) => {
+        const { geometry, properties } = item;
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(geometry.coordinates[0], geometry.coordinates[1], geometry.coordinates[2]),
+          name: 'camera', // 设置实体的名称为 'camera'
+          label: {
+            text: properties.name,
+            font: "700 14px Helvetica",
+            pixelOffset: new Cesium.Cartesian2(0, -66),
+          },
+          billboard: {
+            image: "/cut/camera.png",
+            width: 36,
+            height: 96,
+          },
+          pickable: true
+
+        });
+        // 添加一个透明的点击区域
+        viewer.entities.add({
+          name: 'camera-area',
+          polygon: {
+            hierarchy: Cesium.Cartesian3.fromDegreesArray([
+              101.692532 - 0.0005, 36.653907 - 0.0005,
+              101.692532 + 0.0005, 36.653907 - 0.0005,
+              101.692532 + 0.0005, 36.653907 + 0.0005,
+              101.692532 - 0.0005, 36.653907 + 0.0005
+            ]),
+            material: Cesium.Color.Red, // 透明材质
+            outline: false, // 不显示边框
+            height: 10, // 与 billboards 的高度对应
+            pickable: true
+          }
+        });
       });
     });
-  });
-}
- //外层添加实体设置颜色
-//  viewer.entities.add({
-//     name:'yanse',
-//     rectangle: {
-//       coordinates: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
-//       material: Cesium.Color.fromCssColorString('rgba(3, 0, 37, 0.6)'), // 设置背景颜色和透明度
-//     },
-//   });
-// 添加点击事件处理
-const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-handler.setInputAction((movement) => {
-  console.log(movement);
-  console.log(viewer.scene.pickPosition(movement.position))
-  const pickedObject = viewer.scene.pick(movement.position);
-  console.log(pickedObject);
-  if (pickedObject && pickedObject.id ) {
-    // 如果拾取到了带有 'camera' 名称的实体
-    showIntroduce.value = !showIntroduce.value;
-    console.log('Picked camera entity:', pickedObject.id);
-  } else {
-    showIntroduce.value = false;
   }
-}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-// 在适当的时候调用添加 billboards 的函数
+  // 添加点击事件处理
 
-  addBillboards();
-
-
+  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  handler.setInputAction(function (movement) {
+    console.log(viewer.selectedEntity,'selectedEntity')
+    const pickedObject = viewer.scene.pick(movement.position);
+    console.log(pickedObject);
+    if (pickedObject && pickedObject.id) {
+      // 如果拾取到了带有 'camera' 名称的实体
+      showIntroduce.value = !showIntroduce.value;
+      console.log('Picked camera entity:', pickedObject.id);
+    } else {
+      showIntroduce.value = false;
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 });
 </script>
 
 <style scoped lang="less">
-.container {
-  z-index: 999;
-  background-color: rgba(0, 102, 255, 0.2);
-
-}
-
 #cesiumContainer {
   width: 1920px;
   height: 1000px;
@@ -263,10 +273,9 @@ handler.setInputAction((movement) => {
 //   left: 0;
 //   width: 100%;
 //   height: 100%;
-//   // background-color: rgba(3, 0, 37, 0.5); /* 设置背景颜色 */
+//   background-color: rgba(3, 0, 37, 0.5); /* 设置背景颜色 */
 //   // opacity: 0.5;
 //   pointer-events: none;
 //   /* 确保点击事件传递到下面的Cesium容器 */
 //   z-index: 2;
-// }
-</style>
+// }</style>
