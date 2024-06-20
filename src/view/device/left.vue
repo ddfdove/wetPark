@@ -234,9 +234,9 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   position: fixed;
   top: 180px;
   left: 10px;
-  background: rgba(0, 102, 255, 0.2);
+  background: rgba(0, 102, 255, 0.3);
   // background-color: rgba(0, 163, 255, 0.05);
-  border-image: linear-gradient(90deg, rgba(0, 163, 255, 0.04) 0%, rgba(0, 163, 255, 0) 100%) 1;
+  // border-image: linear-gradient(90deg, rgba(0, 163, 255, 0.04) 0%, rgba(0, 163, 255, 0) 100%) 1;
   opacity: 0.8;
 
   .table-box {

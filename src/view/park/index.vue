@@ -10,7 +10,7 @@
         <li class="flex-1 detection">
           <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
             <div class="monitarChart">
-              <MonitarChart id="monitarChart" :dataList></MonitarChart>
+              <MonitarChart id="monitarChart" :dataList="monitorData"></MonitarChart>
             </div>
           </panelboard>
         </li>
@@ -110,26 +110,26 @@
             <li id="satellite">
               <span style="font-size: 22px;">摄像头</span>
               <div>
-                  <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
-                    <el-tab-pane label="生态停车场" name="park1">
-                      <div style="height: 240px;">
-                        <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
-                      </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="卫生间" name="toilet1">
-                      <Satellite style="height: 240px;"></Satellite>
-                    </el-tab-pane>
-                    <el-tab-pane label="石笼坝" name="shilongba1">
-                      <Satellite style="height: 240px;"></Satellite>
-                    </el-tab-pane>
-                    <el-tab-pane label="沙湖" name="shahu">
-                      <Satellite style="height: 240px;"></Satellite>
-                    </el-tab-pane>
-                    <el-tab-pane label="双湖佳境" name="shuanghu">
-                      <Satellite style="height: 240px;"></Satellite>
-                    </el-tab-pane>
-                  </el-tabs>
-                </div>
+                <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
+                  <el-tab-pane label="生态停车场" name="park1">
+                    <div style="height: 240px;">
+                      <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="卫生间" name="toilet1">
+                    <Satellite style="height: 240px;"></Satellite>
+                  </el-tab-pane>
+                  <el-tab-pane label="石笼坝" name="shilongba1">
+                    <Satellite style="height: 240px;"></Satellite>
+                  </el-tab-pane>
+                  <el-tab-pane label="沙湖" name="shahu">
+                    <Satellite style="height: 240px;"></Satellite>
+                  </el-tab-pane>
+                  <el-tab-pane label="双湖佳境" name="shuanghu">
+                    <Satellite style="height: 240px;"></Satellite>
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
             </li>
           </ul>
         </panelboard>
@@ -146,11 +146,11 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a"style="color:#ffffff">西岸1号</el-dropdown-item>
-                    <el-dropdown-item command="b"style="color:#ffffff">西岸2号</el-dropdown-item>
-                    <el-dropdown-item command="c"style="color:#ffffff">西岸3号</el-dropdown-item>
-                    <el-dropdown-item command="c"style="color:#ffffff">西岸4号</el-dropdown-item>
-                    <el-dropdown-item command="c"style="color:#ffffff">西岸5号</el-dropdown-item>
+                    <el-dropdown-item command="a" style="color:#ffffff">西岸1号</el-dropdown-item>
+                    <el-dropdown-item command="b" style="color:#ffffff">西岸2号</el-dropdown-item>
+                    <el-dropdown-item command="c" style="color:#ffffff">西岸3号</el-dropdown-item>
+                    <el-dropdown-item command="c" style="color:#ffffff">西岸4号</el-dropdown-item>
+                    <el-dropdown-item command="c" style="color:#ffffff">西岸5号</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -163,9 +163,9 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a"style="color:#ffffff">上午</el-dropdown-item>
-                    <el-dropdown-item command="b"style="color:#ffffff">中午</el-dropdown-item>
-                    <el-dropdown-item command="c"style="color:#ffffff">下午</el-dropdown-item>
+                    <el-dropdown-item command="a" style="color:#ffffff">上午</el-dropdown-item>
+                    <el-dropdown-item command="b" style="color:#ffffff">中午</el-dropdown-item>
+                    <el-dropdown-item command="c" style="color:#ffffff">下午</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -176,9 +176,9 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a"style="color:#ffffff">上午</el-dropdown-item>
-                    <el-dropdown-item command="b"style="color:#ffffff">中午</el-dropdown-item>
-                    <el-dropdown-item command="c"style="color:#ffffff">下午</el-dropdown-item>
+                    <el-dropdown-item command="a" style="color:#ffffff">上午</el-dropdown-item>
+                    <el-dropdown-item command="b" style="color:#ffffff">中午</el-dropdown-item>
+                    <el-dropdown-item command="c" style="color:#ffffff">下午</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -222,7 +222,10 @@ import moment from 'moment'
 import "moment/dist/locale/zh-cn";
 
 
-
+let monitorData = ref([
+  { name: '监测次数', data: [842, 512, 632, 342, 958] },
+  { name: '识别次数', data: [88, 232, 376, 312, 654] },
+])
 let statistic = ref([
   {
     description: '总面积',
@@ -305,7 +308,7 @@ const activeName2 = ref('park2')
 
 //图表数据定义
 //种群趋势图表数据
-const populationList=ref([])
+const populationList = ref([])
 //组件挂载完毕更新当前的事件
 onMounted(() => {
   timer.value = setInterval(() => {
@@ -562,6 +565,7 @@ const handleCommand = (command) => {
       flex-direction: column;
       padding: 0px 25px 0px 25px;
       margin-bottom: 90px;
+
       li {
         flex: 1;
         padding-top: 15px;

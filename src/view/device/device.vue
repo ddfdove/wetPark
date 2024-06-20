@@ -15,7 +15,7 @@
           font-weight: 400;
           opacity: 0.8;
           padding-left: 20px;
-        ">园区名</span>
+        ">园区视频展示</span>
     </div>
     <div class="dMiddle">
       <video-player :src="videoSrc" :options="playerOptions" :volume="0.6" />
@@ -28,9 +28,9 @@
         海湖湿地公园位于西宁市海晏路绿地云香郡北侧,是一个集湿地保育、科普宣教、合理利用、管理服务等
         多功能于一体的湿地生态展示示范基地
       </p>
-      <button style="height: 70px; width: 240px; margin-left: 60px; font-size: 18px">
+      <!-- <button style="height: 70px; width: 240px; margin-left: 60px; font-size: 18px">
         进入设备
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@ let playerOptions = ref({
   right: 220px;
   width: 320px;
   height: 500px;
-  background-color: rgb(43, 70, 87);
+  background-color: rgba(0, 102, 255, 0.3);
   opacity: 0.7;
   display: flex;
   flex-direction: column;

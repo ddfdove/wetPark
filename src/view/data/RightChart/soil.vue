@@ -76,8 +76,8 @@ const chartOptions = ref({
         // gridLineDashStyle: 'ShortDash',//网格线样式
         gridLineColor: '#221f3f',
         min: 0,//最小值
-        tickInterval: 20, //间隔
-        max: 100 //最大值
+        tickInterval: 200, //间隔
+        max: 1000 //最大值
     },
     plotOptions: {
         areaspline: {

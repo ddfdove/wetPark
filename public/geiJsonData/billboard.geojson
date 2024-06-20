@@ -20,17 +20,6 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [101.691266,36.652651,100]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "路口摄像头",
-        "color": "#32fc80"
-      },
-      "geometry": {
-        "type": "Point",
         "coordinates": [101.692532,36.653907,500]
       }
     },

@@ -4,7 +4,7 @@
       <li>
         <panelboard :chTitle="'土壤监测'" :enTitle="'Soil monitoring'">
           <div class="soil">
-            <SoilChart></SoilChart>
+            <SoilChart :dataList="soilData"></SoilChart>
           </div>
         </panelboard>
       </li>
@@ -44,7 +44,7 @@
       <li>
         <panelboard :chTitle="'大气湿度'" :enTitle="'Atmospheric humidity'">
           <div class="soil">
-            <SoilChart></SoilChart>
+            <SoilChart :dataList="AtmosphericData"></SoilChart>
           </div>
         </panelboard>
 
@@ -59,7 +59,7 @@
       <li>
         <panelboard :chTitle="'降雨量'" :enTitle="'Rainfall'">
           <div class="water">
-            <SoilChart></SoilChart>
+            <SoilChart :dataList="rainfullData"></SoilChart>
           </div>
         </panelboard>
       </li>
@@ -79,6 +79,18 @@ import BleftChart from './MiddleChart/bLeft.vue'
 import BrightChart from './MiddleChart/bRight.vue'
 import panelboard from "../../components/panelboard/index.vue"
 
+const soilData = ref([
+  { name: '土壤湿度', data: [38, 52, 76, 32, 84] },
+  { name: '土壤温度', data: [22, 12, 32, 26, 28] }
+])
+const AtmosphericData = ref([
+  { name: '绝对湿度', data: [88, 32, 76, 32, 94] },
+  { name: '人体舒适度', data: [22, 32, 37, 12, 38] }
+])
+const rainfullData = ref([
+  { name: '降雨量', data: [55, 42, 84, 42, 94] },
+  { name: '积水量', data: [22, 12, 62, 21, 58] }
+])
 const tableList = ref([
   {
     prop: "garden",
@@ -106,41 +118,41 @@ const tableData = ref([
     garden: "海湖湿地游乐园",
     area: "西宁市城西区",
     device: "130/132",
-    landArea:'1836.45亩'
+    landArea: '1836.45亩'
   },
   {
     garden: "海湖湿地游客中心",
     area: "西宁市城西区",
     device: "130/132",
-    landArea:'1836.45亩'
+    landArea: '1836.45亩'
   },
   {
     garden: "海湖湿地双湖",
     area: "西宁市城西区",
     device: "130/132",
-    landArea:'1836.45亩'
+    landArea: '1836.45亩'
   },
   {
     garden: "海湖湿地游乐园",
     area: "西宁市城西区",
     device: "130/132",
-    landArea:'1836.45亩'
+    landArea: '1836.45亩'
   },
   {
     garden: "海湖湿地游乐园",
     area: "西宁市城西区",
     device: "130/132",
-    landArea:'1836.45亩'
+    landArea: '1836.45亩'
   },
-  
+
 ]);
 const headerRowStyle = ({ row, rowIndex }) => {
   return {
     backgroundColor: "rgba(0, 0, 0, 0)",
     color: "#428fdf",
-    height:'60px',
-    fontSize:'18px'
-    
+    height: '60px',
+    fontSize: '18px'
+
   };
 };
 const headerCellStyle = ({ row, column, rowIndex, columnIndex }) => {
@@ -149,8 +161,8 @@ const headerCellStyle = ({ row, column, rowIndex, columnIndex }) => {
     padding: "0px",
     borderBottom: '1px solid #ffffff',
     border: "none",
-    width:'160px'
-    
+    width: '160px'
+
   };
 };
 const rowStyle = ({ row, rowIndex }) => {
@@ -158,8 +170,8 @@ const rowStyle = ({ row, rowIndex }) => {
     backgroundColor: "rgba(0, 0, 0, 0)",
     color: "white",
     borderBottom: '1px solid #ffffff',
-    height:'60px',
-    fontSize:'16px'
+    height: '60px',
+    fontSize: '16px'
   };
 };
 const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
@@ -222,7 +234,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         // padding: 10px;
         padding-top: 20px;
         height: 425px;
-       
+
         background-color: #030632;
         border: 1px solid #021f66;
       }
@@ -234,6 +246,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         // background-color: rgb(10, 210, 236);
         background-color: transparent; //这是设置透明背景色
       }
+
       // .el-table::before {
       //   content: "";
       //   display: block;
