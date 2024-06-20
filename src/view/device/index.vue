@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div id="cesiumContainer"></div>
-    <div class="overlay"></div> <!-- 透明覆盖层 -->
     <Left></Left>
     <Device v-if="showIntroduce"></Device>
   </div>
@@ -17,8 +16,32 @@ import { ArrowDown } from "@element-plus/icons-vue";
 import Left from './left.vue'
 import Device from './device.vue'
 
+//定义大屏缩放比例
+function getScale(w = 1920, h = 1080) {
+  const ww = window.innerWidth / w;
+  const wh = window.innerHeight / h;
+  return ww < wh ? ww : wh;
+}
+function restorePosition(position, scale) {
+  // 判断是放大还是缩小
+  if (scale < 1) {
+    // 放大：对 position 进行除法运算还原原始坐标
+    return {
+      x: position.x / scale,
+      y: position.y / scale,
+    };
+  } else {
+    // 缩小：对 position 进行乘法运算还原原始坐标
+    return {
+      x: position.x * scale,
+      y: position.y * scale,
+    };
+  }
+}
+const props=defineProps({scale:Number})
 const showIntroduce = ref(false)
 onMounted(() => {
+  console.log('scaledevice',getScale());
   const viewer = new Cesium.Viewer("cesiumContainer", {
     scene3DOnly: true,
     animation: false, //动画小部件
@@ -123,15 +146,7 @@ onMounted(() => {
   // addAMapImagery(viewer, 'tximg')	// 加载腾讯影像图层
   // const terrainProvider = Cesium.createWorldTerrain();
   // viewer.scene.terrainProvider = terrainProvider;
-  //  外层添加实体设置颜色
-  //  viewer.entities.add({
-  //     name:'yanse',
-  //     rectangle: {
-  //       coordinates: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
-  //       material: Cesium.Color.fromCssColorString('rgba(3, 0, 37, 0.6)'), // 设置背景颜色和透明度
-  //     },
-  //   });
-  addBillboards();
+  
   const position = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
   // 设置相机位置
   viewer.camera.setView({
@@ -145,7 +160,15 @@ onMounted(() => {
     },
   });
 
-
+  //外层添加实体设置颜色
+   viewer.entities.add({
+      name:'yanse',
+      rectangle: {
+        coordinates: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
+        material: Cesium.Color.fromCssColorString('rgba(3, 0, 37, 0.6)'), // 设置背景颜色和透明度
+      },
+    });
+  addBillboards();
   // addPolygon(); // 添加面
   // addCamera(); //添加摄像头
   function addPolygon() {
@@ -231,7 +254,7 @@ onMounted(() => {
               101.692532 + 0.0005, 36.653907 + 0.0005,
               101.692532 - 0.0005, 36.653907 + 0.0005
             ]),
-            material: Cesium.Color.Red, // 透明材质
+            material: Cesium.Color.TRANSPARENT, // 透明材质
             outline: false, // 不显示边框
             height: 10, // 与 billboards 的高度对应
             pickable: true
@@ -245,13 +268,18 @@ onMounted(() => {
 
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
   handler.setInputAction(function (movement) {
-    console.log(viewer.selectedEntity,'selectedEntity')
-    const pickedObject = viewer.scene.pick(movement.position);
-    console.log(pickedObject);
-    if (pickedObject && pickedObject.id) {
+    
+    const position=movement.position
+
+    console.log('position1',position);
+   const restoreposition= restorePosition(position,getScale())
+    console.log('position2',restoreposition);
+    const pickedObject = viewer.scene.pick(restoreposition);
+    console.log('pickedObject',pickedObject);
+    if (pickedObject && pickedObject.id && pickedObject.id.name === 'camera') {
       // 如果拾取到了带有 'camera' 名称的实体
       showIntroduce.value = !showIntroduce.value;
-      console.log('Picked camera entity:', pickedObject.id);
+      // console.log('Picked camera entity:', pickedObject.id);
     } else {
       showIntroduce.value = false;
     }
@@ -266,16 +294,4 @@ onMounted(() => {
   // background-color: #001529; /* 设置背景颜色 */
 
 }
-
-// .overlay {
-//   position: absolute;
-//   top: 100px;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(3, 0, 37, 0.5); /* 设置背景颜色 */
-//   // opacity: 0.5;
-//   pointer-events: none;
-//   /* 确保点击事件传递到下面的Cesium容器 */
-//   z-index: 2;
-// }</style>
+</style>

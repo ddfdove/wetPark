@@ -5,7 +5,7 @@
         <Nav></Nav>
       </div>
       <div class="content">
-        <router-view></router-view>
+        <router-view ></router-view>
       </div>
     </div>
   </div>
@@ -17,11 +17,10 @@ import { ref, onMounted, KeepAlive } from "vue";
 import { useRoute } from "vue-router";
 // 获取数据大屏展示内容盒子的DOM元素
 let screen = ref();
-const $route = useRoute();
+
 onMounted(() => {
   screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%)`;
-  // console.log($route.meta.title);
-  // console.log($route.meta.keepAlive);
+  console.log('scaleapp',getScale());
 });
 //定义大屏缩放比例
 function getScale(w = 1920, h = 1080) {
@@ -32,6 +31,8 @@ function getScale(w = 1920, h = 1080) {
 //监听视口变化
 window.onresize = () => {
   screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%) `;
+  
+  
 };
 </script>
 
@@ -45,7 +46,6 @@ window.onresize = () => {
     height: 1080px;
     width: 1920px;
     transform-origin: top left;
-    // background-color: #030025;
     position: fixed;
     top: 50%;
     left: 50%;
