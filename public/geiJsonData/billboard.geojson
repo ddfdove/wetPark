@@ -44,6 +44,39 @@
         "type": "Point",
         "coordinates": [101.692554,36.653391,10]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "环境监测设备",
+        "color": "#32fc80"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.684543,36.652428, 8.7]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "水质监测设备",
+        "color": "#32fc80"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.680815,36.653143, 6.7]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "土壤监测设备",
+        "color": "#32fc80"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.679264,36.653125,7.5]
+      }
     }
    
     

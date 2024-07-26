@@ -21,13 +21,13 @@ const chartOptions = ref({
     chart: {
         type: 'spline',
         backgroundColor: '#030025',
-        height: 200
+        height: 190
     },
     title: {
         text: null
     },
     xAxis: {
-        categories: ['摄像头', '水质检测', '门禁'],
+        categories: ['摄像头', '水质监测', '门禁'],
         title: {
             text: null
         },

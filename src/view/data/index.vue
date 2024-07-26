@@ -24,6 +24,13 @@
       </li>
     </ul>
     <div class="middle">
+
+      <!-- <ul class="switchButton">
+        <li><router-link to="/bird"><span>鸟类监测</span></router-link></li>
+        <li><router-link to="/personnel"><span>人流监测</span></router-link></li>
+        <li><router-link to="/data"><span>环境监测</span></router-link></li>
+      </ul> -->
+
       <div class="mTop">
         <img src="/cut/wind.png" alt="">
       </div>
@@ -191,6 +198,39 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   height: 100%;
   background-color: #030025;
 
+  .switchButton {
+    margin-left: 60px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+
+    li {
+      margin-left: 60px;
+      margin-bottom: 10px;
+      color: #021f66;
+      width: 120px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 10px;
+      text-align: center;
+      background-color: #030836;
+
+      span {
+        font-family: YouSheBiaoTiHei;
+        font-size: 20px;
+        font-weight: normal;
+        // line-height: 12px;
+        text-align: center;
+        color: #FFFFFF;
+      }
+    }
+
+    li:hover {
+      background-color: #030845;
+    }
+
+  }
+
   .left {
     flex: 1;
     display: flex;
@@ -213,7 +253,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
 
       img {
         width: 900px;
-        height: 500px;
+        height: 430px;
         padding: 30px 20px 0 20px;
 
       }

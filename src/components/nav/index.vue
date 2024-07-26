@@ -6,26 +6,27 @@
           <router-link to="/park"><span>园区展示</span></router-link>
         </li>
         <li :class="{ 'active-link': $route.path === '/device' }">
-          <router-link to="/device"><span>设备管理</span></router-link>
+          <router-link to="/device"><span>点位监测</span></router-link>
         </li>
-        <li :class="{ 'active-link': $route.path === '/bird' }">
-          <router-link to="/bird"><span>鸟类检测</span></router-link>
-        </li>
+        
 
       </ul>
     </div>
     <div class="middle">海湖湿地公园智慧屏</div>
     <div class="right">
       <ul>
-        <li :class="{ 'active-link': $route.path === '/personnel' }">
+        <li :class="{ 'active-link': $route.path.startsWith('/monitor') }">
+          <router-link to="/monitor"><span>监测</span></router-link>
+        </li>
+        <!-- <li :class="{ 'active-link': $route.path === '/personnel' }">
           <router-link to="/personnel"><span>人员分布</span></router-link>
+        </li> -->
+        <li :class="{ 'active-link': $route.path.startsWith('/data') }">
+          <router-link to="/data"><span>数据分析</span></router-link>
         </li>
-        <li :class="{ 'active-link': $route.path === '/data' }">
-          <router-link to="data"><span>数据分析</span></router-link>
-        </li>
-        <li :class="{ 'active-link': $route.path === '/message' }">
+        <!-- <li :class="{ 'active-link': $route.path === '/message' }">
           <router-link to="message"><span></span></router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -50,12 +51,13 @@ const $route = useRoute();
     height: 80px;
     display: flex;
     width: 30%;
-
+   
     li {
       flex: 1;
       display: inline-block;
       // margin: 0 20px;
       margin-top: -20px;
+      margin-left: 3vw;
       padding-top: 5px;
       width: 180px;
       line-height: 45px;
@@ -113,6 +115,7 @@ const $route = useRoute();
       display: inline-block;
       // margin: 0 20px;
       margin-top: -20px;
+      margin-left: 3vw;
       padding-top: 5px;
       width: 180px;
       line-height: 45px;

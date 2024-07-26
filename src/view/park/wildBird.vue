@@ -11,8 +11,8 @@ const chartOptions = ref({
     chart: {
         type: 'bar',
         backgroundColor: '#030632',
-        // width:400,
-        height: 200
+        // width:260,
+        // height: 200
     },
     title: {
         text: null

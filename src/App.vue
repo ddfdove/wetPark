@@ -31,8 +31,6 @@ function getScale(w = 1920, h = 1080) {
 //监听视口变化
 window.onresize = () => {
   screen.value.style.transform = `scale(${getScale()}) translate(-50%,-50%) `;
-  
-  
 };
 </script>
 

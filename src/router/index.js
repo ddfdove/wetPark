@@ -13,9 +13,9 @@ const routes = [
     path: "/park",
     component: () => import("../view/park/index.vue"),
     meta: {
-        keepAlive: true,
-        title: "device",
-      },
+      keepAlive: true,
+      title: "park",
+    },
   },
   {
     path: "/device",
@@ -26,37 +26,85 @@ const routes = [
     },
   },
   {
-    path: "/bird",
-    component: () => import("../view/bird/index.vue"),
+    path: "/monitor",
+    redirect: "/monitor/environment",
     meta: {
-        keepAlive: true,
-        title: "device",
+      keepAlive: true,
+      title: "monitor",
+    },
+    
+    children: [
+      {
+        path: "bird",
+        component: () => import("../view/monitor/bird/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "bird",
+        },
       },
+
+      {
+        path: "personnel",
+        component: () => import("../view/monitor/personnel/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "personnel",
+        },
+      },
+      {
+        path: "environment",
+        component: () => import("../view/monitor/environment/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "environment",
+        },
+      },
+    ],
   },
 
   {
-    path: "/personnel",
-    component: () => import("../view/personnel/index.vue"),
-    meta: {
-        keepAlive: true,
-        title: "device",
-      },
-  },
-  {
     path: "/data",
-    component: () => import("../view/data/index.vue"),
+    redirect: "/data/environment",
     meta: {
-        keepAlive: true,
-        title: "device",
+      keepAlive: true,
+      title: "data",
+    },
+    children: [
+      {
+        path: "water",
+        component: () => import("../view/data/water/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "water",
+        },
       },
+
+      {
+        path: "soil",
+        component: () => import("../view/data/soil/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "soil",
+        },
+      },
+      {
+        path: "environment",
+        component: () => import("../view/data/environment/index.vue"),
+        meta: {
+          keepAlive: true,
+          title: "environment",
+        },
+      },
+    ],
   },
+
   {
     path: "/message",
     component: () => import("../view/message/index.vue"),
     meta: {
-        keepAlive: true,
-        title: "device",
-      },
+      keepAlive: true,
+      title: "message",
+    },
   },
 ];
 

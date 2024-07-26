@@ -24,7 +24,7 @@ const chartOptions = ref({
         type: 'spline',
         backgroundColor: '#030025',
         // width:240,
-        height: 200,
+        height: 190,
         space: [0, 0, 0, 0]
     },
     title: {

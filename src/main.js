@@ -1,7 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index'
-import '../styles/index.css'
+import store from './store'
+import '../styles/index.scss'
+import Cookies from 'js-cookie'
+// 引入ElementPlus和视频播放组件
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import VueVideoPlayer from '@videojs-player/vue';
+import 'video.js/dist/video-js.css';
 
 // 引入Highcharts及相关模块
 import HighchartsVue from 'highcharts-vue';
@@ -31,15 +38,12 @@ cylinder(Highcharts);
 pyramid3d(Highcharts);
 variablepie(Highcharts);
 
-// 引入ElementPlus和视频播放组件
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
-import VueVideoPlayer from '@videojs-player/vue';
-import 'video.js/dist/video-js.css';
+
 
 const app = createApp(App);
 
 app.use(router);
+app.use(store)
 app.use(HighchartsVue);
 app.use(ElementPlus);
 app.use(VueVideoPlayer);

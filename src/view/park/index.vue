@@ -8,23 +8,27 @@
       </panelboard>
       <ul>
         <li class="flex-1 detection">
-          <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
+          <panelboard :chTitle="'水质监测'" :enTitle="'Water quality Monitoring'">
             <div class="monitarChart">
-              <MonitarChart id="monitarChart" :dataList="monitorData"></MonitarChart>
+              <LineChart class="border" :dataList="waterDataList" :categories="waterCollectTimeList"
+                :isExcellent="isWaterExcellent"></LineChart>
             </div>
           </panelboard>
         </li>
         <li class="flex-1">
-          <panelboard :chTitle="'野生鸟类种类'" :enTitle="'Wild bird species'">
+          <panelboard :chTitle="'土壤监测'" :enTitle="'Soil Monitoring'">
             <div class="monitarChart">
-              <mvcProgress :dataList="birdList"></mvcProgress>
+              <!-- <PeopleChart class="border" ></PeopleChart> -->
+              <LineChart class="border" :dataList="soilDataList" :categories="soilCollectTimeList"
+                :isExcellent="isSoilExcellent"></LineChart>
             </div>
           </panelboard>
         </li>
         <li class="flex-1">
-          <panelboard :chTitle="'种群趋势分析'" :enTitle="'Population trend analysis'">
+          <panelboard :chTitle="'环境监测'" :enTitle="'Environmental Monitoring'">
             <div class="monitarChart">
-              <PopulationChart :dataList></PopulationChart>
+              <LineChart class="border" :dataList="envDataList" :categories="envCollectTimeList"
+                :isExcellent="isEnvExcellent"></LineChart>
             </div>
           </panelboard>
         </li>
@@ -55,24 +59,27 @@
         </panelboard>
       </div>
       <ul class="statisticBottom">
-        <li>
-          <panelboard :chTitle="'人流量'" :enTitle="'Human traffic'">
+        <!-- <li>
+         
+          <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
             <div class="monitarChart">
-              <PeopleChart class="border" :dataList></PeopleChart>
+              <MonitarChart id="monitarChart" :dataList="monitorData"></MonitarChart>
+            </div>
+          </panelboard>
+        </li> -->
+        <li>
+
+          <panelboard :chTitle="'野生鸟类种类'" :enTitle="'Wild bird species'">
+            <div class="monitarChart" style="margin-right: 20px;">
+              <mvcProgress :dataList="birdList"></mvcProgress>
             </div>
           </panelboard>
         </li>
         <li>
-          <panelboard :chTitle="'水质检测'" :enTitle="'Water quality'">
+
+          <panelboard :chTitle="'种群趋势分析'" :enTitle="'Population trend analysis'">
             <div class="monitarChart">
-              <WaterChart class="border" :dataList></WaterChart>
-            </div>
-          </panelboard>
-        </li>
-        <li>
-          <panelboard :chTitle="'空气湿度检测'" :enTitle="'Air humidity'">
-            <div class="monitarChart">
-              <AirChart class="border" :dataList></AirChart>
+              <PopulationChart :dataList></PopulationChart>
             </div>
           </panelboard>
         </li>
@@ -95,9 +102,13 @@
               </div>
               <div class="date">
                 <ul>
-                  <li>{{ date }}</li>
+                  <!-- <li>{{ date }}</li>
                   <li>{{ week }}</li>
-                  <li>{{ time }}</li>
+                  <li>{{ time }}</li> -->
+                  <li>今日空气质量优</li>
+                  <li>今日气温适宜</li>
+                  <li>今日水质良好</li>
+                  <li>今日土壤指标正常</li>
                 </ul>
               </div>
             </div>
@@ -112,21 +123,27 @@
               <div>
                 <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
                   <el-tab-pane label="生态停车场" name="park1">
-                    <div style="height: 240px;">
+                    <div style="height: 210px;">
                       <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
                     </div>
                   </el-tab-pane>
                   <el-tab-pane label="卫生间" name="toilet1">
-                    <Satellite style="height: 240px;"></Satellite>
+                    <div style="height: 210px;">
+                      <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                    </div>
                   </el-tab-pane>
                   <el-tab-pane label="石笼坝" name="shilongba1">
-                    <Satellite style="height: 240px;"></Satellite>
+                    <div style="height: 210px;">
+                      <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                    </div>
                   </el-tab-pane>
                   <el-tab-pane label="沙湖" name="shahu">
-                    <Satellite style="height: 240px;"></Satellite>
+                    <div style="height: 210px;">
+                      <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
+                    </div>
                   </el-tab-pane>
                   <el-tab-pane label="双湖佳境" name="shuanghu">
-                    <Satellite style="height: 240px;"></Satellite>
+                    <img src="../../assets/images/v2_sah5y2.png" style="width: 100%;height: 100%;">
                   </el-tab-pane>
                 </el-tabs>
               </div>
@@ -136,65 +153,45 @@
 
       </div>
       <div class="rBottom">
-        <panelboard :chTitle="'地点检测'" :enTitle="'Location Detection'">
-          <div class="flex area">
-            <div style="margin: 0 10px 0 10px;">
-              <span>区域:</span>
-              <el-dropdown @command="handleCommand" popper-class="custom-dropdown">
-                <span class="el-dropdown-link">
-                  <span style="margin-right: 10px;">西岸5号</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a" style="color:#ffffff">西岸1号</el-dropdown-item>
-                    <el-dropdown-item command="b" style="color:#ffffff">西岸2号</el-dropdown-item>
-                    <el-dropdown-item command="c" style="color:#ffffff">西岸3号</el-dropdown-item>
-                    <el-dropdown-item command="c" style="color:#ffffff">西岸4号</el-dropdown-item>
-                    <el-dropdown-item command="c" style="color:#ffffff">西岸5号</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
+        <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
+          <div class="flex area" style="margin-top: 10px;">
             <div>
-              <span class="text-sm" style="margin-right: 10px;">时间:</span>
-              <el-dropdown @command="handleCommand" class="leading-10 h-10">
+              <span style="margin-right: 10px;font-size: 18px;">设备对比:</span>
+              <el-dropdown @command="handleFirstDropdown" class="leading-10 h-10">
                 <span class="el-dropdown-link">
-                  <span style="margin-right: 10px;">上午</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                  <span style="margin-right: 10px;">{{ firstSelected }}</span>
+                  <el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a" style="color:#ffffff">上午</el-dropdown-item>
-                    <el-dropdown-item command="b" style="color:#ffffff">中午</el-dropdown-item>
-                    <el-dropdown-item command="c" style="color:#ffffff">下午</el-dropdown-item>
+                  <el-dropdown-menu style="background-color:#030636;max-height: 200px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                    <el-dropdown-item v-for="item in firstOptions" :key="item.id" :command="item.id"
+                      @mouseover="handleMouseOver($event)" @mouseleave="handleMouseLeave($event)"
+                      style="color:#ffffff;">
+                      {{ item.name }}
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
               <span>—</span>
-              <el-dropdown @command="handleCommand" class="leading-10 h-10">
+              <el-dropdown @command="handleSecondDropdown" class="leading-10 h-10">
                 <span class="el-dropdown-link" style="margin-left: 10px;">
-                  <span style="margin-right: 10px;">中午</span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                  <span style="margin-right: 10px;">{{ secondSelected }}</span>
+                  <el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item command="a" style="color:#ffffff">上午</el-dropdown-item>
-                    <el-dropdown-item command="b" style="color:#ffffff">中午</el-dropdown-item>
-                    <el-dropdown-item command="c" style="color:#ffffff">下午</el-dropdown-item>
+                  <el-dropdown-menu style="background-color:#030636;max-height: 200px; overflow-y: auto;">
+                    <el-dropdown-item v-for="item in secondOptions" :key="item.id" :command="item.id" @mouseover="handleMouseOver($event)" @mouseleave="handleMouseLeave($event)"
+                      style="color:#ffffff">
+                      {{ item.name }}
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
             </div>
           </div>
-          <div class="bird">
-            <ul>
-              <li v-for="(item, index) in birds.slice(0, 5)" :key="index">
-                <div>
-                  <span class="font-25">{{ item.quantity }}</span>
-                  <span class="font-18">只</span>
-                </div>
-                <h5 class="font-18">{{ item.name }}</h5>
-              </li>
-
-            </ul>
+          <div class="monitarChart">
+            <BarChart :dataList="waterCompData" :categories="valueList" :isExcellent="isWaterComExcellent"
+              :devicesList="devicesList"></BarChart>
           </div>
         </panelboard>
       </div>
@@ -203,23 +200,25 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted, onBeforeUnmount } from 'vue'
+import { useDataStore } from '@/store/modules/data.js'
+import { ElMessage } from 'element-plus'
+import { ArrowDown } from '@element-plus/icons-vue'
+import moment from 'moment'
+import "moment/dist/locale/zh-cn";
+import { getWaterEquipmentList } from '@/api/index.js'
 import MonitarChart from './monitar.vue'
 import BirdChart from './wildBird.vue'
 import PopulationChart from './population.vue'
 import PeopleChart from './people.vue'
-import WaterChart from './water.vue'
+import LineChart from './line.vue'
+import BarChart from './bar.vue'
 import AirChart from './air.vue'
 import Freehand from './freehand.vue'
 import Satellite from './satellite.vue'
 
 import panelboard from "@/components/panelboard/index.vue"
 import mvcProgress from "./components/mvc-progress.vue"
-
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { ElMessage } from 'element-plus'
-import { ArrowDown } from '@element-plus/icons-vue'
-import moment from 'moment'
-import "moment/dist/locale/zh-cn";
 
 
 let monitorData = ref([
@@ -306,18 +305,263 @@ let time = ref(moment().format('h:mm:ss '))
 const activeName1 = ref('park1')
 const activeName2 = ref('park2')
 
-//图表数据定义
+
 //种群趋势图表数据
 const populationList = ref([])
+
+//图表数据定义
+let intervalId = null;
+let isFetching = false;
+const params = ref({
+  timeType: null,
+  number: 4
+})
+//设置请求参数
+const setParams = (type, number) => {
+  params.value.timeType = type
+  params.value.number = number
+}
+//水质对比参数
+const waterComParams = ref({
+  edId1: null,
+  edId2: null
+})
+const firstOptions = ref([
+  // { id: 1, name: '设备1' },
+  // { id: 2, name: '设备2' },
+  // { id: 3, name: '设备3' },
+  // Add more options here
+],)
+const secondOptions = ref(
+  [
+    // { id: 1, name: '设备1' },
+    // { id: 2, name: '设备2' },
+    // { id: 3, name: '设备3' },
+    // Add more options here
+  ],
+)
+const firstSelected = ref(null)
+const secondSelected = ref(null)
+const equipmentType = ref({
+  Type: 2
+})
+const handleMouseOver = (event) => {
+  event.target.style.backgroundColor = '#223e87'; // 更改背景颜色
+}
+const handleMouseLeave = (event) => {
+  event.target.style.backgroundColor = ''; // 恢复默认背景颜色
+}
+const fetchOptions = async () => {
+  try {
+    const res = await getWaterEquipmentList(equipmentType.value);
+    const data = res.data
+    firstOptions.value = data;
+    secondOptions.value = data;
+    // 默认选择第一项和第二项
+    if (data.length > 0) {
+      firstSelected.value = data[0].name;
+      waterComParams.value.edId1 = data[0].id;
+    }
+    if (data.length > 1) {
+      secondSelected.value = data[1].name;
+      waterComParams.value.edId2 = data[1].id;
+    }
+  } catch (error) {
+    console.error('Error fetching options:', error);
+  }
+};
+const handleFirstDropdown = (command) => {
+  const selectedOption = firstOptions.value.find((option) => option.id === command);
+  // if (selectedOption.id === waterComParams.value.edId2) {
+  //   ElMessage.error('不能选择相同的设备');
+  //   return;
+  // }
+  firstSelected.value = selectedOption.name;
+  waterComParams.value.edId1 = selectedOption.id;
+
+};
+
+const handleSecondDropdown = async (command) => {
+  const selectedOption = secondOptions.value.find((option) => option.id === command);
+  if (selectedOption.id === waterComParams.value.edId1) {
+    ElMessage.error('不能选择相同的设备');
+    return;
+  }
+  secondSelected.value = selectedOption.name;
+  waterComParams.value.edId2 = selectedOption.id;
+  await fetchWaterComData();
+};
+const fetchWaterComData = async () => {
+  await store.getWaterComData(waterComParams.value);
+  mappingWaterCom(store.waterComData.value);
+};
+//水数据
+const waterDataList = ref({
+  waterPHList: [], //PH值
+  waterDissolvedOxygenList: [], //溶解氧值
+  waterTurbidityList: [],  //浊度
+  waterTemperatureList: [], //水温
+  waterChlorophyllList: [], //叶绿素
+  waterConductivityList: [],//导电率
+  //  waterCollectTimeList:[]
+})
+const isWaterExcellent = ref([])
+const waterCollectTimeList = ref([])
+//土壤数据
+const soilDataList = ref({
+  soilPHList: [], //土壤PH值
+  soilTemperatureList: [], //土壤温度
+  soilMoistureList: [],  //土壤水分
+  soilConductivityList: [], //土壤电导率
+  soilNitrogenList: [], //土壤氮含量
+  soilPhosphorusList: [],//土壤磷含量
+  soilPotassiumList: [],//土壤钾含量
+})
+const isSoilExcellent = ref([])
+const soilCollectTimeList = ref([])
+//环境数据
+const envDataList = ref({
+  airTemperatureList: [], //空气温度
+  airHumidityList: [], //空气湿度
+  pm25List: [],//PM2.5
+  atmosphericPressureList: [], //气压
+  carbonDioxideList: [], //二氧化碳
+  sulfurDioxideList: [],//二氧化硫
+  totalRadiationList: [],//总辐射
+  windDirectionList: [],//风向
+  windSpeedList: [],//风速
+  rainfallList: [],//降雨量
+
+})
+const isEnvExcellent = ref([])
+const envCollectTimeList = ref([])
+//双设备对比数据
+const waterCompData = ref({
+  devices1List: [],
+  devices2List: [],
+})
+const devicesList = ref([])
+const isWaterComExcellent = ref([])
+const valueList = ref([])
+//映射水数据
+const mappingWater = (waterData) => {
+
+  waterCollectTimeList.value = waterData.collectTimeList;
+  isWaterExcellent.value = waterData.mapList
+  waterDataList.value.waterPHList = waterData.pHList;
+  waterDataList.value.waterDissolvedOxygenList = waterData.doList;
+  waterDataList.value.waterTemperatureList = waterData.wtList;
+  waterDataList.value.waterConductivityList = waterData.wcList;
+  waterDataList.value.waterTurbidityList = waterData.tList;
+  waterDataList.value.waterChlorophyllList = waterData.cList;
+}
+//映射土壤数据
+const mappingSoil = (soilData) => {
+  soilCollectTimeList.value = soilData.collectTimeList;
+  isSoilExcellent.value = soilData.mapList
+  soilDataList.value.soilPHList = soilData.pHList;
+  soilDataList.value.soilTemperatureList = soilData.stList;
+  soilDataList.value.soilMoistureList = soilData.smList;
+  soilDataList.value.soilConductivityList = soilData.scList;
+  soilDataList.value.soilNitrogenList = soilData.sncList;
+  soilDataList.value.soilPhosphorusList = soilData.sphcList;
+  soilDataList.value.soilPotassiumList = soilData.spocList;
+}
+//映射环境数据
+const mappingEnv = (envData) => {
+  envCollectTimeList.value = envData.collectTimeList;
+  isEnvExcellent.value = envData.mapList
+  envDataList.value.airTemperatureList = envData.airTemperatureList;
+  envDataList.value.airHumidityList = envData.airHumidityList;
+  envDataList.value.pm25List = envData.pm2_5List;
+  envDataList.value.atmosphericPressureList = envData.atmosphericPressureList;
+  envDataList.value.carbonDioxideList = envData.carbonDeviceList;
+  envDataList.value.sulfurDioxideList = envData.sulfurDioxideList;
+  envDataList.value.totalRadiationList = envData.totalRadiationList;
+  envDataList.value.windDirectionList = envData.windDirection360List;
+  envDataList.value.windSpeedList = envData.windSpeedList;
+  envDataList.value.rainfallList = envData.rainList;
+
+}
+//映射双设备对比数据
+const mappingWaterCom = (waterComData) => {
+  if (waterComData == null) {
+    valueList.value = []
+    isWaterComExcellent.value = []
+    devicesList.value = []
+    waterCompData.value.devices1List = []
+    waterCompData.value.devices2List = []
+  } else {
+    valueList.value = waterComData.valueList
+    isWaterComExcellent.value = waterComData.strList
+    devicesList.value = waterComData.devicesList
+    waterCompData.value.devices1List = waterComData.devices1List
+    waterCompData.value.devices2List = waterComData.devices2List
+  }
+
+}
+const store = useDataStore(); // 使用 Pinia store
 //组件挂载完毕更新当前的事件
+const fetchData = async () => {
+  if (isFetching) return; // 如果正在获取数据，直接返回
+  isFetching = true; // 标记正在获取数据
+
+
+  try {
+    await Promise.all([
+      setParams(null, 5),
+      store.getWaterData(params.value),
+      store.getSoilData(params.value),
+      store.getEnvironmentData(params.value),
+      // store.getWaterComData(waterComParams.value),
+      fetchOptions()
+
+    ]);
+    if (waterComParams.value.edId1 && waterComParams.value.edId2) {
+      await fetchWaterComData();
+    }
+    mappingWater(store.waterData.value)
+    mappingSoil(store.soilData.value)
+    mappingEnv(store.envData.value)
+    // mappingWaterCom(store.waterComData.value)
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    isFetching = false; // 请求完成，重置标志
+  }
+
+};
+const startPolling = async () => {
+  fetchData(); // 初始加载数据
+
+  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 30000); // 每隔3分钟秒获取一次数据
+};
+const stopPolling = () => {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+};
 onMounted(() => {
+  startPolling();
+
   timer.value = setInterval(() => {
     time.value = moment().format('h:mm:ss ')
   }, 1000)
-})
+
+
+
+
+});
 onBeforeUnmount(() => {
   clearInterval(timer.value)
 })
+onUnmounted(() => {
+  stopPolling();
+
+});
 
 const activeName = ref('first')
 
@@ -327,12 +571,15 @@ const handleCommand = (command) => {
 
 </script>
 
+
 <style lang="less" scoped>
 .container {
   height: 100%;
   width: 100%;
   background-color: #030025;
   color: #FFFFFF;
+
+
 
   :deep(.el-dropdown-link) {
     width: 120px;
@@ -346,6 +593,9 @@ const handleCommand = (command) => {
     background-repeat: no-repeat;
   }
 
+  :deep(.custom-dropdown-item:hover) {
+    background-color: #1e2a4a;
+  }
 
   .left {
     flex: 1.1;
@@ -455,11 +705,13 @@ const handleCommand = (command) => {
       display: flex;
       // padding-top: 10px;
       height: 200px;
+      padding: 0 0px 0 30px;
 
       // margin-top: 0px;
       li {
         flex: 1;
         display: inline-block;
+        // margin: 0 10px;
 
         .border {
           border: 1px solid #021f66;
@@ -547,13 +799,18 @@ const handleCommand = (command) => {
           letter-spacing: 2px;
           font-weight: 600;
 
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+          }
 
           // justify-content: space-around;
-          li {
-            display: inline-block;
-            flex: 1;
-            margin-right: 5px;
-          }
+          // li {
+          //   display: inline-block;
+          //   flex: 1;
+          //   margin-right: 5px;
+          // }
         }
 
       }
@@ -564,7 +821,7 @@ const handleCommand = (command) => {
       display: flex;
       flex-direction: column;
       padding: 0px 25px 0px 25px;
-      margin-bottom: 90px;
+      margin-bottom: 60px;
 
       li {
         flex: 1;
@@ -576,78 +833,26 @@ const handleCommand = (command) => {
         // background-color: #fff;
       }
 
-      #satellite {
-        // border-top: 2px solid rgb(28, 44, 64);
-
-        // .demo-tabs>.el-tabs__content {
-        //   padding: 32px;
-        //   color: #6b778c;
-        //   font-size: 32px;
-        //   font-weight: 600;
-        // }
-
-        :deep(.el-tabs__item) {
-          color: #FFFFFF;
-        }
-
-        /**选中 */
-        :deep(.el-tabs__item.is-active) {
-          color: #409EFF;
-          opacity: 1;
-        }
-
-        /*去下划线 */
-        :deep(.el-tabs__nav-wrap::after) {
-          position: static !important;
-        }
-
-        /*去掉切换时el-tab-pane底部的蓝色下划线*/
-        :deep(.el-tabs__active-bar) {
-          background-color: transparent !important;
-        }
-
-        // ul li{
-        //   display: inline-block;
-        //   padding: 0;
-        //   margin-left: 0;
-        // }
+      :deep(.el-tabs__item) {
+        color: #FFFFFF;
       }
 
-      #freehand {
-        .demo-tabs>.el-tabs__content {
-          padding: 32px;
-          color: #6b778c;
-          font-size: 32px;
-          font-weight: 600;
-        }
-
-        :deep(.el-tabs__item) {
-          color: #FFFFFF;
-
-        }
-
-        /**选中 */
-        :deep(.el-tabs__item.is-active) {
-          color: #409EFF;
-          opacity: 1;
-        }
-
-        /*去下划线 */
-        :deep(.el-tabs__nav-wrap::after) {
-          position: static !important;
-        }
-
-        /*去掉切换时el-tab-pane底部的蓝色下划线*/
-        :deep(.el-tabs__active-bar) {
-          background-color: transparent !important;
-        }
-
-        ul li {
-          display: inline-block;
-          padding: 0;
-          margin-left: 0;
-        }
+      /**选中 */
+      :deep(.el-tabs__item.is-active) {
+        color: #409EFF;
+        opacity: 1;
       }
+
+      /*去下划线 */
+      :deep(.el-tabs__nav-wrap::after) {
+        position: static !important;
+      }
+
+      /*去掉切换时el-tab-pane底部的蓝色下划线*/
+      :deep(.el-tabs__active-bar) {
+        background-color: transparent !important;
+      }
+
     }
 
     .rBottom {
