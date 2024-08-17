@@ -159,7 +159,7 @@
             </div>
           </div>
         </panelboard>
-        <Video></Video>
+        <Video cameraIndexCode="9dd014fd77964be29b236769949dfbdf"></Video>
         <!-- <video-player  :src="SurveillanceVideo1.url" :options="playerOptions2" :volume="0.6"></video-player> -->
         <!-- <video ref="videoElement" autoplay width="200" height="150"></video> -->
         <!-- <div id='H5Video'></div> // 这里的id是什么初始化的szID就填什么 -->
