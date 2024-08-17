@@ -40,7 +40,7 @@
   // 视频链接地址
 const videoSrc = ref("http://vjs.zencdn.net/v/oceans.mp4");
 // 视频播放器配置
-let playerOptions = ref({
+const playerOptions = ref({
   // height: 200,
   // width: document.documentElement.clientWidth, //播放器宽度
   playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度

@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 
+
+
 const http=axios.create({
-    baseURL: '',
+    baseURL: import.meta.env.MODE === 'development'?'':import.meta.env.VITE_API_URL,
     timeout: 60000,
     headers: {
       'Content-Type': 'application/json',

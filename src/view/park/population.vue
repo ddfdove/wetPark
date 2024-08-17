@@ -43,7 +43,7 @@ const chartOptions = ref({
             viewDistance: 25 // 调整视角距离
         },
         backgroundColor: 'rgba(0, 0, 0, 0)',
-        height: 180,
+        height: 230,
         spacing: [0, 0, 20, 0] // 去掉图表的内边距
     },
     title: {

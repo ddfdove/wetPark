@@ -20,6 +20,10 @@
       </ul>
     </div>
     <div class="middle">
+      <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
+          <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+          <span>BACK</span>
+        </button>
       <div class="environment">
         <ul>
           <li>
@@ -189,7 +193,7 @@ const getWaterMonInfo = async (data) => {
   try {
     const res = await getWaterEquMonitorInfo(data);
     if (res.code === 0) {
-      waterMonitorInfo.value = res.rows.map(item => {
+      waterMonitorInfo.value = res.data.map(item => {
         return {
           edName: item.edName,
           collectTime: item.collectTime,
@@ -296,6 +300,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
 
 
 <style scoped lang="less">
+
 :deep(.el-table__inner-wrapper::before) {
   height: 0px;
 }
@@ -306,10 +311,25 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   height: 100%;
   background-color: #030025;
 
-  .moreButton:hover {
-    color: aquamarine
+  .moreButton {
+   
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: #021f66;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    z-index:99;
   }
-
+  .moreButton:hover{
+    color:aquamarine
+  }
   .left {
     flex: 1;
     height: 100%;

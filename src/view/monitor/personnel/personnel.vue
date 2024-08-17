@@ -13,12 +13,12 @@ const { dataList } = defineProps({
         type: Array,
         default: () => [
             {
-                name: "数据一",
-                data: [100, 140, 230, 100, 130],
+                name: "游乐场一",
+                data: [120, 340, 180, 100, 332],
             },
             {
-                name: "数据二",
-                data: [150, 100, 200, 140, 100],
+                name: "游乐场二",
+                data: [50, 300, 162, 140, 249],
             },
         ],
     },
@@ -28,8 +28,8 @@ const chartOptions = ref({
         type: "cylinder",
         backgroundColor: "#030025",
         spacing: [10, 20, 0, 0], // 去掉图表的内边距
-        height: 320,
-        width:600,
+        // height: 320,
+        width:530,
         options3d: {
             enabled: true,
             // alpha: 10,
@@ -77,8 +77,8 @@ const chartOptions = ref({
         // gridLineDashStyle: 'ShortDash',//网格线样式
         gridLineColor: "#221f3f",
         min: 0, //最小值
-        tickInterval: 50, //间隔
-        max: 250, //最大值
+        tickInterval: 80, //间隔
+        max: 400, //最大值
     },
     plotOptions: {
         series: {

@@ -35,7 +35,7 @@ const chartOptions = ref({
     chart: {
         type: "spline",
         backgroundColor: "#030025",
-        width: 1420,
+        width: 1320,
         height: 320,
     },
     title: {

@@ -26,7 +26,7 @@ const props = defineProps({
     },
     height: {
         type: Number,
-        default: 190
+        default: 160
     },
 });
 const chartOptions = ref({
@@ -34,7 +34,7 @@ const chartOptions = ref({
         type: "cylinder",
         backgroundColor: "#030025",
         spacing: [0, 0, 0, 0], // 去掉图表的内边距
-        height: 320,
+        height: 290,
         width: 600,
         options3d: {
             enabled: true,

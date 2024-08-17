@@ -20,6 +20,10 @@
             </ul>
         </div>
         <div class="middle">
+            <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>BACK</span>
+            </button>
             <div class="environment">
                 <ul>
                     <li>
@@ -51,7 +55,8 @@
                                 <el-table-column prop="nitrogenContent" label="氮含量" width="70"></el-table-column>
                                 <el-table-column prop="phosphorusContent" label="磷含量" width="70"></el-table-column>
                                 <el-table-column prop="potassiumContent" label="钾含量" width="70"></el-table-column>
-                                <el-table-column prop="collectTime" label="收集时间" width="110" fixed="right" sortable></el-table-column>
+                                <el-table-column prop="collectTime" label="收集时间" width="110" fixed="right"
+                                    sortable></el-table-column>
                             </el-table>
                             <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
                                 @current-change="handlePageChange">
@@ -204,7 +209,7 @@ const getWaterMonInfo = async (data) => {
     try {
         const res = await getSoilEquMonitorInfo(data);
         if (res.code === 0) {
-            waterMonitorInfo.value = res.rows.map(item => {
+            waterMonitorInfo.value = res.data.map(item => {
                 return {
                     sdName: item.sdName,
                     collectTime: item.collectTime,
@@ -249,8 +254,8 @@ const fetchData = async () => {
     }
 };
 const handlePageChange = (newPage) => {
-  data.value.pageNum = newPage;
-  getWaterMonInfo(data.value)
+    data.value.pageNum = newPage;
+    getWaterMonInfo(data.value)
 };
 
 const startPolling = () => {
@@ -313,13 +318,30 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
 
 <style scoped lang="less">
 :deep(.el-table__inner-wrapper::before) {
-  height: 0px;
+    height: 0px;
 }
+
 .container {
     display: flex;
     // padding: 20px;
     height: 100%;
     background-color: #030025;
+
+    .moreButton {
+        position: absolute;
+        top: 0px;
+        right: 20px;
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #021f66;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 99;
+    }
 
     .moreButton:hover {
         color: aquamarine
@@ -376,35 +398,35 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
 .el-pagination.is-background .btn-next.is-active,
 .el-pagination.is-background .btn-prev.is-active,
 .el-pagination.is-background .el-pager li.is-active {
-  background-color: skyblue;
-  color: #151414;
+    background-color: skyblue;
+    color: #151414;
 }
 
 .el-pagination.is-background .el-pager li {
-  background-color: #0154ac;
-  /* 修改未选中项背景和字体颜色 */
-  color: #fff;
+    background-color: #0154ac;
+    /* 修改未选中项背景和字体颜色 */
+    color: #fff;
 }
 
 .el-pagination.is-background .el-pager li:hover {
-  background-color: skyblue;
-  color: #151414 !important;
-  /* hover 时的文字颜色 */
+    background-color: skyblue;
+    color: #151414 !important;
+    /* hover 时的文字颜色 */
 }
 
 .el-pagination.is-background .btn-prev.is-first,
 .el-pagination.is-background .btn-next.is-last {
-  background-color: #0154ac;
-  /* 设置箭头按钮背景颜色 */
-  color: #ffffff;
-  /* 设置箭头按钮文字颜色 */
+    background-color: #0154ac;
+    /* 设置箭头按钮背景颜色 */
+    color: #ffffff;
+    /* 设置箭头按钮文字颜色 */
 }
 
 .el-pagination.is-background .btn-prev:hover,
 .el-pagination.is-background .btn-next:hover {
-  background-color: skyblue;
-  /* 设置箭头按钮 hover 时的背景颜色 */
-  color: #151414;
-  /* 设置箭头按钮 hover 时的文字颜色 */
+    background-color: skyblue;
+    /* 设置箭头按钮 hover 时的背景颜色 */
+    color: #151414;
+    /* 设置箭头按钮 hover 时的文字颜色 */
 }
 </style>

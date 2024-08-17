@@ -42,7 +42,7 @@
           <router-link to="/monitor/bird"><span>鸟类监测</span></router-link>
         </li>
         <li :class="{ 'active-link': $route.path === '/monitor/personnel' }">
-          <router-link to="/monitor/personnel"><span>人员监测</span></router-link>
+          <router-link to="/monitor/personnel"><span>人流监测</span></router-link>
         </li>
        
 

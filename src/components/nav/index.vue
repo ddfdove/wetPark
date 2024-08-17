@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div class="nav" >
     <div class="left">
       <ul>
         <li :class="{ 'active-link': $route.path === '/park' }">
@@ -12,7 +12,7 @@
 
       </ul>
     </div>
-    <div class="middle">海湖湿地公园智慧屏</div>
+    <div class="middle">{{parkStore.parkIntroduce.title}}智慧屏</div>
     <div class="right">
       <ul>
         <li :class="{ 'active-link': $route.path.startsWith('/monitor') }">
@@ -35,7 +35,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router';
-
+import {useParkStore} from '@/store/modules/park.js'
+const parkStore=useParkStore()
 const $route = useRoute();
 </script>
 
@@ -46,7 +47,7 @@ const $route = useRoute();
   padding: 20px 0;
   background-image: url('/cut/头部.png');
   background-size: cover;
-
+  
   .left {
     height: 80px;
     display: flex;

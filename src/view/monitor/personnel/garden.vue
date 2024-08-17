@@ -14,7 +14,7 @@ const { dataList } = defineProps({
         default: () => [
             {
                 name: '数据一',
-                data: [4950, 5768, 5887, 5490, 2907],
+                data: [2950, 1768, 4287, 4890, 2907],
             }
 
         ],
@@ -24,8 +24,8 @@ const chartOptions = ref({
     chart: {
         type: 'column',
         backgroundColor: '#030025',
-        // width: 500,
-        height: 380,
+        spacing: [0, 0, 10, 0], // 去掉图表的内边距
+        height: 320,
         options3d: {
             enabled: true,
             // alpha: 15, // 调整alpha以旋转图表
@@ -39,7 +39,7 @@ const chartOptions = ref({
     },
     xAxis: {
 
-        categories: ['运动公园游客中心', '双湖佳境', '西宁湟水国家湿地科普馆', '沙湖', '儿童游乐场'],
+        categories: ['八卦广场', '双湖佳境', '运动公园游客中心', '儿童游乐场', '沙湖'],
         title: {
             text: null
         },
@@ -73,7 +73,7 @@ const chartOptions = ref({
         gridLineColor: '#221f3f',
         min: 0,//最小值
         tickInterval: 1000, //间隔
-        max: 6000 //最大值
+        max: 5000 //最大值
     },
     tooltip: {
         backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
@@ -84,8 +84,8 @@ const chartOptions = ref({
             // letterSpacing: '2px',
             fontSize: '14px',
         },
-        headerFormat: '{point.key}<br>',
-        pointFormat: ' <b> {series.name}</b>&nbsp&nbsp&nbsp {point.y} <br>',
+        headerFormat: '{point.key}</b>&nbsp&nbsp {point.y}',
+        pointFormat: '  ',
         style: {
             color: '#ccc',
             letterSpacing: '2px',

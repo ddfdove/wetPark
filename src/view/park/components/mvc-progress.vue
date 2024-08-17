@@ -40,19 +40,20 @@ const newList = computed(() => {
 <style lang="less" scoped>
 .group-progress{
   // border:1px solid red;
-  min-height:50px;
+  // min-height:50px;
+  height:100%;
   width:100%;
   .progress-item{
     width:100%;
     display: flex;
     align-items: center;
-    margin-bottom:8px;
+    margin-bottom:10px;
     .progress-name{
       width: 60.42px;
-      line-height: 22.65px;
+      line-height: 28px;
       color:#fff;
       text-align: center;
-      border-radius:22.65px;
+      border-radius:26px;
       background: #5397F4;
     }
     &:nth-of-type(1) .progress-name{
@@ -64,7 +65,7 @@ const newList = computed(() => {
     
     .progress-bar{
       flex:1 1 auto;
-      margin:0 9px 0 15px;
+      margin:0 10px 0 15px;
       ::v-deep{
         .el-progress-bar__outer{
           background: #254B87;
@@ -72,9 +73,9 @@ const newList = computed(() => {
       }
     }
     .progress-num{
-      width:25px;
+      width:26px;
       color:#fff;
-      font-size:14px;
+      font-size:16px;
     }
   }
 }

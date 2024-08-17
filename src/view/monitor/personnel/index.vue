@@ -5,7 +5,7 @@
     <ul class="top">
       <li id="left">
         <div class="lTop">
-          <panelboard :chTitle="'季度人流排行'" :enTitle="'Quarterly traffic ranking'">
+          <panelboard :chTitle="'季度人流排行'" :enTitle="'Quarterly traffic ranking'" style="margin-top: 40px;">
             <ul class="statisticTop flex">
               <li class="flex-1" v-for="(item, index) in statistic" :key="index"
                 :style="{ backgroundImage: `url(${item.image})` }">
@@ -30,22 +30,24 @@
             <router-link to="/monitor/bird"><span>鸟类监测</span></router-link>
           </li>
           <li :class="{ 'active-link': $route.path === '/monitor/personnel' }">
-            <router-link to="/monitor/personnel"><span>人员监测</span></router-link>
+            <router-link to="/monitor/personnel"><span>人流监测</span></router-link>
           </li>
 
         </ul>
-        <div class="mtop" style="margin-top: 30px;">
+        <div class="mtop" style="margin-top: 10px;">
           <panelboard :chTitle="'人员分布情况'" :enTitle="'Personnel distribution'">
             <div class="mBottom">
-              <Personnel></Personnel>
+              <!-- <Personnel></Personnel> -->
+              <HotMap></HotMap>
             </div>
           </panelboard>
         </div>
 
       </li>
       <li id="right">
-        <panelboard :chTitle="'区域人员分布'" :enTitle="'Staff Distribution'">
-          <mvcProgress :list="personList" style="width: 500px;margin-top: 50px;"></mvcProgress>
+        <panelboard :chTitle="'区域人员分布对比'" :enTitle="'Staff Distribution'" style="margin-top: 20px;">
+          <!-- <mvcProgress :list="personList" style="width: 530px;margin-top: 50px;"></mvcProgress> -->
+          <Personnel style="width: 530px;margin-top: 30px;"></Personnel>
         </panelboard>
       </li>
     </ul>
@@ -56,7 +58,7 @@
         </panelboard>
       </div>
       <div id="bRight">
-        <panelboard :chTitle="'景区人流排行Top5'" :enTitle="'ScenicSpot flow ranking'" style="margin-top: -60px;">
+        <panelboard :chTitle="'景区人流排行Top5'" :enTitle="'ScenicSpot flow ranking'" >
           <Garden class="garden"></Garden>
         </panelboard>
       </div>
@@ -72,10 +74,12 @@ import Visitors from './visitors.vue';
 import Personnel from './personnel.vue'
 import Regional from './regional.vue'
 import Garden from './garden.vue'
+import HotMap from './hotMap.vue'
 import { useRoute } from 'vue-router';
 
 import panelboard from "../../../components/panelboard/index.vue"
 import mvcProgress from "./components/mvc-progress.vue"
+
 
 const $route = useRoute();
 const isBirdLinkActive = (path: string) => {
@@ -136,12 +140,10 @@ const personList = reactive([
 
   // height: 1000px;
   .top {
-    flex: 5.5;
+    flex: 5.8;
     display: flex;
-
-    li {
-      flex: 1;
-    }
+    width: 100%;
+   
 
     .switchButton {
       margin-left: 120px;
@@ -183,9 +185,10 @@ const personList = reactive([
     }
 
     #left {
+      flex: 1;
       display: flex;
       flex-direction: column;
-
+   
       .lTop {
         flex: 1.5;
 
@@ -256,47 +259,40 @@ const personList = reactive([
     }
 
     #middle {
+      flex: 1.4;
+      
       // width: 770px;
-      margin-top: 10px;
+      // margin-top: 10px;
       margin-right: 10px;
       // border-radius: 5px;
       display: flex;
       flex-direction: column;
 
-      .mTop {
-        // padding: 10px 30px;
-
-        img {
-
-          width: 100%;
-          height: 100%;
-        }
-
-      }
 
       .mBottom {
         flex: 5;
-        margin-top: 40px;
-        padding: 30px 0 0 60px;
-        border: 1px solid #021f66;
+        // margin-top: 40px;
+        padding:  10px 20px;
+        // border: 1px solid #021f66;
       }
     }
 
     #right {
-
+      flex: 0.6;
       margin-top: 20px;
-      margin-left: 60px;
+      padding: 0 20px 0 10px;
+      // margin-left: 30px;
 
     }
   }
 
   .bottom {
-    flex: 4.2;
+    flex: 4;
     // height: 460px;
     display: flex;
 
     #bLeft {
-      flex: 1.95;
+      flex: 1.8;
 
 
       .visitors {
@@ -309,12 +305,12 @@ const personList = reactive([
     }
 
     #bRight {
-      flex: 1;
+      flex: 1.2;
 
       .garden {
         border: 1px solid #021f66;
 
-        margin: 20px 5px 0 0px;
+        margin: 20px 5px 0 20px;
       }
 
 

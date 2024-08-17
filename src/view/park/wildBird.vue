@@ -12,7 +12,7 @@ const chartOptions = ref({
         type: 'bar',
         backgroundColor: '#030632',
         // width:260,
-        // height: 200
+        // height: 300
     },
     title: {
         text: null

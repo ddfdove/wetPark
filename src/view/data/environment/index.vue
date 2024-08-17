@@ -16,7 +16,7 @@
                 </li>
                 <li>
 
-                    <lineChart :dataList="{carbonDioxideList, sulfurDioxideList }" :categories="evnCollectTimeList"
+                    <lineChart :dataList="{ carbonDioxideList, sulfurDioxideList }" :categories="evnCollectTimeList"
                         :isExcellent="isEnvExcellent">
                     </lineChart>
 
@@ -36,19 +36,10 @@
 
 
         <div class="middle">
-
-            <!-- <ul class="switchButton">
-          <li :class="{ 'active-link': $route.path === '/monitor/bird' }">
-            <router-link to="/monitor/bird"><span>鸟类监测</span></router-link>
-          </li>
-          <li :class="{ 'active-link': $route.path === '/monitor/personnel' }">
-            <router-link to="/monitor/personnel"><span>人员监测</span></router-link>
-          </li>
-          <li :class="{ 'active-link': $route.path === '/monitor/environment' }">
-            <router-link to="/monitor/environment"><span>环境监测</span></router-link>
-          </li>
-  
-        </ul> -->
+            <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>BACK</span>
+            </button>
             <div class="environment">
                 <!-- <button class="moreButton" @click=" $router.push({ path: '/data/enviroment' })">
                     <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
@@ -112,7 +103,7 @@
                         <BarChart :dataList="{ rainfallList }" :categories="evnCollectTimeList"
                             :isExcellent="isEnvExcellent">
                         </BarChart>
-                       
+
 
 
 

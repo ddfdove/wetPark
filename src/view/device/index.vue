@@ -2,14 +2,20 @@
   <div class="container">
     <div class="button">
       <el-tooltip content="点击显示/隐藏" placement="right">
-        <el-button @click="isToolShow = !isToolShow" type="primary" class="tools"
-          v-tooltip="点击显示 / 隐藏">地图小工具</el-button>
+        <el-button @click="isToolShow = !isToolShow" type="primary" class="tools"   :style="{ backgroundImage: 'url(' + buttonBackgroundImage + ')', backgroundSize: 'cover' }"
+          v-tooltip="点击显示 / 隐藏"><span style="font-size: 20px;margin-left: 30px;">地图小工具</span></el-button>
       </el-tooltip>
 
       <ul v-show="isToolShow">
         <li>
-          <el-input v-model="coordinates" placeholder="输入坐标 (经度, 纬度, 高度)" @keyup.enter="goToCoordinates"
-            style="width: 200px;"></el-input>
+          <!-- <el-input v-model="coordinates" placeholder="输入坐标 (经度, 纬度, 高度)" @keyup.enter="goToCoordinates"
+            style="width: 200px;"></el-input> -->
+          <el-select v-model="coordinates" placeholder="选择景点跳转"  @change="goToCoordinates"
+            @keyup.enter="goToCoordinates" style="width: 200px;">
+            <el-option v-for="(option, index) in coordinateOptions" :key="index" :label="option.label"
+              :value="option.value">
+            </el-option>
+          </el-select>
         </li>
         <li>
           <el-button type="primary" @click="onLineMeasure" style="margin-right: 10px;">空间距离</el-button>
@@ -53,7 +59,7 @@
 <script setup>
 import * as Cesium from "cesium";
 import { onMounted, onUnmounted, ref } from "vue";
-import { getMonitorEquipment } from '@/api/index.js'
+import { getMonitorEquipment ,getCameraEquipment,getCameraEquipments} from '@/api/index.js'
 import { ElMessage, ElTooltip } from "element-plus"; // 引入 ElMessage 组件
 import MeasureTool from "@/utils/cesiumCtrl/measure.js";
 import DrawTool from "@/utils/cesiumCtrl/drawGraphic";
@@ -62,7 +68,7 @@ import Left from './left.vue'
 import Device from './device.vue'
 import Right from './right.vue'
 
-
+const buttonBackgroundImage = ref('/cut/toolBox.png');
 const props = defineProps({ scale: Number })
 const viewer = ref(null)
 const showIntroduce = ref(false)
@@ -80,11 +86,19 @@ let intervalId = null;
 let isFetching = false;
 const monitorEqu = ref({
 })
+const monitorEquList=ref({})
+const camerasParams=ref({
+  pageNo:1,
+  pageSize:20
+})
+//设备经纬度
+const EquimentLatAndLong=ref({})
 const getMonitorEqu = async () => {
   try {
     const res = await getMonitorEquipment();
-    if (res.code === 0) {
+    if (res.code == 0) {
       monitorEqu.value = res.data;
+      EquimentLatAndLong.value=res.data.find(item=>item.name=='') 
     } else {
       console.log(res.msg);
     }
@@ -93,12 +107,21 @@ const getMonitorEqu = async () => {
     // 处理请求失败的情况
   }
 }
-
+//获取摄像头设备列表多个
+const getCameraEquiList=(params)=>{
+  getCameraEquipments(params).then(res=>{
+    if (res.code == 0) {
+      monitorEquList.value = res.data;
+    } else {
+      console.log(res.msg);
+    }
+  })
+}
 const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
   try {
-    await  getMonitorEqu()
+    await getMonitorEqu()
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -110,7 +133,7 @@ const startPolling = () => {
   fetchData(); // 初始加载数据
   intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
   // intervalId = setInterval(fetchData, 30000); // 每隔3分钟秒获取一次数据
- 
+
 };
 
 const stopPolling = () => {
@@ -294,6 +317,14 @@ const onClear = () => {
   console.log('清除');
   measure.value._drawLayer.entities.removeAll();
 };
+// 示例坐标选项
+const coordinateOptions = [
+  { value: '101.695674,36.653018, 500', label: '运动公园游客中心' },
+  { value: '101.700325,36.653181, 500', label: '儿童游乐场' },
+  { value: '101.683379,36.653078, 500', label: '西宁湟水生态馆' },
+  { value: '101.683299,36.653676, 500', label: '双湖佳境' },
+
+];
 //飞到指定位置
 const goToCoordinates = () => {
   const [longitude, latitude, height] = coordinates.value.split(",").map(Number);
@@ -418,7 +449,7 @@ const addMapOffline = (viewer, type) => {
   switch (type) {
     case "vec":
       url =
-        "src/assets/map/vec/tiles/{z}/{x}/{reverseY}.png";
+        "/map/vec/tiles/{z}/{x}/{reverseY}.png";
       break;
     case "img":
       url =
@@ -554,6 +585,9 @@ const toggleFullscreen = () => {
   .tools {
     margin-left: 8px;
     margin-bottom: 10px;
+    width: 200px;
+    height: 60px;
+    
   }
 
   ul {

@@ -39,10 +39,17 @@ export const getMonitorEquipment=()=>{
     method: "get",
   });
 }
+// export const getMonitorEquipment1=()=>{
+//   return http({
+//     url: "/api/wp/location/getWpLocationVo1",
+//     method: "get",
+//   });
+// }
+
 //获取水质设备列表
 export const getWaterEquipmentList=(params)=>{
   return http({
-    url: "api/wp/EquipmentInformation/getByIdsAndNames",
+    url: "/api/wp/EquipmentInformation/getByIdsAndNames",
     method: "get",
     params
   });
@@ -70,4 +77,27 @@ export const getEnvEquMonitorInfo=(data)=>{
     method: "post",
     data
   });
+}
+//获取公园介绍
+export const getParkIntroduce=(params)=>{
+  return http({
+    url: "api/wp/park/getWpParkInfoVo",
+    method: "get",
+    params
+  });
+}
+
+//获取园区展示监控视频摄像头设备列表单个
+export const getCameraEquipment=(params)=>{
+  return http({
+    url:'api/wp/artemispost/getCamera',
+    method:'get'
+  })
+}
+//获取园区展示监控视频摄像头设备列表多个
+export const getCameraEquipments=(params)=>{
+  return http({
+    url:'/api/wp/artemispost/getCameras',
+    method:'get'
+  })
 }

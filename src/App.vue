@@ -1,7 +1,7 @@
 <template>
   <div class="boxContainer">
     <div class="screen" ref="screen">
-      <div style="height: 80px;">
+      <div style="height: 80px;" v-if="$route.path!=='/home'">
         <Nav></Nav>
       </div>
       <div class="content">
@@ -15,6 +15,7 @@
 import Nav from "./components/nav/index.vue";
 import { ref, onMounted, KeepAlive } from "vue";
 import { useRoute } from "vue-router";
+const $route = useRoute();
 // 获取数据大屏展示内容盒子的DOM元素
 let screen = ref();
 
