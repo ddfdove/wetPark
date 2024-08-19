@@ -1,7 +1,5 @@
 <template>
-
     <div :id="props.id" class="playWnd"></div>
-    
 </template>
 
 <script setup>
@@ -40,7 +38,7 @@ const objData = ref({
 })
 const initPlugin = () => {
     oWebControl.value = new WebControl({
-         szPluginContainer: props.id,
+        szPluginContainer: props.id,
         iServicePortStart: 15900,
         iServicePortEnd: 15900,
         szClassId: "23BF3B0A-2C56-4D97-9C03-0CB103AA8F11",
@@ -74,9 +72,9 @@ const init = () => {
             layout: objData.value.layout,
             enableHTTPS: 1,
             encryptedFields: "secret",
-            showToolbar: 0,
+            showToolbar: 1,
             showSmart: 0,
-            buttonIDs: ""
+            buttonIDs: "0,16,256,257,258,259,260,512,513,514,515,516,517,768,769"
         }
 
         oWebControl.value.JS_RequestInterface({
@@ -85,6 +83,7 @@ const init = () => {
         }).then(() => {
             oWebControl.value.JS_Resize(props.width, props.height)
             if (props.cameraIndexCode) {
+                console.log('props.cameraIndexCodetest', props.cameraIndexCode)
                 previewVideo(props.cameraIndexCode)  // 页面加载时调用预览
             }
         })
@@ -109,9 +108,9 @@ const getPubKey = callback => {
     })
 }
 
-const previewVideo = cameraIndexCode => {
+const previewVideo = (code) => {
     const params = {
-        cameraIndexCode,
+        cameraIndexCode: code,
         streamMode: 0,
         transMode: 1,
         gpuMode: 0,
@@ -136,10 +135,11 @@ watch([() => props.width, () => props.height], ([newWidth, newHeight]) => {
     console.log('New height:', newHeight);
     if (oWebControl.value) {
         oWebControl.value.JS_Resize(newWidth, newHeight)
-       
+
     }
 })
 onMounted(() => {
+
     nextTick(() => initPlugin())
     // 监听窗口大小变化，并调整播放器大小
     window.addEventListener('resize', () => {
@@ -162,6 +162,7 @@ onBeforeUnmount(() => {
 .main {
     background-color: #ccc;
 }
+
 .playWnd {
     width: 100%;
     height: 100%;

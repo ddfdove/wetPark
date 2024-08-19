@@ -5,49 +5,36 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, watch, defineProps } from "vue";
 
 // 定义组件的 props
-const { dataList } = defineProps({
+const props = defineProps({
     dataList: {
-        type: Array,
-        default: () => [
-            {
-                name: "游乐场一",
-                data: [120, 340, 180, 100, 332],
-            },
-            {
-                name: "游乐场二",
-                data: [50, 300, 162, 140, 249],
-            },
-        ],
+        type: Object,
+        default: () => ({}), // 确保默认是一个对象
     },
 });
+
+// 初始化 chartOptions
 const chartOptions = ref({
     chart: {
         type: "cylinder",
         backgroundColor: "#030025",
         spacing: [10, 20, 0, 0], // 去掉图表的内边距
-        // height: 320,
-        width:530,
+        width: 530,
         options3d: {
             enabled: true,
-            // alpha: 10,
-            // beta: 30,
             depth: 50,
-            // viewDistance: 25
         },
     },
     title: {
         text: null,
     },
     xAxis: {
-        categories: ["1月", "2月", "3月", "4月", "5月"],
+        categories: [], // 初始为空，在 watch 中更新
         title: {
             text: null,
         },
-        // crosshair: true,
-        // gridLineWidth: 1,
         lineWidth: 0,
         gridLineWidth: 0,
         labels: {
@@ -59,53 +46,36 @@ const chartOptions = ref({
         },
     },
     yAxis: {
-        // categories: ['0', '100', '200', '300','400','500','600'],
-        //   min: 0,
         title: {
             text: null,
         },
         labels: {
             enabled: true,
-            overflow: "justify",
             style: {
                 color: "#ffffff",
                 fontSize: "12px",
             },
         },
         gridLineWidth: 2,
-        gridLineDashStyle: "solid", //网格线样式
-        // gridLineDashStyle: 'ShortDash',//网格线样式
+        gridLineDashStyle: "solid",
         gridLineColor: "#221f3f",
-        min: 0, //最小值
-        tickInterval: 80, //间隔
-        max: 400, //最大值
+        // min: 0,
+        // tickInterval: 80,
+        // max: 400,
     },
     plotOptions: {
         series: {
             depth: 60,
-            colorByPoint: false,
-            pointWidth: 18, // 控制圆柱体的宽度
-            edgeColor: "", // 去除3D效果中的白色部分
+            pointWidth: 18,
             dataLabels: {
                 enabled: false,
             },
-            groupPadding: 0.2, // 控制组之间的间隔
-            pointPadding: 0.2, // 控制点之间的间隔
+            groupPadding: 0.2,
+            pointPadding: 0.2,
         },
         cylinder: {
             depth: 25,
-            // edgeColor: '#FFFFFF', // 设置圆柱体边缘颜色
-            edgeWidth: 2, // 设置边缘宽度
-            // zones: [{
-            //     value: 1, // 为顶部设置颜色
-            //     color: {
-            //         linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, // 纵向渐变
-            //         stops: [
-            //             [0, 'rgba(0, 117, 255, 0)'],
-            //             [1, '#FFFFFF']
-            //         ]
-            //     }
-            // }]
+            edgeWidth: 2,
         },
     },
     legend: {
@@ -117,7 +87,6 @@ const chartOptions = ref({
         itemStyle: { color: "#FFFFFF" },
     },
     tooltip: {
-        // enable:false,
         shared: true,
         padding: 16,
         backgroundColor: "rgba(0, 170, 255, 0.15)", // 提示框背景色
@@ -127,7 +96,6 @@ const chartOptions = ref({
         style: {
             color: "#ffffff",
         },
-        // <span style="color:{point.color}">\u25CF</span>
         pointFormat:
             " <b> {series.name}</b>&nbsp&nbsp&nbsp&nbsp {point.y} <br><br>",
     },
@@ -135,32 +103,38 @@ const chartOptions = ref({
         enabled: false,
     },
     exporting: { enabled: false },
-    series: [
-        {
-            name: dataList[0].name,
-            data: dataList[0].data,
-            color: {
-                linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 }, // 180度渐变方向
-                stops: [
-                    [0, "rgba(0, 133, 255, 0.5)"],
-                    [1, "rgba(0, 71, 255, 0)"],
-                ],
-            },
-        },
-        {
-            name: dataList[1].name,
-            data: dataList[1].data,
-            color: {
-                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 0 }, // 横向渐变
-                stops: [
-                    [0, "rgba(0, 102, 255, 0.6)"],
-                    [0.12, "rgba(0, 102, 255, 0.6)"],
-                    [0.49, "rgba(135, 212, 255, 0.6)"],
-                    [0.91, "rgba(0, 117, 255, 0.6)"],
-                    [1, "rgba(0, 117, 255, 0.6)"],
-                ],
-            },
-        },
-    ],
+    series: [], // 初始为空，在 watch 中更新
 });
+
+// 监听 props.dataList 的变化
+watch(
+    () => props.dataList,
+    (newDataList) => {
+        if (newDataList && newDataList.categories && newDataList.series) {
+            chartOptions.value.xAxis.categories = newDataList.categories;
+            chartOptions.value.series = newDataList.series.map((series, index) => ({
+                name: series.name,
+                data: series.data,
+                color: {
+                    linearGradient: index === 0 
+                        ? { x1: 0, x2: 0, y1: 0, y2: 1 } 
+                        : { x1: 0, y1: 0, x2: 1, y2: 0 },
+                    stops: index === 0 
+                        ? [
+                            [0, "rgba(0, 133, 255, 0.5)"],
+                            [1, "rgba(0, 71, 255, 0)"],
+                        ]
+                        : [
+                            [0, "rgba(0, 102, 255, 0.6)"],
+                            [0.12, "rgba(0, 102, 255, 0.6)"],
+                            [0.49, "rgba(135, 212, 255, 0.6)"],
+                            [0.91, "rgba(0, 117, 255, 0.6)"],
+                            [1, "rgba(0, 117, 255, 0.6)"],
+                        ],
+                },
+            }));
+        }
+    },
+    { immediate: true, deep: true } // 立即执行一次，并且深度监听
+);
 </script>

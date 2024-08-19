@@ -6,9 +6,9 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from "vue"
+import { ref,onMounted,watch } from "vue"
 
-const {dataList} = defineProps({
+const props = defineProps({
     dataList: {
         type: Array,
         default: () => [
@@ -95,7 +95,7 @@ const chartOptions = ref({
         name: '鸟类',
         size: '110%',
         innerSize: '70%',
-        data: dataList,
+        data: props.dataList,
         colors: [
             '#f25e00',
             '#0084e6',
@@ -103,5 +103,13 @@ const chartOptions = ref({
         ]
     }]
 })
+onMounted(() => {
+  // 在组件挂载时更新 series 数据
+  chartOptions.value.series[0].data = props.dataList;
+});
 
+// 监控 props.dataList 的变化并更新图表数据
+watch(() => props.dataList, (newData) => {
+  chartOptions.value.series[0].data = newData;
+}, { immediate: true });
 </script>

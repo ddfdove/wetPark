@@ -1,170 +1,137 @@
 <template>
     <div>
-        <highcharts :options="chartOptions" ref="chart"></highcharts>
+      <highcharts :options="chartOptions" ref="chart"></highcharts>
     </div>
-</template>
-
-<script setup>
-import { ref, reactive } from "vue";
-
-// 定义组件的 props
-const { dataList } = defineProps({
+  </template>
+  
+  <script setup>
+  import { ref, watch, toRefs } from "vue";
+  
+  // 接收 props 并使用 toRefs 保持响应式
+  const props = defineProps({
     dataList: {
-        type: Array,
-        default: () => [
-            {
-                name: "2021",
-                data: [100, 156, 222, 65, 89, 95, 12, 189, 223, 99, 156, 245],
-            },
-            {
-                name: "2022",
-                data: [149, 123, 221, 89, 86, 59, 145, 198, 226, 146, 110, 145],
-            },
-            {
-                name: "2023",
-                data: [148, 156, 222, 56, 29, 98, 45, 125, 146, 249, 211, 102],
-            },
-            {
-                name: "2024",
-                data: [223, 156, 222, 87, 111, 23, 56, 79, 145, 11, 233, 210],
-            },
-        ],
+      type: Object,
+      required: true,
     },
-});
-const chartOptions = ref({
+  });
+  
+  // 使用 toRefs 保留响应式
+  const { dataList } = toRefs(props);
+  
+  // 为每条线设置不同颜色
+  const colors = [
+    "#43cf7c", // 绿色
+    "#ff8d1a", // 橙色
+    "#ac33c1", // 紫色
+    "#2263ed", // 蓝色
+    "#ff4d4d", // 红色
+    "#f0e02e", // 黄色
+  ];
+  
+  // 初始化 chartOptions
+  const chartOptions = ref({
     chart: {
-        type: "spline",
-        backgroundColor: "#030025",
-        width: 1320,
-        height: 320,
+      type: "spline",
+      backgroundColor: "#030025",
+      width: 1320,
+      height: 320,
     },
     title: {
-        text: null,
+      text: null,
     },
-    // style: {
-    // color: 'red',
-    // fontSize: "12px",
-
-    //  },
     xAxis: {
-        categories: [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月",
-        ],
-        title: {
-            text: null,
+      categories: [], // 初始化为空数组
+      title: {
+        text: null,
+      },
+      crosshair: true,
+      labels: {
+        style: {
+          color: "#919191",
+          fontSize: "12px",
         },
-        crosshair: true,
-        labels: {
-            style: {
-                color: "#919191",
-                fontSize: "12px",
-            },
-        },
+      },
     },
-
     yAxis: {
-        categories: ["0", "200", "400", "600", "800", "1000"],
-        title: {
-            text: null,
+      title: {
+        text: null,
+      },
+      labels: {
+        style: {
+          color: "#919191",
+          fontSize: "12px",
         },
-        labels: {
-            style: {
-                color: "#919191",
-                fontSize: "12px",
-            },
-        },
-        gridLineDashStyle: "solid", //网格线样式
-        // gridLineDashStyle: 'ShortDash',//网格线样式
-        gridLineColor: "#221f3f",
-        min: 0, //最小值
-        tickInterval: 50, //间隔
-        max: 250, //最大值
+      },
+      gridLineDashStyle: "solid",
+      gridLineColor: "#221f3f",
+      min: 0,
+      tickInterval: 1,
+      max: 4,
     },
     plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: true,
-            },
-            enableMouseTracking: false,
+      line: {
+        dataLabels: {
+          enabled: true,
         },
-        series: {
-            marker: {
-                enabled: false,
-            },
+        enableMouseTracking: false,
+      },
+      series: {
+        marker: {
+          enabled: true,
         },
+        dataLabels: {
+                enabled: true, // 启用数据标签
+                format: '{y}', // 可以设置数据标签显示的格式，这里显示y值
+                style: {
+                    textOutline: 'none', // 文本描边，可选
+                    color: 'white', // 文本颜色，可选
+                    fontSize: '12px' // 文本字号，可选
+                }
+            },
+      },
     },
     legend: {
-        itemStyle: { color: "#FFFFFF" },
+      itemStyle: { color: "#FFFFFF" },
     },
     tooltip: {
-        // enable:false,
-        shared: true,
-        padding: 16,
-
-        backgroundColor: "rgba(0, 170, 255, 0.15)", // 提示框背景色
-        borderWidth: 1, // 提示框边框宽度
-        borderColor: " rgba(0, 170, 255, 0.5)", // 提示框边框颜色
-        // style: {
-        //     color: 'rgb(124,124,124)',
-        // },
-        headerFormat: "{point.key}<br>",
-        pointFormat: " <b> {series.name}</b>&nbsp&nbsp&nbsp {point.y} <br>",
-        style: {
-            color: "#ccc",
-            letterSpacing: "2px",
-            fontSize: "14px",
-        },
+      shared: true,
+      padding: 16,
+      backgroundColor: "rgba(0, 170, 255, 0.15)",
+      borderWidth: 1,
+      borderColor: "rgba(0, 170, 255, 0.5)",
+      headerFormat: "{point.key}<br>",
+      pointFormat: "<b>{series.name}</b>&nbsp&nbsp&nbsp {point.y} <br>",
+      style: {
+        color: "#ccc",
+        letterSpacing: "2px",
+        fontSize: "14px",
+      },
     },
     credits: {
-        enabled: false,
+      enabled: false,
     },
     exporting: { enabled: false },
-    series: [
-        {
-            name: dataList[0].name,
-            data: dataList[0].data,
-            marker: {
-                symbol: "circle",
-                lineColor: "#43cf7c",
-            },
-        },
-        {
-            name: dataList[1].name,
-            data: dataList[1].data,
-            // color: 'rgb( 250,215,130)'
-            marker: {
-                symbol: "circle",
-                lineColor: "#ff8d1a",
-            },
-        },
-        {
-            name: dataList[2].name,
-            data: dataList[2].data,
-            // lineColor: 'rgb(225,173,129)',
-            marker: {
-                symbol: "circle",
-                lineColor: "#ac33c1",
-            },
-        },
-        {
-            name: dataList[3].name,
-            data: dataList[3].data,
-            marker: {
-                symbol: "circle",
-                lineColor: "#2263ed",
-            },
-        },
-    ],
-});
-</script>
+    series: [], // 初始化为空数组
+  });
+  
+  // 监听 dataList 的变化
+  watch(
+    dataList,
+    (newValue) => {
+      if (newValue && newValue.series && newValue.categories) {
+        chartOptions.value.series = newValue.series.map((item, index) => ({
+          name: item.name,
+          data: item.data,
+          color: colors[index % colors.length], // 根据颜色数组循环设置颜色
+          marker: {
+            symbol: "circle",
+            lineColor: colors[index % colors.length], // 为每个点指定颜色
+          },
+        }));
+        chartOptions.value.xAxis.categories = newValue.categories;
+      }
+    },
+    { immediate: true }
+  );
+  </script>
+  

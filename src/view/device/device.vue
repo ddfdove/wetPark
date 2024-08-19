@@ -17,7 +17,9 @@
           padding-left: 20px;
         ">园区视频展示</span>
     </div>
-    <div class="dMiddle">
+    <div class="dMiddle" ref="videoContainer">
+    {{props.id}}
+      <Video :cameraIndexCode="props.id" :width="videoWidth" :height="videoHeight"></Video>
       <video-player :src="videoSrc" :options="playerOptions" :volume="0.6" />
     </div>
     <div class="dBottom">
@@ -36,8 +38,30 @@
 </template>
 
 <script setup>
-  import { onMounted, ref } from "vue";
-  // 视频链接地址
+import { onMounted, ref } from "vue";
+import Video from './video1.vue'
+const props = defineProps({
+  id: {
+    type: Number,
+    required:true
+  }
+})
+const videoWidth = ref(262)
+const videoHeight = ref(120)
+const videoContainer=ref(null)
+const updateVideoDimensions = () => {
+  if (videoContainer.value) {
+    const rect = videoContainer.value.getBoundingClientRect()
+    videoWidth.value = Math.max(Math.floor(rect.width)) // 保证最小宽度为 100
+    videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
+  }
+}
+onMounted(()=>{
+  console.log('传入的 id:', props.id); // 打印传入的 id
+  updateVideoDimensions()
+  window.addEventListener('resize', updateVideoDimensions)
+})
+// 视频链接地址
 const videoSrc = ref("http://vjs.zencdn.net/v/oceans.mp4");
 // 视频播放器配置
 const playerOptions = ref({

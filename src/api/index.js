@@ -101,3 +101,81 @@ export const getCameraEquipments=(params)=>{
     method:'get'
   })
 }
+
+
+//*****************************园区展示 *********************//
+//获取园区展示中间野生动物种类
+export const getBirds=()=>{
+  return http({
+    url:'/api/wp/wpBird/getBirds',
+    method:'get'
+  })
+}
+//获取园区展示种群趋势分析
+export const getBirdsBybType=()=>{
+  return http({
+    url:'/api/wp/wpBird/getBirdsBybType',
+    method:'get'
+  })
+}
+//获取园区展示中间野生鸟类种类
+export const getWildBirds=(params)=>{
+  return http({
+    url:'/api/wp/artemispost/getShibieVoListAll',
+    method:'get',
+    params
+  })
+}
+
+
+
+
+//*****************************监测  人流监测 *********************//
+//季度人流
+export const getVisitorByji=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenliusByJi',
+    method:'get',
+   
+  })
+}
+//获取人流监测人流量
+export const getVisitor=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenlius',
+    method:'get',
+   
+  })
+}
+//获取人流监测区域人员分布对比
+export const getRegionalPersonnel=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenliusByHour',
+    method:'get',
+   
+  })
+}
+//获取人流监测人员分布
+export const getPersonnelDistribution=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenliusByRen',
+    method:'get',
+   
+  })
+}
+//获取人流监测时段排行数据
+export const getTimeRank=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenliusByTime',
+    method:'get',
+   
+  })
+}
+//获取人流监测园区Top5
+export const getGardenTop=()=>{
+  return http({
+    url:'/api/wp/wpRenliu/getRenliusByTop',
+    method:'get',
+   
+  })
+}

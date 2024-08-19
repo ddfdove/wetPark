@@ -39,12 +39,36 @@
       <div class="statisticTop">
         <panelboard :chTitle="'数据统计'" :enTitle="'Statistics'">
           <ul>
-            <li class="flex-1" v-for="(item, index) in statistic" :key="index"
-              :style="{ backgroundImage: `url(${item.image})` }">
-              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">{{ item.description }}</div>
+            <li class="flex-1" 
+              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">总面积</div>
               <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{ item.quantity }}</span>
-                <span style="font-size: 14px;">{{ item.unit }}</span>
+                <span style="font-size: 30px;margin-right: 5px; ">120</span>
+                <span style="font-size: 14px;">公顷</span>
+              </div>
+            </li>
+            <li class="flex-1"  
+              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">人流量</div>
+              <div>
+                <span style="font-size: 30px;margin-right: 5px; ">5765</span>
+                <span style="font-size: 14px;">人</span>
+              </div>
+            </li>
+            <li class="flex-1"  
+              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">野生动物种类</div>
+              <div>
+                <span style="font-size: 30px;margin-right: 5px; ">{{parkBirds}}</span>
+                <span style="font-size: 14px;">种</span>
+              </div>
+            </li>
+            <li class="flex-1"  
+              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">设备</div>
+              <div>
+                <span style="font-size: 30px;margin-right: 5px; ">{{parkEquirments}}</span>
+                <span style="font-size: 14px;">台</span>
               </div>
             </li>
           </ul>
@@ -52,39 +76,33 @@
       </div>
       <div class="animal">
         <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'">
-          <div class="video-container">
-            <!-- controls="controls" -->
-            <!-- <div class="date-time">2024年06月15日 星期六 15:44:01</div> -->
-            <div v-if="videoSrc" class="video-player">
-              <!-- <video-player :src="videoSrc" :options="playerOptions" :volume="0.6" /> -->
-              <video-player v-if="!isWebRTC" :src="videoSrc" :options="playerOptions" :volume="0.6" />
-              <video v-if="isWebRTC" ref="webrtcVideo" autoplay></video>
-              <!-- <div v-if="isWebRTC" >{{ videoSrc }}</div> -->
-              <!-- <video autoplay="autoplay" :src="videoSrc" controls="controls"></video> -->
-            </div>
-            <div v-else class="image-display">
-              <img :src="imageSrc" alt="Image Preview" style="width: 100%;height:100%;" />
-            </div>
+           <div class="video-container" ref="videoContainer">
+            
+            <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video1>
+          
           </div>
         </panelboard>
+        
       </div>
+      
       <div class="statisticBottom">
         <ul>
           <li>
             <panelboard :chTitle="'野生鸟类种类'" :enTitle="'Wild bird species'">
               <div class="monitarChart" style="margin-right: 20px;height: 260px;">
-                <mvcProgress :dataList="birdList"></mvcProgress>
+                <mvcProgress :dataList="parkWildBirds"></mvcProgress>
               </div>
             </panelboard>
           </li>
           <li>
             <panelboard :chTitle="'种群趋势分析'" :enTitle="'Population trend analysis'">
               <div class="monitarChart">
-                <PopulationChart></PopulationChart>
+                <PopulationChart :dataList="birdsPopulation"></PopulationChart>
               </div>
             </panelboard>
           </li>
         </ul>
+        
         <!-- <li>
           <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
             <div class="monitarChart">
@@ -99,6 +117,7 @@
         <i class="iconfont icon-gengduoshuangjiantou" style="margin-right: 8px;"></i>
         <span>回到首页</span>
       </button>
+      
       <div class="rTop">
         <panelboard :chTitle="'城市时间'" :enTitle="'City Time'">
           <!-- <iframe width="590" scrolling="no" height="190" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=27&bgc=%23&bdc=%23FFFFFF&icon=1&py=xining&site=12"></iframe> -->
@@ -145,13 +164,10 @@
               <!-- <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
                 <el-tab-pane v-for="(item, index) in monitorTabs" :key="index" :label="item.label" :name="item.name"> -->
               <div class="video-grid">
-                <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item"
-                  @click="handleItemClick(source, index)">
-                  <img v-if="source.src.endsWith('.png')" :src="source.src" alt="Item Image" />
-                  <video v-else-if="source.src.startsWith('rtsp://')" :ref="setVideoElementRef(index, source)"
-                    autoplay></video>
-                  <video-player v-else :src="source.src" :options="playerOptions2" :volume="0.6"></video-player>
-                  <div class="content">{{ source.content }}</div>
+                <div ref="caemraContainer" v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item"
+                  @click="handleItemClick(source, index)" >
+                    <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth" :height="cameraHeight"></Video>
+                 
                 </div>
               </div>
               <!-- </el-tab-pane>
@@ -159,7 +175,7 @@
             </div>
           </div>
         </panelboard>
-        <Video cameraIndexCode="9dd014fd77964be29b236769949dfbdf"></Video>
+      
         <!-- <video-player  :src="SurveillanceVideo1.url" :options="playerOptions2" :volume="0.6"></video-player> -->
         <!-- <video ref="videoElement" autoplay width="200" height="150"></video> -->
         <!-- <div id='H5Video'></div> // 这里的id是什么初始化的szID就填什么 -->
@@ -222,7 +238,7 @@ import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import moment from 'moment'
 import "moment/dist/locale/zh-cn";
-import { getWaterEquipmentList,getCameraEquipments, } from '@/api/index.js'
+import { getWaterEquipmentList,getCameraEquipments,getBirds,getBirdsBybType,getMonitorEquipment ,getWildBirds} from '@/api/index.js'
 import MonitarChart from './monitar.vue'
 import BirdChart from './wildBird.vue'
 import PopulationChart from './population.vue'
@@ -237,6 +253,7 @@ import panelboard from "@/components/panelboard/index.vue"
 import mvcProgress from "./components/mvc-progress.vue"
 import LocalWeather from '@/components/LocalWeather.vue'
 import Video from './video.vue'
+import Video1 from './video1.vue'
 
 
 const myPlugin = ref(null);
@@ -320,42 +337,38 @@ const getCameraWs = async () => {
 
 //获取webRtc服务
 // 视频元素的引用
+const videoWidth = ref(760)
+const videoHeight = ref(443)
+const cameraWidth = ref(178)
+const cameraHeight = ref(103)
+const videoContainer = ref(null)
+const caemraContainer=ref(null)
+
 const videoElements = ref([]);
 const webRtcServers = ref([]);
 const webrtcVideo = ref(null);
 const webRtcServerIp = ref('127.0.0.1:9001');
 const videoSrc = ref("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
+const videoCode=ref('9dd014fd77964be29b236769949dfbdf')
 const imageSrc = ref('/cut/bird/bird5.png');
 const isWebRTC = ref(false);
-
-// 设置视频元素的引用
-const setVideoElementRef = (index, source) => (el) => {
-  videoElements.value[index] = el;
-  if (el && source.src.startsWith('rtsp://')) {
-    initWebRtcServer(el, source.src, index);
+const updateVideoDimensions = () => {
+  if (videoContainer.value) {
+    const rect = videoContainer.value.getBoundingClientRect()
+    videoWidth.value = Math.max(Math.floor(rect.width)) // 保证最小宽度为 100
+    videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
   }
-};
-// 初始化 WebRTC 服务器
-const initWebRtcServer = (videoElement, rtspUrl, index) => {
-  nextTick(() => {
-    if (videoElement) {
-      const webRtcServer = new WebRtcStreamer(videoElement, `${location.protocol}//${webRtcServerIp.value}`);
-      webRtcServer.connect(rtspUrl);
-      // webRtcServers.value[index] = webRtcServer;
-    } else {
-      console.error('视频元素未找到');
+  if (caemraContainer.value && Array.isArray(caemraContainer.value)) {
+        caemraContainer.value.forEach((container, index) => {
+            if (container) {  // 这里进一步确保每个元素都存在
+                const rect2 = container.getBoundingClientRect();
+                cameraWidth.value = Math.max(Math.floor(rect2.width)); // 保证最小宽度为 100
+                cameraHeight.value = Math.max(Math.floor(rect2.height)); // 保证最小高度为 100
+            }
+        });
     }
-  });
-};
-// 页面销毁时销毁 WebRTC
-const cleanupWebRtcServers = () => {
-  webRtcServers.value.forEach((server) => {
-    if (server) {
-      server.disconnect();
-    }
-  });
-  webRtcServers.value = [];
-};
+}
+
 
 
 
@@ -467,23 +480,9 @@ const playerOptions2 = ref({
 });
 //点击右侧监控视频中间展示放大
 const handleItemClick = (source, index) => {
-  if (source.src.endsWith('.png')) {
-    imageSrc.value = source.src;
-    videoSrc.value = '';
-    isWebRTC.value = false;
-  } else if (source.src.startsWith('rtsp://')) {
-    videoSrc.value = source.src;
-    imageSrc.value = '';
-    isWebRTC.value = true;
-    // 在点击后重新初始化 WebRTC 服务器
-    if (videoElements.value[index]) {
-      initWebRtcServer(webrtcVideo.value, videoSrc.value, index);
-    }
-  } else {
-    videoSrc.value = source.src;
-    imageSrc.value = '';
-    isWebRTC.value = false;
-  }
+  console.log('source.cameraIndexCode',source.cameraIndexCode)
+  videoCode.value=source.cameraIndexCode
+  console.log('videoCode.value',videoCode.value);
 };
 //中间下面野生鸟类种类展示
 const birdList = ref([
@@ -621,8 +620,8 @@ const setParams = (type, number) => {
 }
 //设置摄像机监控参数
 const cameraParams = ref({
-  cameraIndexCode:'',
-  protocol:'hls'
+  
+  protocol:'rtsp'
 })
 //设置水质对比参数
 const waterParams = ref({
@@ -821,21 +820,111 @@ const getParkIntroduce = () => {
     console.error('ID parameter is missing in the URL');
   }
 };
+//获取园区展示种群趋势分析
+const birdsPopulation=ref([])
+const getBirdsPopulation=async()=>{
+  await getBirdsBybType()
+  try {
+    const res =  await getBirdsBybType()
+    if (res.code == 0) {
+      birdsPopulation.value=res.data
 
+    }
+  } catch (error) {
+    console.error("请求失败", err);
+  }
+}
+const parkBirds=ref(223)
+//获取园区展示中间动物种类
+const getParkBirds=async()=>{
+   try {
+     const res=await getBirds()
+     parkBirds.value=res.data
+   } catch (error) {
+    
+   }
+}
+const parkWildBirds=ref([
+
+])
+//获取园区展示野生鸟类种类
+const getParkWildBirds=async()=>{
+  try {
+    const res=await getWildBirds()
+    if(res.code==0){
+      parkWildBirds.value=res.data.slice(0,6).map((item)=>{
+        return {
+          name:item.acname,
+          value:item.bid
+        }
+    })
+    }
+    
+    console.log('parkWildBirds.value',parkWildBirds.value);
+  } catch (error) {
+    
+  }
+}
+//获取园区展示设备总数
+const parkEquirments=ref(2563)
+const getParkEquirments = async () => {
+  try {
+    const res = await getMonitorEquipment();
+    if (res.code == 0) {
+      // 初始化设备总数
+      let totalDeviceCount = 0;
+
+      // 遍历 res.data 以计算总设备数
+      res.data.forEach(category => {
+        if (category.tvdata) {
+          // 如果该类别有 tvdata 数组，则计算其设备数量
+          totalDeviceCount += category.tvdata.length;
+          console.log('totalDeviceCount',totalDeviceCount)
+          console.log('category.tvdata.length',category.tvdata.length)
+        }
+        if (category.data) {
+          // 如果该类别有 data 数组，则遍历每一个 data 对象并计算设备数量
+          console.log('category.data',category.data)
+          category.data.forEach(subCategory => {
+            if (subCategory.totalNum) {
+              totalDeviceCount += subCategory.totalNum;
+              console.log('data totalDeviceCount', totalDeviceCount);
+              console.log(' subCategory.totalNum', subCategory.totalNum);
+            }
+            console.log('totalDeviceCount',totalDeviceCount)
+          });
+        }
+      });
+
+      // 将计算得到的设备总数赋值给 parkEquirments
+      parkEquirments.value = totalDeviceCount;
+      console.log("设备总数:", parkEquirments.value);
+    } else {
+      console.log("获取设备数据失败:", res.msg);
+    }
+  } catch (err) {
+    console.error("请求失败", err);
+    // 处理请求失败的情况
+  }
+};
 //获取园区展示监控视频摄像头设备列表
 const getCameraEquipmentList = async (params) => {
 
   try {
     const res = await getCameraEquipments(params);
-    console.log('res.data', res.data);
+    
     // console.log('res.code === 0', res.code == 0);
     if (res.code == 0) {
+      console.log('res.data', res.data);
       SurveillanceVideo.value = res.data.map((item, index) => {
         return {
           content: monitorsources.value[index].content,
-          src: item.url
+          src: item.url,
+          cameraIndexCode:item.cameraIndexCode
         }
+        
       });
+      console.log('SurveillanceVideo.value',SurveillanceVideo.value)
       // SurveillanceVideo1.value=res.data
     } else {
       console.log(res.msg);
@@ -991,10 +1080,12 @@ const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
 
-
+  
   getLocationInfo();
   // getParkSurveillanceVideos()
   getCameraEquipmentList(cameraParams)
+  getBirdsPopulation()
+  getParkWildBirds()
   try {
     await Promise.all([
       setParams(null, 5),
@@ -1035,11 +1126,14 @@ const stopPolling = () => {
 };
 
 onMounted(() => {
-
+  updateVideoDimensions()
+   getParkBirds()
+   getParkEquirments()
+  window.addEventListener('resize', updateVideoDimensions)
   // initCamera();
   getParkIntroduce()
   startPolling();
-  // initWebRtcServer();
+  
   timer.value = setInterval(() => {
     time.value = moment().format('h:mm:ss ')
   }, 1000)
@@ -1150,7 +1244,7 @@ onUnmounted(() => {
       .video-container {
         position: relative;
         width: 100%;
-        height: 340px;
+        height: 400px;
         // padding-top: 10px;
 
         .video-player {

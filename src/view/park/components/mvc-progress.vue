@@ -25,10 +25,11 @@ const props = defineProps({
 })
 const newList = computed(() => {
   let list=props.dataList;
+  if (list.length === 0) return []; // 如果 list 为空，直接返回空数组
   let max=list.reduce((a,b)=>{
     if(a.value>b.value)return a;
     else return b;
-  })    
+  },{ value: 0 })    
   list.forEach(item=>{
     item.rate=(item.value/max.value)*100;
   })

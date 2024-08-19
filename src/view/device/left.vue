@@ -18,25 +18,29 @@
               :header-cell-style="headerCellStyle" :row-style="rowStyle" :cell-style="cellStyle"
               row-class-name="rowClassName">
               <el-table-column type="index" width="80" label="序号" />
-              <el-table-column v-if="item.name !== 'camera'" prop="parkNames" label="园区" width="160" />
-              
-              <el-table-column v-if="item.name !== 'camera'" prop="parkAttractionNames" label="景区" width="160" />
-              <el-table-column v-if="item.name !== 'camera'" prop="device" label="设备(在线/总数)" width="160">
+              <el-table-column v-if="item.name !== 'tv'" prop="parkNames" label="园区" width="160" />
+
+              <el-table-column v-if="item.name !== 'tv'" prop="parkAttractionNames" label="景区" width="160" />
+              <el-table-column v-if="item.name !== 'tv'" prop="device" label="设备(在线/总数)" width="160">
                 <template #default="scope">
                   {{ scope.row.onlineNum }}/{{ scope.row.totalNum }}
                 </template>
               </el-table-column>
-              <el-table-column v-if="item.name === 'camera'" prop="cameraName" label="监控点名称" width="160" />
-              <el-table-column v-if="item.name === 'camera'" prop="latitude" label="纬度" width="120" />
-              <el-table-column v-if="item.name === 'camera'" prop="longitude" label="经度" width="120" />
-              <el-table-column v-if="item.name === 'camera'" prop="status" label="状态" width="120" />
+              <el-table-column v-if="item.name === 'tv'" prop="cameraName" label="监控点名称" width="160" />
+              <el-table-column v-if="item.name === 'tv'" prop="latitude" label="纬度" width="120" />
+              <el-table-column v-if="item.name === 'tv'" prop="longitude" label="经度" width="120" />
+              <el-table-column v-if="item.name === 'tv'" prop="status" label="状态" width="120">
+                <template #default="scope">
+                  {{ scope.row.status == 'null' ? '在线' : scope.row.status }}
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
         </el-tabs>
       </div>
     </panel-board>
     <el-dialog ref="dialogRef" v-model="isDialogVisible" title="异常设备列表" style="width: 750px;">
-      <el-table :data="abnormalDevicesList" :max-height="maxTableHeight" style="width:100%;" >
+      <el-table :data="abnormalDevicesList" :max-height="maxTableHeight" style="width:100%;">
         <el-table-column type="index" width="80" label="序号" />
         <el-table-column prop="devicesName" label="设备名称" width="100" />
         <el-table-column prop="devicesType" label="设备类型" width="120" />
@@ -49,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed ,onMounted, nextTick} from "vue";
+import { ref, watch, computed, onMounted, nextTick } from "vue";
 import PanelBoard from "@/components/panelboard/index.vue";
 
 const props = defineProps({
@@ -70,13 +74,15 @@ watch(
   () => props.dataList,
   (newValue) => {
     if (Array.isArray(newValue)) {
+      console.log('dataList', newValue);
       tabsList.value = newValue.map((item) => {
-        if (item.label === "camera") {
+        if (item.label === "tv") {
+          console.log('对吗', item.label === "tv");
           // 处理 "camera" 选项卡的数据
           return {
             label: item.name,
             name: item.label,
-            data: item.dataV.map((dataItem) => ({
+            data: item.tvdata.map((dataItem) => ({
               cameraIndexCode: dataItem.cameraIndexCode,
               cameraName: dataItem.cameraName,
               latitude: dataItem.latitude,
@@ -99,7 +105,7 @@ watch(
           };
         }
       });
-
+      console.log('tabsList.value', tabsList.value);
       // 设置默认激活的选项卡，如果未设置
       if (tabsList.value.length > 0 && !activeName.value) {
         activeName.value = tabsList.value[0].name;
@@ -125,7 +131,7 @@ const updateAbnormalDevicesList = () => {
     tab.data.forEach((device) => {
       if (device.onlineNum < device.totalNum) {
         const abnormalDevices = device.detail.filter((d) => d.status !== "Active");
-        console.log('abnormalDevices',abnormalDevices);
+        console.log('abnormalDevices', abnormalDevices);
         abnormalDevices.forEach((abnormalDevice) => {
           abnormalDevicesList.value.push({
             devicesName: abnormalDevice.devicesName,
@@ -135,7 +141,7 @@ const updateAbnormalDevicesList = () => {
             reason: statusMap[abnormalDevice.status] || "未知状态", // 根据状态映射转换为中文
           });
         });
-        console.log('abnormalDevicesList',abnormalDevicesList.value);
+        console.log('abnormalDevicesList', abnormalDevicesList.value);
       }
     });
   });
