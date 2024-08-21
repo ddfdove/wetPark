@@ -79,7 +79,7 @@
            <div class="video-container" ref="videoContainer">
             
             <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video1>
-          
+            
           </div>
         </panelboard>
         
@@ -178,7 +178,7 @@
       
         <!-- <video-player  :src="SurveillanceVideo1.url" :options="playerOptions2" :volume="0.6"></video-player> -->
         <!-- <video ref="videoElement" autoplay width="200" height="150"></video> -->
-        <!-- <div id='H5Video'></div> // 这里的id是什么初始化的szID就填什么 -->
+          
       </div>
       <div class="rBottom">
         <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
@@ -312,7 +312,7 @@ const realplay = async () => {
     const res2 = await getCameraWs(); // 后端接口获取 WS 地址
     const playURL1 = 'rtsp://rtspstream:111c140a7de78d40ba5e3249819b9632@zephyr.rtsp.stream/movie'; // 监控点预览取流 URL
     const playURL2 = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'; // 监控点预览取流 URL
-    const playURL3 = 'http://vjs.zencdn.net/v/oceans.mp4'; // 监控点预览取流 URL
+    const playURL3 = 'ws://135.131.1.10:559/openUrl/1o3FTJm'; // 监控点预览取流 URL
     await myPlugin.value.JS_Play(
       playURL3,
       {
@@ -1130,7 +1130,7 @@ onMounted(() => {
    getParkBirds()
    getParkEquirments()
   window.addEventListener('resize', updateVideoDimensions)
-  // initCamera();
+  //initCamera();
   getParkIntroduce()
   startPolling();
   

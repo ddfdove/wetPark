@@ -1,39 +1,12 @@
 <template>
   <div id="device">
-    <div class="dTop">
-      <!-- <i class="iconfont icon-yuanqufuwu" style="font-size: 36px; padding-left: 20px;color: white;font-weight: 600;"></i> -->
-      <i class="iconfont icon-shouye_" style="
-          font-size: 36px;
-          padding-left: 20px;
-          color: white;
-          font-weight: 600;
-        "></i>
-      <!-- <i class="iconfont icon-shidigongyuan" style="font-size: 36px; padding-left: 20px;color: white;font-weight: 600;"></i> -->
-      <span style="
-          font-size: 30px;
-          color: white;
-          font-weight: 400;
-          opacity: 0.8;
-          padding-left: 20px;
-        ">园区视频展示</span>
+    
+    <div class="dMiddle" >
+      <div style="width:260px;height:160px" ref="videoContainer">
+      <Video :id="id"  :cameraIndexCode="id" :width="videoWidth" :height="videoHeight"></Video>
+      </div>
     </div>
-    <div class="dMiddle" ref="videoContainer">
-    {{props.id}}
-      <Video :cameraIndexCode="props.id" :width="videoWidth" :height="videoHeight"></Video>
-      <video-player :src="videoSrc" :options="playerOptions" :volume="0.6" />
-    </div>
-    <div class="dBottom">
-      <h2 style="padding-left: 20px; color: white; font-weight: 600; opacity: 0.5">
-        描述
-      </h2>
-      <p style="padding: 10px 50px; color: #ffffff; margin: 10px 0">
-        海湖湿地公园位于西宁市海晏路绿地云香郡北侧,是一个集湿地保育、科普宣教、合理利用、管理服务等
-        多功能于一体的湿地生态展示示范基地
-      </p>
-      <!-- <button style="height: 70px; width: 240px; margin-left: 60px; font-size: 18px">
-        进入设备
-      </button> -->
-    </div>
+    
   </div>
 </template>
 
@@ -42,13 +15,17 @@ import { onMounted, ref } from "vue";
 import Video from './video1.vue'
 const props = defineProps({
   id: {
-    type: Number,
-    required:true
-  }
+    type: String,
+    default: ""
+  },
+  name: {
+    type: String,
+    default: ""
+  },
 })
 const videoWidth = ref(262)
 const videoHeight = ref(120)
-const videoContainer=ref(null)
+const videoContainer = ref(null)
 const updateVideoDimensions = () => {
   if (videoContainer.value) {
     const rect = videoContainer.value.getBoundingClientRect()
@@ -57,7 +34,6 @@ const updateVideoDimensions = () => {
   }
 }
 onMounted(()=>{
-  console.log('传入的 id:', props.id); // 打印传入的 id
   updateVideoDimensions()
   window.addEventListener('resize', updateVideoDimensions)
 })
@@ -91,10 +67,10 @@ const playerOptions = ref({
 #device {
   position: fixed;
   bottom: 110px;
-  right: 220px;
+  right: 620px;
   width: 320px;
   height: 500px;
-  background-color: rgba(0, 102, 255, 0.3);
+  
   opacity: 0.7;
   display: flex;
   flex-direction: column;

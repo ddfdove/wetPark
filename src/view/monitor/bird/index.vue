@@ -93,7 +93,7 @@
            
               <div class="video-container" ref="videoContainer">
                 
-                <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video1>
+                <Video :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video>
               
               </div>
            
@@ -101,32 +101,32 @@
         </panelboard>
 
       </div>
-      <div class="mBottom">
+       <div class="mBottom">
         <panelboard :chTitle="'鸟类增长数据'" :enTitle="'Bird show'">
           <!-- <div class="birdShow">
             <Carousel :birdsList="birdsList"></Carousel>
           </div> -->
-          <ul class="statisticBottom" style="margin-top: 10px;">
+          <ul class="statisticBottom" style="margin-top: 10px" v-if="loding">
             <li>
-
               <div class="monitarChart">
-                <PeopleChart class="border"></PeopleChart>
-              </div>
-
-            </li>
-            <li>
-
-              <div class="monitarChart">
-                <WaterChart class="border"></WaterChart>
+                <PeopleChart
+                  class="border"
+                  :dataList="seasonList"
+                ></PeopleChart>
               </div>
             </li>
             <li>
+              <div class="monitarChart">
+                <WaterChart class="border" :dataList="dayList"></WaterChart>
+              </div>
+            </li>
+            <!-- <li>
 
               <div class="monitarChart">
                 <AirChart class="border"></AirChart>
               </div>
 
-            </li>
+            </li> -->
           </ul>
         </panelboard>
       </div>
@@ -227,7 +227,7 @@
             </div>
             <div class="flex-1" style="margin:auto;"> 
            
-            <img  :src="discription.bUrl" style="width:100%;height:200px">
+            <img referrerpolicy="no-referrer"  :src="discription.bUrl" style="width:100%;height:200px">
             
             </div>
           </div>
@@ -239,7 +239,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,onUnmounted } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import Carousel from './carousel.vue'
@@ -250,23 +250,94 @@ import PeopleChart from './people.vue'
 import WaterChart from './water.vue'
 import AirChart from './air.vue'
 import axios from 'axios';
+import { getBirdsByJi, getBirdsByRi } from "@/api/birddata/index.js";
 import http from "@/utils/http";
-import Video1 from './video2.vue'
+import Video from './video.vue'
 
 const $route = useRoute();
-
+let isFetching=false
 const firstOptions = ref([]);
 const secondOptions = ref([]);
 const thirdOptions = ref([]);
 const birds = ref([]);
+const seasonList = ref([]);
+const dayList = ref([]);
+const loding=ref(false)
+let intervalId = null; // 定时器id
+// 获取季度数据
+const getBirdsList = async () => {
 
+  try {
+    const response = await getBirdsByJi();
+    const response2 = await getBirdsByRi();
+    //重新构造数据结构
+    seasonList.value = configuredBrids(response.data);
+    dayList.value = configuredDayBrids(response2.data);
+    loding.value = true;
+  } catch (error) {
+    console.error("Error fetching birds:", error);
+  }
+};
+
+//数据重新构造
+//季增长
+const configuredBrids = (data) => {
+  // 按季度排序
+  data.sort((a, b) => a.quarter - b.quarter);
+  const quarterMap = {
+    1: "春",
+    2: "夏",
+    3: "秋",
+    4: "冬",
+  };
+  let yearMap = {}; // 按年份分组
+  data.forEach((item) => {
+    // 遍历插入数据
+    if (!yearMap[item.year]) {
+      yearMap[item.year] = {
+        name: item.year,
+        year: item.year,
+        data: [],
+        quarter: [],
+      };
+    }
+    yearMap[item.year].data.push(item.new_birds_count);
+    yearMap[item.year].quarter.push(quarterMap[item.quarter]);
+  });
+
+  let obj = Object.values(yearMap); // 转换为数组
+  return obj;
+};
+//日增长
+const configuredDayBrids = (data) => {
+  let result = {
+    name: "今日",
+    data: [],
+    new_birds_count: [],
+  };
+
+  data.forEach((item) => {
+    result.data.push(item.date);
+    result.new_birds_count.push(item.new_birds_count);
+  });
+
+  return [result];
+};
 const firstSelected = ref('');
 const secondSelected = ref('');
 const thirdSelected = ref('');
 
-const videoCode=ref('cc612fed05e84543b9719330a396c6aa')
-const videoWidth = ref(760)
-const videoHeight = ref(443)
+const videoCode=ref('cc612fed05e84543b9719330a396c6aa');
+const videoContainer=ref(null)
+const videoWidth = ref(610);
+const videoHeight = ref(393);
+const updateVideoDimensions = () => {
+  if (videoContainer.value) {
+    const rect = videoContainer.value.getBoundingClientRect()
+    videoWidth.value = Math.max(Math.floor(rect.width)) // 保证最小宽度为 100
+    videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
+  }
+}
 //=======================================地点检测===========================
 //鸟类数量统计查询条件
 const birdParam=ref({
@@ -546,15 +617,48 @@ const handleThirdDropdown = (command) => {
   fetchBirds(command);
 };
 
+const fetchData=async()=>{
+  if (isFetching) return; // 如果正在获取数据，直接返回
+  isFetching = true; // 标记正在获取数据
+ try {
+    await Promise.all([
+      getBirdsList(), //先调用一次
+      asyncRealTimeMonitor()//实时监控
+    ]);
+   console.log('进入')
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    isFetching = false; // 请求完成，重置标志
+  }
+}
+const startPolling = async () => {
+ 
+ await fetchData(); // 初始加载数据
+  
+  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+};
+const stopPolling = () => {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+};
 onMounted(() => {
+  startPolling();
   fetchFirstOptions();
-
+  
   asyncBirdOptions();//鸟类数量统计条件
   getBirdStatistic();//左侧鸟类数量统计
   getBirdStatistic2();//右侧鸟类数量统计
-  asyncRealTimeMonitor();//实时监控
+  
+  updateVideoDimensions()
+  window.addEventListener('resize', updateVideoDimensions)
 });
-
+onUnmounted(() => {
+  stopPolling();
+});
 
 const birdsList = ref([
   { name: '白鹭', src: './cut/bird/bailu.png' },
@@ -784,10 +888,11 @@ const formatDate=(date, format)=>{
       .video-container {
         position: relative;
         // width: 100%;
-        margin-left: 30px;
-        width: 780px;
-        // height: 400px;
-        // padding-top: 10px;
+        margin-left: 10px;
+        margin-right:20px;
+        width: 760px;
+        // height:100%;
+        height: 450px;
 
         // border:1px dashed grey;
         .date-time {

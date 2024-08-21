@@ -48,7 +48,7 @@
     </div> -->
     <div id="cesiumContainer"></div>
     <Left :dataList="monitorEqu"></Left>
-    <Device v-if="showIntroduce" :id="selectedCameraId"></Device>
+    <Device v-if="showIntroduce" :id="selectedCameraId" :name="selectedCameraName"></Device>
     <!-- <Right></Right> -->
 
 
@@ -74,6 +74,7 @@ const props = defineProps({ scale: Number })
 const viewer = ref(null)
 const showIntroduce = ref(false)
 const selectedCameraId = ref(null); // 用于存储选中的广告牌对应的 cameraIndexCode
+const selectedCameraName = ref(null); // 用于存储选中的广告牌对应的 cameraIndexCode
 const isToolShow = ref(false)
 const cameraPosition = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
 const swichInlineOffline = ref(false)
@@ -658,6 +659,7 @@ const switchMap = () => {
       if (cameraData) {
         console.log('cameraDataddf', cameraData);
         selectedCameraId.value = cameraData.cameraIndexCode;
+        selectedCameraName.value = cameraData.cameraName;
       }
       // console.log('Picked camera entity:', pickedObject.id);
     } else {

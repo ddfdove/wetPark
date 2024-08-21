@@ -7,20 +7,20 @@ import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
 
 const props = defineProps({
     cameraIndexCode: {
-        type: String,
+        type: [Number, String],
         default: ''
     },
     id: {
-        type: String,
-        required: true // 强制要求传入id
+        type: [Number, String],
+        required: true 
     },
     width: {
-        type: Number,
-        default: 760
+        type: [Number, String],
+        default: 262
     },
     height: {
-        type: Number,
-        default: 443
+        type: [Number, String],
+        default: 120
     }
 })
 
@@ -72,9 +72,9 @@ const init = () => {
             layout: objData.value.layout,
             enableHTTPS: 1,
             encryptedFields: "secret",
-            showToolbar: 1,
+            showToolbar: 0,
             showSmart: 0,
-            buttonIDs: "0,16,256,257,258,259,260,512,513,514,515,516,517,768,769"
+            buttonIDs: "0"
         }
 
         oWebControl.value.JS_RequestInterface({
@@ -139,7 +139,7 @@ watch([() => props.width, () => props.height], ([newWidth, newHeight]) => {
     }
 })
 onMounted(() => {
-
+    console.log('type of',typeof props.width);
     nextTick(() => initPlugin())
     // 监听窗口大小变化，并调整播放器大小
     window.addEventListener('resize', () => {

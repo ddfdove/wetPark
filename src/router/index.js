@@ -25,6 +25,7 @@ const routes = [
       title: "park",
     },
   },
+  
   {
     path: "/device",
     component: () => import("../view/device/index.vue"),
