@@ -18,6 +18,14 @@ const routes = [
     },
   },
   {
+    path: "/test",
+    component: () => import("../view/test.vue"),
+    meta: {
+      keepAlive: true,
+      title: "test",
+    },
+  },
+  {
     path: "/park",
     component: () => import("../view/park/index.vue"),
     meta: {

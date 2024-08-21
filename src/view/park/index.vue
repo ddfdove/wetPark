@@ -943,7 +943,7 @@ const getLocationInfo = async () => {
   try {
     const { data } = await axios.get('https://restapi.amap.com/v3/ip', { params });
     // data.adcode值为获取天气需要的city值
-    getWeather(data.adcode);
+    getWeather('630100');
   } catch (error) {
     console.error('获取位置信息失败', error);
   }
