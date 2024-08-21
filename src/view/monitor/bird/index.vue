@@ -316,7 +316,7 @@ const configuredDayBrids = (data) => {
     new_birds_count: [],
   };
 
-  data.forEach((item) => {
+  data.slice(0,5).forEach((item) => {
     result.data.push(item.date);
     result.new_birds_count.push(item.new_birds_count);
   });
