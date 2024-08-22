@@ -1,7 +1,7 @@
 <template>
   <div class="container flex">
     <div class="left">
-      <panelboard :chTitle="'公园简介'" :enTitle="'Park Introduction'">
+      <panelboard :chTitle="'公园简介'" >
         <div class="introduce">
           {{ parkStore.parkIntroduce.introduce }}
         </div>
@@ -77,9 +77,8 @@
       <div class="animal">
         <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'">
            <div class="video-container" ref="videoContainer">
-            
             <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video1>
-            
+            <!-- <H5Video :id="`video`+String(videoCode.slice(0,5))" :playUrl="videoSrc" :width="videoWidth" :height="videoHeight"></H5Video> -->
           </div>
         </panelboard>
         
@@ -166,7 +165,8 @@
               <div class="video-grid">
                 <div ref="caemraContainer" v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item"
                   @click="handleItemClick(source, index)" >
-                    <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth" :height="cameraHeight"></Video>
+                    <!-- <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth" :height="cameraHeight"></Video> -->
+                    <H5Video :playUrl="source.url" :id="`play`+String(index)" ></H5Video>
                  
                 </div>
               </div>
@@ -178,7 +178,7 @@
       
         <!-- <video-player  :src="SurveillanceVideo1.url" :options="playerOptions2" :volume="0.6"></video-player> -->
         <!-- <video ref="videoElement" autoplay width="200" height="150"></video> -->
-          
+        <!-- <div id='H5Video'></div>  -->
       </div>
       <div class="rBottom">
         <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
@@ -254,7 +254,7 @@ import mvcProgress from "./components/mvc-progress.vue"
 import LocalWeather from '@/components/LocalWeather.vue'
 import Video from './video.vue'
 import Video1 from './video1.vue'
-
+import H5Video from '@/components/h5video.vue'
 
 const myPlugin = ref(null);
 const curIndex = ref(0); // 当前窗口下标
@@ -312,7 +312,7 @@ const realplay = async () => {
     const res2 = await getCameraWs(); // 后端接口获取 WS 地址
     const playURL1 = 'rtsp://rtspstream:111c140a7de78d40ba5e3249819b9632@zephyr.rtsp.stream/movie'; // 监控点预览取流 URL
     const playURL2 = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'; // 监控点预览取流 URL
-    const playURL3 = 'ws://135.131.1.10:559/openUrl/1o3FTJm'; // 监控点预览取流 URL
+    const playURL3 = 'http://vjs.zencdn.net/v/oceans.mp4'; // 监控点预览取流 URL
     await myPlugin.value.JS_Play(
       playURL3,
       {
@@ -482,6 +482,7 @@ const playerOptions2 = ref({
 const handleItemClick = (source, index) => {
   console.log('source.cameraIndexCode',source.cameraIndexCode)
   videoCode.value=source.cameraIndexCode
+  videoSrc.value=source.url
   console.log('videoCode.value',videoCode.value);
 };
 //中间下面野生鸟类种类展示
@@ -621,7 +622,7 @@ const setParams = (type, number) => {
 //设置摄像机监控参数
 const cameraParams = ref({
   
-  protocol:'rtsp'
+  protocol:'ws'
 })
 //设置水质对比参数
 const waterParams = ref({
@@ -834,7 +835,7 @@ const getBirdsPopulation=async()=>{
     console.error("请求失败", err);
   }
 }
-const parkBirds=ref(223)
+const parkBirds=ref(null)
 //获取园区展示中间动物种类
 const getParkBirds=async()=>{
    try {
@@ -879,19 +880,13 @@ const getParkEquirments = async () => {
         if (category.tvdata) {
           // 如果该类别有 tvdata 数组，则计算其设备数量
           totalDeviceCount += category.tvdata.length;
-          console.log('totalDeviceCount',totalDeviceCount)
-          console.log('category.tvdata.length',category.tvdata.length)
         }
         if (category.data) {
           // 如果该类别有 data 数组，则遍历每一个 data 对象并计算设备数量
-          console.log('category.data',category.data)
           category.data.forEach(subCategory => {
-            if (subCategory.totalNum) {
-              totalDeviceCount += subCategory.totalNum;
-              console.log('data totalDeviceCount', totalDeviceCount);
-              console.log(' subCategory.totalNum', subCategory.totalNum);
+            if (subCategory.detail) {
+              totalDeviceCount += subCategory.detail.length;
             }
-            console.log('totalDeviceCount',totalDeviceCount)
           });
         }
       });
@@ -919,11 +914,15 @@ const getCameraEquipmentList = async (params) => {
       SurveillanceVideo.value = res.data.map((item, index) => {
         return {
           content: monitorsources.value[index].content,
-          src: item.url,
+          url: item.url,
           cameraIndexCode:item.cameraIndexCode
         }
         
       });
+      if (SurveillanceVideo.value.length > 0) {
+        videoCode.value = SurveillanceVideo.value[0].cameraIndexCode;
+        videoSrc.value = SurveillanceVideo.value[0].url;
+      }
       console.log('SurveillanceVideo.value',SurveillanceVideo.value)
       // SurveillanceVideo1.value=res.data
     } else {
@@ -1083,7 +1082,7 @@ const fetchData = async () => {
   
   getLocationInfo();
   // getParkSurveillanceVideos()
-  getCameraEquipmentList(cameraParams)
+  
   getBirdsPopulation()
   getParkWildBirds()
   try {
@@ -1115,8 +1114,8 @@ const fetchData = async () => {
 const startPolling = async () => {
   fetchData(); // 初始加载数据
 
-  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  // intervalId = setInterval(fetchData, 30000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {
@@ -1126,11 +1125,12 @@ const stopPolling = () => {
 };
 
 onMounted(() => {
+  getCameraEquipmentList(cameraParams.value)
   updateVideoDimensions()
    getParkBirds()
    getParkEquirments()
   window.addEventListener('resize', updateVideoDimensions)
-  //initCamera();
+  // initCamera();
   getParkIntroduce()
   startPolling();
   
@@ -1244,7 +1244,7 @@ onUnmounted(() => {
       .video-container {
         position: relative;
         width: 100%;
-        height: 400px;
+        height: 420px;
         // padding-top: 10px;
 
         .video-player {

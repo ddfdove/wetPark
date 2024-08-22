@@ -2,8 +2,9 @@
   <div id="device">
     
     <div class="dMiddle" >
-      <div style="width:260px;height:160px" ref="videoContainer">
-      <Video :id="id"  :cameraIndexCode="id" :width="videoWidth" :height="videoHeight"></Video>
+      <div style="width:400px;height:300px" ref="videoContainer">
+      <!-- <Video :id="id"  :cameraIndexCode="props.id" :width="videoWidth" :height="videoHeight"></Video> -->
+      <H5Video :playUrl="playUrl" :id="video" :width="videoWidth" :height="videoHeight"></H5Video>
       </div>
     </div>
     
@@ -11,8 +12,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref ,watch} from "vue";
 import Video from './video1.vue'
+import H5Video from '@/components/h5video.vue'
+import {getCameraEquipment} from '@/api/index.js'
 const props = defineProps({
   id: {
     type: String,
@@ -23,8 +26,8 @@ const props = defineProps({
     default: ""
   },
 })
-const videoWidth = ref(262)
-const videoHeight = ref(120)
+const videoWidth = ref(250)
+const videoHeight = ref(190)
 const videoContainer = ref(null)
 const updateVideoDimensions = () => {
   if (videoContainer.value) {
@@ -33,6 +36,24 @@ const updateVideoDimensions = () => {
     videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
   }
 }
+const playUrl=ref('')
+const getCamera = async (params) => {
+  const res = await getCameraEquipment(params)
+  if(res.code==0){
+    playUrl.value=res.data.url 
+  }
+}
+// 监听 props.id 的变化，并在变化时发送请求
+watch(() => props.id, (newId) => {
+  if (newId) {
+    const cameraParams = {
+      cameraIndexCode: newId,
+      protocol: 'ws'
+    };
+    getCamera(cameraParams);
+  }
+}, { immediate: true });
+
 onMounted(()=>{
   updateVideoDimensions()
   window.addEventListener('resize', updateVideoDimensions)

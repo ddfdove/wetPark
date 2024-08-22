@@ -90,15 +90,17 @@ export const getParkIntroduce=(params)=>{
 //获取园区展示监控视频摄像头设备列表单个
 export const getCameraEquipment=(params)=>{
   return http({
-    url:'api/wp/artemispost/getCamera',
-    method:'get'
+    url:'/api/wp/artemispost/previewURLs',
+    method:'get',
+    params
   })
 }
 //获取园区展示监控视频摄像头设备列表多个
 export const getCameraEquipments=(params)=>{
   return http({
-    url:'/api/wp/artemispost/getCameras',
-    method:'get'
+    url:'/api/wp/artemispost/getCamerasBy9',
+    method:'get',
+    params
   })
 }
 

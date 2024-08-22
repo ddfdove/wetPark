@@ -4,7 +4,7 @@
       <div class="panel-title">
         <img class="bg-img" src="@/assets/images/cut/标题.png">
         <span class="ch-title" v-text="props.chTitle"></span>
-        <span class="en-title" v-text="props.enTitle"></span>
+        <!-- <span class="en-title" v-text="props.enTitle"></span> -->
       </div>
       <div class="panel-right">
         <slot name="topRight"></slot>

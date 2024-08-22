@@ -48,7 +48,7 @@
     </div> -->
     <div id="cesiumContainer"></div>
     <Left :dataList="monitorEqu"></Left>
-    <Device v-if="showIntroduce" :id="selectedCameraId" :name="selectedCameraName"></Device>
+    <Device v-if="showIntroduce" :id="cameraCode"></Device>
     <!-- <Right></Right> -->
 
 
@@ -73,8 +73,7 @@ const buttonBackgroundImage = ref('/cut/toolBox.png');
 const props = defineProps({ scale: Number })
 const viewer = ref(null)
 const showIntroduce = ref(false)
-const selectedCameraId = ref(null); // 用于存储选中的广告牌对应的 cameraIndexCode
-const selectedCameraName = ref(null); // 用于存储选中的广告牌对应的 cameraIndexCode
+const cameraCode = ref(null); // 用于存储选中的广告牌对应的 cameraCode
 const isToolShow = ref(false)
 const cameraPosition = Cesium.Cartesian3.fromDegrees(101.691631, 36.6529, 2000);
 const swichInlineOffline = ref(false)
@@ -126,16 +125,7 @@ const getMonitorEqu = async () => {
     // 处理请求失败的情况
   }
 };
-//获取摄像头设备列表多个
-const getCameraEquiList = (params) => {
-  getCameraEquipments(params).then(res => {
-    if (res.code == 0) {
-      monitorEquList.value = res.data;
-    } else {
-      console.log(res.msg);
-    }
-  })
-}
+
 const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
@@ -255,71 +245,7 @@ function addPolygon() {
     });
   });
 }
-//添加广告牌
-// const addBillboards = (viewer) => {
-//   const url = "/geiJsonData/billboard.geojson";
-//   Cesium.Resource.fetchJson(url).then((res) => {
-//     const billboards = res.features;
-//     billboards.forEach((item) => {
-//       const { geometry, properties } = item;
-//       // 根据 properties.name 设置不同的图片路径
-//       let imageUrl;
-//       switch (properties.name) {
-//         case '路口摄像头':
-//           imageUrl = "/cut/camera.png";
-//           break;
-//         case '鸟类监控摄像头':
-//           imageUrl = "/cut/camera2.png";
-//           break;
-//         case '土壤监测设备':
-//           imageUrl = "/cut/soil.png";
-//           break;
-//         case '水质监测设备':
-//           imageUrl = "/cut/water.png";
-//           break;
-//         case '环境监测设备':
-//           imageUrl = "/cut/environment.png";
-//           break;
-//         // 添加更多的 case 以匹配其他名称
-//         default:
-//           imageUrl = "/cut/camera.png"; // 默认图片
-//       }
-//       viewer.entities.add({
-//         position: Cesium.Cartesian3.fromDegrees(geometry.coordinates[0], geometry.coordinates[1], geometry.coordinates[2]),
-//         name: 'camera', // 设置实体的名称为 'camera'
-//         label: {
-//           text: properties.name,
-//           font: "700 14px Helvetica",
-//           pixelOffset: new Cesium.Cartesian2(0, -66),
-//         },
-//         billboard: {
-//           image: imageUrl,
-//           width: 36,
-//           height: 96,
-//         },
-//         pickable: true
 
-//       });
-//       // 添加一个透明的点击区域
-//       viewer.entities.add({
-//         name: 'camera-area',
-//         polygon: {
-//           hierarchy: Cesium.Cartesian3.fromDegreesArray([
-//             101.692532 - 0.0005, 36.653907 - 0.0005,
-//             101.692532 + 0.0005, 36.653907 - 0.0005,
-//             101.692532 + 0.0005, 36.653907 + 0.0005,
-//             101.692532 - 0.0005, 36.653907 + 0.0005
-//           ]),
-//           material: Cesium.Color.TRANSPARENT, // 透明材质
-//           outline: false, // 不显示边框
-//           height: 10, // 与 billboards 的高度对应
-//           pickable: true
-//         }
-//       });
-//     });
-//   });
-// }
-// 
 const addBillboards = (viewer) => {
 
 
@@ -336,7 +262,11 @@ const addBillboards = (viewer) => {
       const longitude = parseFloat(item.longitude);
       const height = 10;
 
-      
+       if (isNaN(latitude) || isNaN(longitude)) {
+        
+         return;
+       }
+
       // 根据 item.name 设置不同的图片路径
       let imageUrl;
       switch (item.cameraName) {
@@ -373,6 +303,9 @@ const addBillboards = (viewer) => {
           image: imageUrl,
           width: 36,
           height: 96,
+        },
+        properties: {
+          cameraCode: item.cameraIndexCode, // 这里添加 cameraCode
         },
         pickable: true
       });
@@ -620,7 +553,7 @@ const switchMap = () => {
   // 如果不是第一次初始化，显示切换成功的提示信息
   if (isMapInitialized.value) {
     ElMessage({
-      message: '地图切换成功！',
+      message: swichInlineOffline.value ? '在线地图切换成功！' : '离线地图切换成功！',
       type: 'success',
       duration: 2000
     });
@@ -637,31 +570,16 @@ const switchMap = () => {
   // 添加点击事件处理
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.value.scene.canvas);
   handler.setInputAction(function (movement) {
+    console.log('出发了点击事件')
     const restoreposition = restorePosition(movement.position)
     const pickedObject = viewer.value.scene.pick(restoreposition);
     if (pickedObject && pickedObject.id && pickedObject.id.name === 'camera') {
       // 如果拾取到了带有 'camera' 名称的实体
       showIntroduce.value = !showIntroduce.value;
-      const cartesianPosition = pickedObject.id.position._value;
-      const cartographicPosition = Cesium.Cartographic.fromCartesian(cartesianPosition);
-      // 提取经纬度
-      const latitude = parseFloat(Cesium.Math.toDegrees(cartographicPosition.latitude).toFixed(6));
-      const longitude = parseFloat(Cesium.Math.toDegrees(cartographicPosition.longitude).toFixed(6));
-      console.log('latitude', latitude);
-      console.log('longitude', longitude);
-      // 获取点击广告牌的 cameraIndexCode
-      
-      const cameraData = EquimentLatAndLong.value.find(camera =>
-      camera.latitude == latitude && 
-      camera.longitude == longitude
-      );
-
-      if (cameraData) {
-        console.log('cameraDataddf', cameraData);
-        selectedCameraId.value = cameraData.cameraIndexCode;
-        selectedCameraName.value = cameraData.cameraName;
-      }
-      // console.log('Picked camera entity:', pickedObject.id);
+     
+      // 获取实体的 cameraCode
+       cameraCode.value = pickedObject.id.properties.cameraCode.getValue();
+       console.log('cameraCode.value',cameraCode.value);
     } else {
       showIntroduce.value = false;
     }

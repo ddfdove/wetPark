@@ -600,7 +600,7 @@ export default defineFakeRoute([
   //   },
   // },
   {
-    url: "api/wp/artemispost/previewURLs",
+    url: "api/wp/artemispost/previewURLs/",
     method: "get",
     response: () => {
       // 返回静态假数据

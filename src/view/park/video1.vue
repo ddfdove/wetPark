@@ -74,7 +74,7 @@ const init = () => {
             encryptedFields: "secret",
             showToolbar: 1,
             showSmart: 0,
-            buttonIDs: "0,16,256,257,258,259,260,512,513,514,515,516,517,768,769"
+            buttonIDs: "0"
         }
 
         oWebControl.value.JS_RequestInterface({

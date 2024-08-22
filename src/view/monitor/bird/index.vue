@@ -9,12 +9,14 @@
               <span>区域:</span>
               <el-dropdown @command="deviceChange">
                 <span class="el-dropdown-link">
-                  <span style="margin-right: 10px;" v-text="deviceMapName"></span><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                  <span style="margin-right: 10px;" v-text="deviceMapName"></span><el-icon
+                    class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                    <el-dropdown-item  style="color:#ffffff" v-for="item in deviceOptions" :key="item.id" :command="item.id" >{{ item.name }}</el-dropdown-item>
-                   
+                    <el-dropdown-item style="color:#ffffff" v-for="item in deviceOptions" :key="item.id"
+                      :command="item.id">{{ item.name }}</el-dropdown-item>
+
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -22,22 +24,14 @@
             <div>
               <span class="text-sm" style="margin-right: 10px;">时间:</span>
               <!-- 日期选择器 1 -->
-      <el-date-picker
-        v-model="startDate"
-        type="date"
-        placeholder="开始"
-         @change="handleDateChange('startDate', $event)"
-        :style="{ width: '100px',backgroundColor: '#030636', color: '#ffffff', marginRight: '10px' }"
-      ></el-date-picker>
-      <span>—</span>
-      <!-- 日期选择器 2 -->
-      <el-date-picker
-        v-model="endDate"
-        type="date"
-        placeholder="结束"
-         @change="handleDateChange('endDate', $event)"
-        :style="{ width: '100px',backgroundColor: '#030636', color: '#ffffff', marginLeft: '10px' }"
-      ></el-date-picker>
+              <el-date-picker v-model="startDate" type="date" placeholder="开始"
+                @change="handleDateChange('startDate', $event)"
+                :style="{ width: '100px', backgroundColor: '#030636', color: '#ffffff', marginRight: '10px' }"></el-date-picker>
+              <span>—</span>
+              <!-- 日期选择器 2 -->
+              <el-date-picker v-model="endDate" type="date" placeholder="结束"
+                @change="handleDateChange('endDate', $event)"
+                :style="{ width: '100px', backgroundColor: '#030636', color: '#ffffff', marginLeft: '10px' }"></el-date-picker>
             </div>
           </div>
           <div class="bird">
@@ -58,11 +52,11 @@
         <panelboard :chTitle="'实时监测'" :enTitle="'Real-time monitoring'">
           <ul>
             <li v-for="(item, index) in places" :key="index" @click="changePlaces(item)">
-              <div >
-                <span style="color: #4DA6FF;">{{ item.cameraName}}</span>
-                <span style="margin-left: 300px;">{{ item.createTime}}</span>
+              <div>
+                <span style="color: #4DA6FF;">{{ item.cameraName }}</span>
+                <span style="margin-left: 300px;">{{ item.createTime }}</span>
               </div>
-              
+
             </li>
           </ul>
         </panelboard>
@@ -79,7 +73,7 @@
         <li :class="{ 'active-link': $route.path === '/monitor/personnel' }">
           <router-link to="/monitor/personnel"><span>人流监测</span></router-link>
         </li>
-        
+
       </ul>
       <div class="mTop">
         <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'">
@@ -90,18 +84,20 @@
             </el-tab-pane>
           </el-tabs> -->
           <div class="video-container">
-           
-              <div class="video-container" ref="videoContainer">
-                
-                <Video :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video>
-              
-              </div>
-           
+
+            <div class="video-container" ref="videoContainer">
+
+              <!-- <Video :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth"
+            :height="videoHeight"></Video> -->
+              <H5Video :id="bird" :playUrl="birdVideoSrc" :width="videoWidth" :height="videoHeight"></H5Video>
+
+            </div>
+
           </div>
         </panelboard>
 
       </div>
-       <div class="mBottom">
+      <div class="mBottom">
         <panelboard :chTitle="'鸟类增长数据'" :enTitle="'Bird show'">
           <!-- <div class="birdShow">
             <Carousel :birdsList="birdsList"></Carousel>
@@ -109,10 +105,7 @@
           <ul class="statisticBottom" style="margin-top: 10px" v-if="loding">
             <li>
               <div class="monitarChart">
-                <PeopleChart
-                  class="border"
-                  :dataList="seasonList"
-                ></PeopleChart>
+                <PeopleChart class="border" :dataList="seasonList"></PeopleChart>
               </div>
             </li>
             <li>
@@ -143,7 +136,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu style="background-color:#030636;color:#ffffff">
-                  <el-dropdown-item v-for="item in deviceOptions" :key="item.id" :command="item.id"  
+                  <el-dropdown-item v-for="item in deviceOptions" :key="item.id" :command="item.id"
                     style="color:#ffffff">
                     {{ item.name }}
                   </el-dropdown-item>
@@ -186,14 +179,14 @@
         </div>
         <div class="bird">
           <ul>
-              <li v-for="(item, index) in birdsStaticList2" :key="index">
-                <div>
-                  <span class="font-25">{{ item.recognitionCount }}</span>
-                  <span class="font-18">只</span>
-                </div>
-                <h5 class="font-18">{{ item.acname }}</h5>
-              </li>
-            </ul>
+            <li v-for="(item, index) in birdsStaticList2" :key="index">
+              <div>
+                <span class="font-25">{{ item.recognitionCount }}</span>
+                <span class="font-18">只</span>
+              </div>
+              <h5 class="font-18">{{ item.acname }}</h5>
+            </li>
+          </ul>
           <!-- <ul>
             <li v-for="(item, index) in birds.slice(0, 5)" :key="index" @click="handleDesc(item.id)">
               <div>
@@ -213,25 +206,25 @@
           </div>
           <div class="flex" style="background-color: #030632;">
             <div class="animal flex-1">
-               <ul class="flex flex-col">
+              <ul class="flex flex-col">
                 <li class="flex-1 family" style="display:flex;">
                   <div style="width:100px;">简介：</div>
                   <div>{{ discription.remark }}</div>
                 </li>
-               <!-- <li class="flex-1">身高：{{ discription.height }}</li>
+                <!-- <li class="flex-1">身高：{{ discription.height }}</li>
                 <li class="flex-1">翼展：{{ discription.Wingspan }}</li>
                 <li class="flex-1">体重：{{ discription.weight }}</li>
                 <li class="flex-1">拉丁学名：{{ discription.scientificName }}</li>
                 <li class="flex-1">地理分布：{{ discription.distributed }}</li>-->
-              </ul> 
+              </ul>
             </div>
-            <div class="flex-1" style="margin:auto;"> 
-           
-            <img referrerpolicy="no-referrer"  :src="discription.bUrl" style="width:100%;height:200px">
-            
+            <div class="flex-1" style="margin:auto;">
+
+              <img referrerpolicy="no-referrer" :src="discription.bUrl" style="width:100%;height:200px">
+
             </div>
           </div>
-          
+
         </div>
       </panelboard>
     </div>
@@ -239,7 +232,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted,onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import Carousel from './carousel.vue'
@@ -250,19 +243,21 @@ import PeopleChart from './people.vue'
 import WaterChart from './water.vue'
 import AirChart from './air.vue'
 import axios from 'axios';
+import { getCameraEquipment } from '@/api/index.js'
 import { getBirdsByJi, getBirdsByRi } from "@/api/birddata/index.js";
 import http from "@/utils/http";
 import Video from './video.vue'
+import H5Video from '@/components/h5video.vue'
 
 const $route = useRoute();
-let isFetching=false
+let isFetching = false
 const firstOptions = ref([]);
 const secondOptions = ref([]);
 const thirdOptions = ref([]);
 const birds = ref([]);
 const seasonList = ref([]);
 const dayList = ref([]);
-const loding=ref(false)
+const loding = ref(false)
 let intervalId = null; // 定时器id
 // 获取季度数据
 const getBirdsList = async () => {
@@ -316,7 +311,7 @@ const configuredDayBrids = (data) => {
     new_birds_count: [],
   };
 
-  data.slice(0,5).forEach((item) => {
+  data.slice(0, 5).forEach((item) => {
     result.data.push(item.date);
     result.new_birds_count.push(item.new_birds_count);
   });
@@ -327,10 +322,28 @@ const firstSelected = ref('');
 const secondSelected = ref('');
 const thirdSelected = ref('');
 
-const videoCode=ref('cc612fed05e84543b9719330a396c6aa');
-const videoContainer=ref(null)
-const videoWidth = ref(610);
+const videoCode = ref('9dd014fd77964be29b236769949dfbdf');
+const birdVideoSrc = ref('ws://135.131.1.10:559/openUrl/39wIwdq')
+const videoContainer = ref(null)
+const videoWidth = ref(730);
 const videoHeight = ref(393);
+const cameraParams = ref({
+  cameraIndexCode: '9dd014fd77964be29b236769949dfbdf',
+  protocol: 'ws'
+})
+const getCameraEqui =async (params) => {
+  try {
+    const res = await getCameraEquipment(params)
+    if (res.code == 0) {
+      console.log('code为0')
+      console.log('res',res)
+      birdVideoSrc.value = res.data.url
+    }
+    console.log('birdVideoSrc.value',birdVideoSrc.value)
+  } catch (error) {
+    console.log('获取失败');
+  }
+}
 const updateVideoDimensions = () => {
   if (videoContainer.value) {
     const rect = videoContainer.value.getBoundingClientRect()
@@ -340,70 +353,70 @@ const updateVideoDimensions = () => {
 }
 //=======================================地点检测===========================
 //鸟类数量统计查询条件
-const birdParam=ref({
-  cameraIndexCode:"",
-  beginTime:'',
-  endTime:''
+const birdParam = ref({
+  cameraIndexCode: "",
+  beginTime: '',
+  endTime: ''
 })
-const deviceOptions=ref([]);
+const deviceOptions = ref([]);
 //鸟类统计数量
-const birdsStaticList=ref([]);
+const birdsStaticList = ref([]);
 //条件选择事件
-const deviceChange=(command)=>{
-  birdParam.value.cameraIndexCode=command;
-  console.log('birdParam.value',birdParam.value)
+const deviceChange = (command) => {
+  birdParam.value.cameraIndexCode = command;
+  console.log('birdParam.value', birdParam.value)
   getBirdStatistic()
 }
 const handleDateChange = (type, date) => {
-      birdParam.value[type] = date;
-      console.log('Date changed:', birdParam.value);
-     getBirdStatistic()
-    };
-const asyncBirdOptions=async ()=>{
+  birdParam.value[type] = date;
+  console.log('Date changed:', birdParam.value);
+  getBirdStatistic()
+};
+const asyncBirdOptions = async () => {
   try {
     // const data = await axios.get('http://127.0.0.1:6633/api/wp/artemispost/getNiaoCameras', {});
     const data = await http({
-    url: "/api/wp/artemispost/getNiaoCameras",
-    method: "get",
-   
-  });
+      url: "/api/wp/artemispost/getNiaoCameras",
+      method: "get",
+
+    });
     // let data={"msg":"操作成功","total":7,"code":0,"data":[{"cameraIndexCode":"cc612fed05e84543b9719330a396c6aa","cameraName":"北岸高架桥底西侧鸟类云台"},{"cameraIndexCode":"b3c204d059774f308a986b6630e0d5c2","cameraName":"南岸观鸟平台鸟类云台"},{"cameraIndexCode":"ea93f2951988433d90c25ea4f971c90d","cameraName":"北岸峡口4号杆鸟类云台"},{"cameraIndexCode":"3c2a80109dee407189f763037ee1ce10","cameraName":"北岸北河道木栈道东鸟类云台"},{"cameraIndexCode":"1178426d6f4a4dbb88920651c7a0a935","cameraName":"北岸北河道小木屋入口鸟类云台"},{"cameraIndexCode":"2e23e66432294a56b6bb663ab29b6e6c","cameraName":"南岸峡口鸟类云台"},{"cameraIndexCode":"35140747d7664700b97bf019c64368e4","cameraName":"北岸高架桥西4号杆鸟类云台"}],"pageSize":10,"pageNum":1};
-    deviceOptions.value = data.data.map(item=>{return {id:item.cameraIndexCode,name:item.cameraName}});
+    deviceOptions.value = data.data.map(item => { return { id: item.cameraIndexCode, name: item.cameraName } });
   } catch (error) {
     console.error('Error fetching second options:', error);
   }
 }
 
-const deviceMapName=computed(()=>{
- let obj= deviceOptions.value.find(item=>item.id==birdParam.value.deviceId)
-  return obj?.name||"==请选择==";
+const deviceMapName = computed(() => {
+  let obj = deviceOptions.value.find(item => item.id == birdParam.value.deviceId)
+  return obj?.name || "==请选择==";
 })
 
 
-const asyncBirdStatistic=(params)=>{
-  return new Promise((resovle,rejct)=>{
-     http({
-    url: "/api/wp/artemispost/getShibieVoListAll",
-    method: "get",
-    params
-   
-  })
-    .then(res=>{
-      resovle(res);
-    },reject=>{
-      rejct(reject);
+const asyncBirdStatistic = (params) => {
+  return new Promise((resovle, rejct) => {
+    http({
+      url: "/api/wp/artemispost/getShibieVoListAll",
+      method: "get",
+      params
+
     })
+      .then(res => {
+        resovle(res);
+      }, reject => {
+        rejct(reject);
+      })
     // let data={"msg":"操作成功","total":2,"code":0,"data":[{"acname":"大白鹭","recognitionCount":1,"bid":2},{"acname":"白鹭","recognitionCount":1,"bid":6}],"pageSize":10,"pageNum":1}
     // resovle(data);
   })
 }
 
-const getBirdStatistic=async ()=>{
+const getBirdStatistic = async () => {
   try {
     const data = await asyncBirdStatistic(birdParam.value);
-    console.log('鸟类数量',data)
-    birdsStaticList.value = data.data.filter((item,index)=>index<=5)
-     console.log('birdsStaticList.value',birdsStaticList.value)
+    console.log('鸟类数量', data)
+    birdsStaticList.value = data.data.filter((item, index) => index <= 5)
+    console.log('birdsStaticList.value', birdsStaticList.value)
   } catch (error) {
     console.error('实时监控错误！', error);
   }
@@ -452,60 +465,60 @@ const places = ref([
     time: '2024-06-12'
   },
 ])
-const asyncRealTimeMonitor=async ()=>{
+const asyncRealTimeMonitor = async () => {
   try {
     // const data = await axios.get('http://127.0.0.1:6633/api/wp/artemispost/getWpBirdObservations', {});
     const data = await http({
-    url: "/api/wp/artemispost/getWpBirdObservations",
-    method: "get",
-   
-  });
+      url: "/api/wp/artemispost/getWpBirdObservations",
+      method: "get",
+
+    });
     // let data={"msg":"操作成功","total":8,"code":0,"data":[{"createBy":null,"createTime":"2024-08-18 13:40:31","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":8,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:40:01","updateBy":null,"updateTime":null,"remark":"白鹭是鹈形目鹭科白鹭属中型涉禽。白鹭属共有13种鸟类，其中大白鹭、中白鹭、小白鹭和雪鹭四种体羽皆是全白，通称白鹭。体型中等，具有黄色趾；繁殖期时，眼先裸皮为粉红色，头部具有两根条状饰羽，背部和胸部具有蓑羽。非繁殖期时，眼先裸皮为黄绿色，没有头部饰羽和背部蓑羽。雌雄无明显差异。白鹭分布于中国长江流域等地，非洲、欧洲中南部、西亚、中亚、东亚、东南亚、大洋洲等地均有分布。栖息于低海拔地区的湖泊、水塘、河口等水域，常集小群活动于浅水或河滩。常白天于水域觅食，夜晚飞回林地休息。白鹭捕食小鱼、虾、蛙类、软体动物、昆虫等，也啄食少量植物种子。繁殖期3-7月，孵化期约25天，雌鸟留守营巢，由双亲共同孵化哺育。寿命约10年。白鹭出现在很多的文载中，例如唐代诗人杜甫的名句：“两个黄鹂鸣翠柳，一行白鹭上青天”；现代大文豪郭沫若也写了一篇优美散文《白鹭》来赞美它。因其羽毛有很高的经济价值，古代东方人喜欢用它来装饰衣服，西方人则喜欢用它来点缀女帽，加上白鹭喜欢群居，导致很容易被人大量捕捉，导致野生白鹭数量锐减，几乎陷入灭绝的境地，白鹭13种全部列入《世界自然保护联盟濒危物种红色名录》，其中黄嘴白鹭、蓝灰鹭被列为易危(VU)，棕颈鹭被列为近危(NT)。黄嘴白鹭为中国一级重点保护动物。","pageNum":null,"pageSize":null,"isSelected":false,"boId":7,"bId":2,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:39:30","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":6,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:39:01","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":5,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:38:31","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":4,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:38:01","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":3,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:37:33","updateBy":null,"updateTime":null,"remark":"","pageNum":null,"pageSize":null,"isSelected":false,"boId":2,"bId":1,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null},{"createBy":null,"createTime":"2024-08-18 13:37:31","updateBy":null,"updateTime":null,"remark":"白鹭是鹈形目鹭科白鹭属中型涉禽。白鹭属共有13种鸟类，其中大白鹭、中白鹭、小白鹭和雪鹭四种体羽皆是全白，通称白鹭。体型中等，具有黄色趾；繁殖期时，眼先裸皮为粉红色，头部具有两根条状饰羽，背部和胸部具有蓑羽。非繁殖期时，眼先裸皮为黄绿色，没有头部饰羽和背部蓑羽。雌雄无明显差异。白鹭分布于中国长江流域等地，非洲、欧洲中南部、西亚、中亚、东亚、东南亚、大洋洲等地均有分布。栖息于低海拔地区的湖泊、水塘、河口等水域，常集小群活动于浅水或河滩。常白天于水域觅食，夜晚飞回林地休息。白鹭捕食小鱼、虾、蛙类、软体动物、昆虫等，也啄食少量植物种子。繁殖期3-7月，孵化期约25天，雌鸟留守营巢，由双亲共同孵化哺育。寿命约10年。白鹭出现在很多的文载中，例如唐代诗人杜甫的名句：“两个黄鹂鸣翠柳，一行白鹭上青天”；现代大文豪郭沫若也写了一篇优美散文《白鹭》来赞美它。因其羽毛有很高的经济价值，古代东方人喜欢用它来装饰衣服，西方人则喜欢用它来点缀女帽，加上白鹭喜欢群居，导致很容易被人大量捕捉，导致野生白鹭数量锐减，几乎陷入灭绝的境地，白鹭13种全部列入《世界自然保护联盟濒危物种红色名录》，其中黄嘴白鹭、蓝灰鹭被列为易危(VU)，棕颈鹭被列为近危(NT)。黄嘴白鹭为中国一级重点保护动物。","pageNum":null,"pageSize":null,"isSelected":false,"boId":1,"bId":6,"cameraIndexCode":null,"recognition":null,"status":null,"delFlag":null}],"pageSize":10,"pageNum":1};
-    places.value = data.data.filter((item,index)=>index<5)
+    places.value = data.data.filter((item, index) => index < 5)
     //查询鸟类详情
-    let obj=places.value[0];
-    if(obj.boId)getBirdInfo(obj.boId);
+    let obj = places.value[0];
+    if (obj.boId) getBirdInfo(obj.boId);
   } catch (error) {
     console.error('实时监控错误！', error);
   }
 }
-const changePlaces=(item)=>{
-  if(item.boId)getBirdInfo(item.boId);
+const changePlaces = (item) => {
+  if (item.boId) getBirdInfo(item.boId);
 }
 //========================种类搜索===========
 //鸟类统计数量
-const birdsStaticList2=ref([]);
-const birdParam2=ref({
-  deviceId:"",
+const birdsStaticList2 = ref([]);
+const birdParam2 = ref({
+  deviceId: "",
 })
 //条件选择事件
-const handleFirstDropdown=(command)=>{
-  birdParam2.value.deviceId=command;
+const handleFirstDropdown = (command) => {
+  birdParam2.value.deviceId = command;
   getBirdStatistic2();
 }
-const deviceMapName2=computed(()=>{
- let obj= deviceOptions.value.find(item=>item.id==birdParam2.value.deviceId)
-  return obj?.name||"==请选择==";
+const deviceMapName2 = computed(() => {
+  let obj = deviceOptions.value.find(item => item.id == birdParam2.value.deviceId)
+  return obj?.name || "==请选择==";
 })
-const getBirdStatistic2=async ()=>{
+const getBirdStatistic2 = async () => {
   try {
     const data = await asyncBirdStatistic(birdParam2.value);
-    birdsStaticList2.value = data.data.filter((item,index)=>index<=5)
+    birdsStaticList2.value = data.data.filter((item, index) => index <= 5)
   } catch (error) {
     console.error('实时监控错误！', error);
   }
 }
 //================鸟类展示==============
-const discription = ref({}) 
+const discription = ref({})
 const getBirdInfo = async (id) => {
   try {
     // const data = await axios.get('http://127.0.0.1:6633/api/wp/artemispost/getWpBirdObservationsByid', {params:{id}});
     const data = await http({
-    url: "/api/wp/artemispost/getWpBirdObservationsByid",
-    method: "get",
-    params:{boId:id}
-   
-  });
+      url: "/api/wp/artemispost/getWpBirdObservationsByid",
+      method: "get",
+      params: { boId: id }
+
+    });
     // let data={"msg":"操作成功","code":0,"data":{"createBy":null,"createTime":"2024-08-18 19:09:43","updateBy":null,"updateTime":null,"remark":"鸻鹬是脊索动物门动物，澳大利亚鸻鹬鸟类研究组副主席菲力史卓先生对上虞中沙岛的鸟类生态进行了考察，他认为，中沙岛与黄海湿地一样是鸻鹬鸟类国际迁徙途中的“加油站”。鸻鹬鸟类是地球上迁徙距离最远的鸟类。","pageNum":null,"pageSize":null,"isSelected":false,"boId":1923,"bId":58,"bName":"鸻鹬","bUrl":"https://bkimg.cdn.bcebos.com/pic/95eef01f3a292df5e0fe6806317c4b6034a85edfd5d8?x-bce-process=image/resize,m_lfit,w_536,limit_1/quality,Q_70","cameraIndexCode":"35140747d7664700b97bf019c64368e4","cameraName":"北岸高架桥西4号杆鸟类云台","recognition":"https://135.131.1.10:6113/pic?0d8000=54d0ip-ceo921-226*8o0=1867l2=4188*5789233=9177*pt==315**bs=f619*22c65bc58-b0031f-0*l12eod05672=009&AccessKeyId=f1ZQrskinK8TPMfS&Expires=1724065785&Signature=odsLO36FKv6kNQx6HzJ/ZoNtFIw=","status":null,"delFlag":null}}
     discription.value = data.data;
   } catch (error) {
@@ -520,11 +533,11 @@ const fetchFirstOptions = async () => {
   try {
     // const response = await axios.get('http://127.0.0.1:6633/bird/dropDown/first-options');
     const response = await await http({
-    url: "/bird/dropDown/first-options",
-    method: "get",
-   
-   
-  });
+      url: "/bird/dropDown/first-options",
+      method: "get",
+
+
+    });
     console.log('response', response);
     firstOptions.value = response.data.data;
     console.log('firstOptions.value', firstOptions.value);
@@ -543,11 +556,11 @@ const fetchSecondOptions = async (firstOptionId) => {
     //   params: { id: firstOptionId } // 使用 `params` 属性传递查询参数
     // });
     const response = await await http({
-    url: "/bird/dropDown/second-options",
-    method: "get",
-    params: { id: firstOptionId }
-   
-  });
+      url: "/bird/dropDown/second-options",
+      method: "get",
+      params: { id: firstOptionId }
+
+    });
     secondOptions.value = response.data.data;
     if (secondOptions.value.length > 0) {
       secondSelected.value = secondOptions.value[0].name;
@@ -563,12 +576,12 @@ const fetchThirdOptions = async (secondOptionId) => {
     // const response = await axios.get('http://127.0.0.1:6633/bird/dropDown/third-options', {
     //   params: { id: secondOptionId } // 使用 `params` 属性传递查询参数
     // });
-    const response =  await http({
-    url: "/bird/dropDown/third-options",
-    method: "get",
-    params: { id: secondOptionId }
-   
-  });
+    const response = await http({
+      url: "/bird/dropDown/third-options",
+      method: "get",
+      params: { id: secondOptionId }
+
+    });
     thirdOptions.value = response.data.data;
     if (thirdOptions.value.length > 0) {
       thirdSelected.value = thirdOptions.value[0].name;
@@ -617,15 +630,15 @@ const handleThirdDropdown = (command) => {
   fetchBirds(command);
 };
 
-const fetchData=async()=>{
+const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
- try {
+  try {
     await Promise.all([
       getBirdsList(), //先调用一次
       asyncRealTimeMonitor()//实时监控
     ]);
-   console.log('进入')
+    console.log('进入')
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -633,9 +646,9 @@ const fetchData=async()=>{
   }
 }
 const startPolling = async () => {
- 
- await fetchData(); // 初始加载数据
-  
+
+  await fetchData(); // 初始加载数据
+
   // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
   intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
@@ -646,13 +659,14 @@ const stopPolling = () => {
   }
 };
 onMounted(() => {
+  getCameraEqui(cameraParams.value)
   startPolling();
   fetchFirstOptions();
-  
+
   asyncBirdOptions();//鸟类数量统计条件
   getBirdStatistic();//左侧鸟类数量统计
   getBirdStatistic2();//右侧鸟类数量统计
-  
+
   updateVideoDimensions()
   window.addEventListener('resize', updateVideoDimensions)
 });
@@ -704,36 +718,36 @@ const handleCommand = (command) => {
   // ElMessage(`click on item ${command}`)
 
 }
-const formatDate=(date, format)=>{
-  date=new Date(date);
-    const o = {
-      "M+": date.getMonth() + 1, // 月份
-      "d+": date.getDate(), // 日
-      "h+": date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 小时
-      "H+": date.getHours(), // 小时
-      "m+": date.getMinutes(), // 分
-      "s+": date.getSeconds(), // 秒
-      "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
-      S: date.getMilliseconds(), // 毫秒
-      a: date.getHours() < 12 ? "上午" : "下午", // 上午/下午
-      A: date.getHours() < 12 ? "AM" : "PM", // AM/PM
-    };
-    if (/(y+)/.test(format)) {
+const formatDate = (date, format) => {
+  date = new Date(date);
+  const o = {
+    "M+": date.getMonth() + 1, // 月份
+    "d+": date.getDate(), // 日
+    "h+": date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 小时
+    "H+": date.getHours(), // 小时
+    "m+": date.getMinutes(), // 分
+    "s+": date.getSeconds(), // 秒
+    "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
+    S: date.getMilliseconds(), // 毫秒
+    a: date.getHours() < 12 ? "上午" : "下午", // 上午/下午
+    A: date.getHours() < 12 ? "AM" : "PM", // AM/PM
+  };
+  if (/(y+)/.test(format)) {
+    format = format.replace(
+      RegExp.$1,
+      (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
+  }
+  for (let k in o) {
+    if (new RegExp("(" + k + ")").test(format)) {
       format = format.replace(
         RegExp.$1,
-        (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+        RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
       );
     }
-    for (let k in o) {
-      if (new RegExp("(" + k + ")").test(format)) {
-        format = format.replace(
-          RegExp.$1,
-          RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
-        );
-      }
-    }
-    return format;
   }
+  return format;
+}
 </script>
 
 <style lang="less" scoped>
@@ -856,6 +870,7 @@ const formatDate=(date, format)=>{
         display: flex;
         flex-direction: column;
         margin-top: 10px;
+
         // width: 550px;
         li {
           background-color: #030836;
@@ -863,7 +878,7 @@ const formatDate=(date, format)=>{
           padding: 2px 20px;
           color: rgba(255, 255, 255, 0.87);
           height: 70px;
-          
+
         }
 
         li:hover {
@@ -889,7 +904,7 @@ const formatDate=(date, format)=>{
         position: relative;
         // width: 100%;
         margin-left: 10px;
-        margin-right:20px;
+        margin-right: 20px;
         width: 760px;
         // height:100%;
         height: 450px;
