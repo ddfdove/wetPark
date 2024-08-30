@@ -111,10 +111,10 @@ watch(
     () => props.dataList,
     (newDataList) => {
         if (newDataList && newDataList.categories && newDataList.series) {
-            chartOptions.value.xAxis.categories = newDataList.categories;
+            chartOptions.value.xAxis.categories = newDataList.categories.slice(0,6);
             chartOptions.value.series = newDataList.series.map((series, index) => ({
                 name: series.name,
-                data: series.data,
+                data: series.data.slice(0,6),
                 color: {
                     linearGradient: index === 0 
                         ? { x1: 0, x2: 0, y1: 0, y2: 1 } 

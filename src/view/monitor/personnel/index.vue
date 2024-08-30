@@ -38,7 +38,7 @@
           <panelboard :chTitle="'人员分布情况'" :enTitle="'Personnel distribution'">
             <div class="mBottom">
               <!-- <Personnel></Personnel> -->
-              <HotMap></HotMap>
+              <HotMap :dataList="personnelDistributionData"></HotMap>
             </div>
           </panelboard>
         </div>
@@ -129,8 +129,12 @@ const personList = reactive([
 ])
 const visitorByjiData=ref([])
 const vistorData = ref([])
-const regionalPersonnelData = ref([])
-const personnelDistributionData = ref([])
+const regionalPersonnelData = ref({})
+const personnelDistributionData = ref({
+  xCategories: [],
+  yCategories: [],
+  mapData: [],
+});
 const timeRankData = ref([])
 const gardenTopData = ref([])
 let intervalId = null;
@@ -250,69 +254,42 @@ const getVisitorData = async () => {
   }
 };
 //人员分布数据
-// 数据转换函数
-const transformData = (data) => {
-  const xAxisCategories = [];
-  const yAxisCategories = [];
-
-  console.log('datadata.forEachtransformData', data);
-
-  // 收集所有 x 和 y 轴的类别
-  data.forEach(item => {
-    xAxisCategories.push(item.date_hour);  // 直接使用 date_hour 作为 x 轴类别
-    yAxisCategories.push(item.camera_name); // 摄像头名称作为 y 轴类别
-  });
-
-  console.log('xAxisCategories', xAxisCategories);
-  console.log('yAxisCategories', yAxisCategories);
-
-  // 转换为数组，并进行排序（如果不想排序，可以去掉这一步）
-  const xcategories = [...xAxisCategories];
-  const ycategories = [...yAxisCategories];
-
-  console.log('xcategories', xcategories);
-  console.log('ycategories', ycategories);
-
-  // 创建二维数组并填充值
-  const dataMatrix = Array.from({ length: ycategories.length }, () => Array(xcategories.length).fill(0));
-
-  data.forEach(item => {
-    const xIndex = xcategories.indexOf(item.date_hour);
-    const yIndex = ycategories.indexOf(item.camera_name);
-
-    if (xIndex !== -1 && yIndex !== -1) {
-      dataMatrix[yIndex][xIndex] = item.snumber;
-    }
-  });
-  console.log('xcategories',xcategories);
-  console.log('ycategories',ycategories);
-  console.log('dataMatrix',dataMatrix);
-  
-  return {
-    xcategories,
-    ycategories,
-    data: dataMatrix
-  };
-};
-
-
-// 获取数据函数
 const getPersonnelDistributionData = async () => {
   try {
     const res = await getPersonnelDistribution();
-    console.log('API response:', res); // 添加日志以调试数据结构
+    console.log('API response:', res);
     if (res.code == 0) {
-      console.log('Array.isArray(res.data)',Array.isArray(res.data));
-      
-      if (Array.isArray(res.data)) {
-        regionalPersonnelData.value = transformData(res.data);
-        console.log('personnelDistributionData',personnelDistributionData.value);
-        
-      } else {
-        console.error('Unexpected data format:', res.data);
-      }
+      const data = res.data;
+      const xCategories = [];
+      const yCategories = [];
+      const mapData = [];
+
+      // 创建yCategories
+      data.forEach(item => {
+          yCategories.push(item.camera_name);
+          xCategories.push(item.date_hour);
+      });
+
+      // 生成 mapData
+      xCategories.forEach((xCategory, xIndex) => {
+        yCategories.forEach((yCategory, yIndex) => {
+          const matchingItem = data.find(item => 
+            item.date_hour === xCategory && item.camera_name === yCategory
+          );
+          const value = matchingItem ? matchingItem.snumber : 0;
+          mapData.push([xIndex, yIndex, value]);
+        });
+      });
+
+      personnelDistributionData.value = {
+        xCategories,
+        yCategories,
+        mapData,
+      };
+
+      console.log('personnelDistributionData data:', personnelDistributionData.value);
     } else {
-      console.error('Failed to fetch data:', res.message);
+      console.error('Unexpected data format:', res.data);
     }
   } catch (error) {
     console.error('An error occurred while fetching data:', error);

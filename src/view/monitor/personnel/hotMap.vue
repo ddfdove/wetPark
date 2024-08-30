@@ -5,25 +5,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive,toRefs ,watch} from "vue";
 
 // 定义组件的 props
-const { dataList } = defineProps({
+const props = defineProps({
     dataList: {
-        type: Array,
-        default: () => [
-            {
-                name: "数据一",
-                data: [100, 140, 230, 100, 130],
-            },
-            {
-                name: "数据二",
-                data: [150, 100, 200, 140, 100],
-            },
-        ],
+        type: Object,
+        default: () => {}
     },
 });
-
 // 更新 heatmapData
 const heatmapData = [
     // 格式: [x, y, value]
@@ -93,7 +83,9 @@ const chartOptions = ref({
             style: {
                 color: "#ffffff",
                 fontSize: "12px",
+                width:'50px'
             },
+            useHTML: true, // 启用 HTML 以允许更灵活的标签样式
         },
         gridLineWidth: 2,
         gridLineDashStyle: "solid", //网格线样式
@@ -125,7 +117,7 @@ const chartOptions = ref({
         
         formatter: function () {
         // 使用 this.point 来访问当前点的数据
-        return `${this.point.x + 1}月&nbsp${chartOptions.value.yAxis.categories[this.point.y]}:&nbsp 游客&nbsp${this.point.value}人`;
+        return `游客&nbsp${this.point.value}人`;
     },
     },
     credits: {
@@ -145,4 +137,12 @@ const chartOptions = ref({
         }
     ],
 });
+// 监听 dataList 的变化
+watch(() => props.dataList, (newDataList) => {
+    if (newDataList && newDataList.xCategories && newDataList.yCategories && newDataList.mapData) {
+        chartOptions.value.xAxis.categories = newDataList.yCategories;
+        chartOptions.value.yAxis.categories = newDataList.xCategories;
+        chartOptions.value.series[0].data = newDataList.mapData;
+    }
+}, { immediate: true });
 </script>

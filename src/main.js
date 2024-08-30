@@ -6,6 +6,7 @@ import '../styles/index.scss'
 import Cookies from 'js-cookie'
 // 引入ElementPlus和视频播放组件
 import ElementPlus from 'element-plus';
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import 'element-plus/dist/index.css';
 import VueVideoPlayer from '@videojs-player/vue';
 import 'video.js/dist/video-js.css';
@@ -51,7 +52,7 @@ const app = createApp(App);
 app.use(router);
 app.use(store)
 app.use(HighchartsVue);
-app.use(ElementPlus);
+app.use(ElementPlus,{locale:zhCn});
 app.use(VueVideoPlayer);
 app.use(weatherLiquidfill)
 // app.use(VueSkycons)

@@ -325,6 +325,10 @@ export const getIndicators = (baseKey, value, min, max, status) => {
 };
 //定义日期格式化函数和
 export const formatDate = (date) => {
+  if (!date) {
+    // 如果 date 为 undefined、null 或空字符串，返回空字符串或其他默认值
+    return '';
+  }
   const dateTimeParts = date.split(' '); // 拆分日期和时间部分
   const dateParts = dateTimeParts[0].split('-'); // 拆分日期部分
   

@@ -129,9 +129,53 @@ export const getWildBirds=(params)=>{
   })
 }
 
-
-
-
+//*****************************监测  鸟类检测********************* //
+//左侧地点搜索下拉列表
+export const  getPlaceList=()=>{
+  return http({
+    url:'/api/wp/artemispost/getNiaoCameras',
+    method:'get',
+  })
+}
+//左侧地点搜索
+export const getSearchByPlace=(params)=>{
+  return http({
+    url:'/api/wp/artemispost/getShibieVoListAll',
+    method:'get',
+    params
+  })
+}
+//左侧实时监测
+export const getRealTimeMonitoring=()=>{
+  return http({
+    url:'/api/wp/artemispost/getWpBirdObservations',
+    method:'get',
+    
+  })
+}
+//右侧鸟类种类搜索下拉列表
+export const getSpeciesList=()=>{
+  return http({
+    url:'/api/wp/artemispost/getNiaos',
+    method:'get',
+  })
+}
+//右侧鸟类种类搜索
+export const getSearchBySpecies=(params)=>{
+  return http({
+    url:'/api/wp/artemispost/getNiaoVoListAll',
+    method:'get',
+    params
+  })
+}
+//右侧鸟类监测展示详情
+export const getBirdDetail=(params)=>{
+  return http({
+    url:'/api/wp/artemispost/getWpBirdObservationsByid',
+    method:'get',
+    params
+  })
+}
 //*****************************监测  人流监测 *********************//
 //季度人流
 export const getVisitorByji=()=>{

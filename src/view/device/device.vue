@@ -3,8 +3,8 @@
     
     <div class="dMiddle" >
       <div style="width:400px;height:300px" ref="videoContainer">
-      <!-- <Video :id="id"  :cameraIndexCode="props.id" :width="videoWidth" :height="videoHeight"></Video> -->
-      <H5Video :playUrl="playUrl" :id="video" :width="videoWidth" :height="videoHeight"></H5Video>
+      <Video :id="id"  :cameraIndexCode="props.id" :width="videoWidth" :height="videoHeight"></Video>
+      <!-- <H5Video :playUrl="playUrl" :id="video" :width="videoWidth" :height="videoHeight"></H5Video> -->
       </div>
     </div>
     

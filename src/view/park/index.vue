@@ -1,7 +1,7 @@
 <template>
   <div class="container flex">
     <div class="left">
-      <panelboard :chTitle="'公园简介'" >
+      <panelboard :chTitle="'公园简介'">
         <div class="introduce">
           {{ parkStore.parkIntroduce.introduce }}
         </div>
@@ -39,35 +39,31 @@
       <div class="statisticTop">
         <panelboard :chTitle="'数据统计'" :enTitle="'Statistics'">
           <ul>
-            <li class="flex-1" 
-              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
               <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">总面积</div>
               <div>
                 <span style="font-size: 30px;margin-right: 5px; ">120</span>
                 <span style="font-size: 14px;">公顷</span>
               </div>
             </li>
-            <li class="flex-1"  
-              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
               <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">人流量</div>
               <div>
                 <span style="font-size: 30px;margin-right: 5px; ">5765</span>
                 <span style="font-size: 14px;">人</span>
               </div>
             </li>
-            <li class="flex-1"  
-              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
               <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">野生动物种类</div>
               <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{parkBirds}}</span>
+                <span style="font-size: 30px;margin-right: 5px; ">{{ parkBirds }}</span>
                 <span style="font-size: 14px;">种</span>
               </div>
             </li>
-            <li class="flex-1"  
-              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
               <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">设备</div>
               <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{parkEquirments}}</span>
+                <span style="font-size: 30px;margin-right: 5px; ">{{ parkEquirments }}</span>
                 <span style="font-size: 14px;">台</span>
               </div>
             </li>
@@ -76,14 +72,16 @@
       </div>
       <div class="animal">
         <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'">
-           <div class="video-container" ref="videoContainer">
-            <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index" :width="videoWidth" :height="videoHeight"></Video1>
+          <div class="video-container" ref="videoContainer" style="position: relative;">
+
+            <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index"
+              :width="videoWidth" :height="videoHeight"></Video1>
             <!-- <H5Video :id="`video`+String(videoCode.slice(0,5))" :playUrl="videoSrc" :width="videoWidth" :height="videoHeight"></H5Video> -->
           </div>
         </panelboard>
-        
+
       </div>
-      
+
       <div class="statisticBottom">
         <ul>
           <li>
@@ -101,7 +99,7 @@
             </panelboard>
           </li>
         </ul>
-        
+
         <!-- <li>
           <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
             <div class="monitarChart">
@@ -116,7 +114,7 @@
         <i class="iconfont icon-gengduoshuangjiantou" style="margin-right: 8px;"></i>
         <span>回到首页</span>
       </button>
-      
+
       <div class="rTop">
         <panelboard :chTitle="'城市时间'" :enTitle="'City Time'">
           <!-- <iframe width="590" scrolling="no" height="190" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=27&bgc=%23&bdc=%23FFFFFF&icon=1&py=xining&site=12"></iframe> -->
@@ -160,22 +158,25 @@
         <panelboard :chTitle="'地区摄像'" :enTitle="'Regional Photography'">
           <div class="photography">
             <div>
-              <!-- <el-tabs v-model="activeName1" class="demo-tabs" @tab-click="handleClick1">
-                <el-tab-pane v-for="(item, index) in monitorTabs" :key="index" :label="item.label" :name="item.name"> -->
+
               <div class="video-grid">
-                <div ref="caemraContainer" v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item"
-                  @click="handleItemClick(source, index)" >
-                    <!-- <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth" :height="cameraHeight"></Video> -->
-                    <H5Video :playUrl="source.url" :id="`play`+String(index)" ></H5Video>
-                 
+                <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item"
+                 >
+                  <div ref="caemraContainer" style="height:85%">
+                    <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth"
+                      :height="cameraHeight"></Video>
+                  </div>
+                  <p @click="handleItemClick(source, index)" style="font-size: 14px;cursor: pointer;">{{ source.name }}</p>
+                  <!-- <H5Video :playUrl="source.url" :id="`play`+String(index)" ></H5Video> -->
+
                 </div>
+
               </div>
-              <!-- </el-tab-pane>
-              </el-tabs> -->
+              <!-- <H5Video :id="playerpark" :playUrl></H5Video> -->
             </div>
           </div>
         </panelboard>
-      
+
         <!-- <video-player  :src="SurveillanceVideo1.url" :options="playerOptions2" :volume="0.6"></video-player> -->
         <!-- <video ref="videoElement" autoplay width="200" height="150"></video> -->
         <!-- <div id='H5Video'></div>  -->
@@ -238,7 +239,7 @@ import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import moment from 'moment'
 import "moment/dist/locale/zh-cn";
-import { getWaterEquipmentList,getCameraEquipments,getBirds,getBirdsBybType,getMonitorEquipment ,getWildBirds} from '@/api/index.js'
+import { getWaterEquipmentList, getCameraEquipments, getBirds, getBirdsBybType, getMonitorEquipment, getWildBirds } from '@/api/index.js'
 import MonitarChart from './monitar.vue'
 import BirdChart from './wildBird.vue'
 import PopulationChart from './population.vue'
@@ -342,14 +343,14 @@ const videoHeight = ref(443)
 const cameraWidth = ref(178)
 const cameraHeight = ref(103)
 const videoContainer = ref(null)
-const caemraContainer=ref(null)
+const caemraContainer = ref(null)
 
 const videoElements = ref([]);
 const webRtcServers = ref([]);
 const webrtcVideo = ref(null);
 const webRtcServerIp = ref('127.0.0.1:9001');
 const videoSrc = ref("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
-const videoCode=ref('9dd014fd77964be29b236769949dfbdf')
+const videoCode = ref('9dd014fd77964be29b236769949dfbdf')
 const imageSrc = ref('/cut/bird/bird5.png');
 const isWebRTC = ref(false);
 const updateVideoDimensions = () => {
@@ -359,14 +360,14 @@ const updateVideoDimensions = () => {
     videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
   }
   if (caemraContainer.value && Array.isArray(caemraContainer.value)) {
-        caemraContainer.value.forEach((container, index) => {
-            if (container) {  // 这里进一步确保每个元素都存在
-                const rect2 = container.getBoundingClientRect();
-                cameraWidth.value = Math.max(Math.floor(rect2.width)); // 保证最小宽度为 100
-                cameraHeight.value = Math.max(Math.floor(rect2.height)); // 保证最小高度为 100
-            }
-        });
-    }
+    caemraContainer.value.forEach((container, index) => {
+      if (container) {  // 这里进一步确保每个元素都存在
+        const rect2 = container.getBoundingClientRect();
+        cameraWidth.value = Math.max(Math.floor(rect2.width)); // 保证最小宽度为 100
+        cameraHeight.value = Math.max(Math.floor(rect2.height)); // 保证最小高度为 100
+      }
+    });
+  }
 }
 
 
@@ -468,7 +469,7 @@ const playerOptions2 = ref({
   preload: "auto",
   language: "zh-CN",
   fluid: true,
-  
+
   notSupportedMessage: "此视频暂无法播放，请稍后再试",
   controls: false,
   controlBar: {
@@ -480,10 +481,10 @@ const playerOptions2 = ref({
 });
 //点击右侧监控视频中间展示放大
 const handleItemClick = (source, index) => {
-  console.log('source.cameraIndexCode',source.cameraIndexCode)
-  videoCode.value=source.cameraIndexCode
-  videoSrc.value=source.url
-  console.log('videoCode.value',videoCode.value);
+  console.log('source.cameraIndexCode', source.cameraIndexCode)
+  videoCode.value = source.cameraIndexCode
+  videoSrc.value = source.url
+  console.log('videoCode.value', videoCode.value);
 };
 //中间下面野生鸟类种类展示
 const birdList = ref([
@@ -621,8 +622,8 @@ const setParams = (type, number) => {
 }
 //设置摄像机监控参数
 const cameraParams = ref({
-  
-  protocol:'ws'
+
+  protocol: 'ws'
 })
 //设置水质对比参数
 const waterParams = ref({
@@ -822,52 +823,52 @@ const getParkIntroduce = () => {
   }
 };
 //获取园区展示种群趋势分析
-const birdsPopulation=ref([])
-const getBirdsPopulation=async()=>{
+const birdsPopulation = ref([])
+const getBirdsPopulation = async () => {
   await getBirdsBybType()
   try {
-    const res =  await getBirdsBybType()
+    const res = await getBirdsBybType()
     if (res.code == 0) {
-      birdsPopulation.value=res.data
+      birdsPopulation.value = res.data
 
     }
   } catch (error) {
     console.error("请求失败", err);
   }
 }
-const parkBirds=ref(null)
+const parkBirds = ref(null)
 //获取园区展示中间动物种类
-const getParkBirds=async()=>{
-   try {
-     const res=await getBirds()
-     parkBirds.value=res.data
-   } catch (error) {
-    
-   }
+const getParkBirds = async () => {
+  try {
+    const res = await getBirds()
+    parkBirds.value = res.data
+  } catch (error) {
+
+  }
 }
-const parkWildBirds=ref([
+const parkWildBirds = ref([
 
 ])
 //获取园区展示野生鸟类种类
-const getParkWildBirds=async()=>{
+const getParkWildBirds = async () => {
   try {
-    const res=await getWildBirds()
-    if(res.code==0){
-      parkWildBirds.value=res.data.slice(0,6).map((item)=>{
+    const res = await getWildBirds()
+    if (res.code == 0) {
+      parkWildBirds.value = res.data.slice(0, 6).map((item) => {
         return {
-          name:item.acname,
-          value:item.bid
+          name: item.acname,
+          value: item.bid
         }
-    })
+      })
     }
-    
-    console.log('parkWildBirds.value',parkWildBirds.value);
+
+    console.log('parkWildBirds.value', parkWildBirds.value);
   } catch (error) {
-    
+
   }
 }
 //获取园区展示设备总数
-const parkEquirments=ref(2563)
+const parkEquirments = ref(2563)
 const getParkEquirments = async () => {
   try {
     const res = await getMonitorEquipment();
@@ -907,7 +908,7 @@ const getCameraEquipmentList = async (params) => {
 
   try {
     const res = await getCameraEquipments(params);
-    
+
     // console.log('res.code === 0', res.code == 0);
     if (res.code == 0) {
       console.log('res.data', res.data);
@@ -915,15 +916,17 @@ const getCameraEquipmentList = async (params) => {
         return {
           content: monitorsources.value[index].content,
           url: item.url,
-          cameraIndexCode:item.cameraIndexCode
+          cameraIndexCode: item.cameraIndexCode,
+          name: item.cameraName
+
         }
-        
+
       });
       if (SurveillanceVideo.value.length > 0) {
         videoCode.value = SurveillanceVideo.value[0].cameraIndexCode;
         videoSrc.value = SurveillanceVideo.value[0].url;
       }
-      console.log('SurveillanceVideo.value',SurveillanceVideo.value)
+      console.log('SurveillanceVideo.value', SurveillanceVideo.value)
       // SurveillanceVideo1.value=res.data
     } else {
       console.log(res.msg);
@@ -1079,10 +1082,10 @@ const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
 
-  
+
   getLocationInfo();
   // getParkSurveillanceVideos()
-  
+
   getBirdsPopulation()
   getParkWildBirds()
   try {
@@ -1127,13 +1130,13 @@ const stopPolling = () => {
 onMounted(() => {
   getCameraEquipmentList(cameraParams.value)
   updateVideoDimensions()
-   getParkBirds()
-   getParkEquirments()
+  getParkBirds()
+  getParkEquirments()
   window.addEventListener('resize', updateVideoDimensions)
   // initCamera();
   getParkIntroduce()
   startPolling();
-  
+
   timer.value = setInterval(() => {
     time.value = moment().format('h:mm:ss ')
   }, 1000)
@@ -1430,14 +1433,14 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       padding: 0px 25px 0px 25px;
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
 
       .video-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
         grid-gap: 10px;
-        height: 300px;
+        height: 320px;
 
         .video-item {
           position: relative;

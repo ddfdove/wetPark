@@ -5,30 +5,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted ,watch} from 'vue';
+import { ref, onMounted ,watch,onUnmounted} from 'vue';
 const props = defineProps({
   playUrl: {
-    type: Array,
-    default: () => [
-      'ws://135.131.1.10:559/openUrl/pIOfGyQ',
-      'ws://135.131.1.10:559/openUrl/pIOfGyQ',
-      'ws://135.131.1.10:559/openUrl/pJjtyRW',
-      'ws://135.131.1.10:559/openUrl/pJzWipG',
-      'ws://135.131.1.10:559/openUrl/pJPyeze',
-      'ws://135.131.1.10:559/openUrl/pK4AYsE',
-      'ws://135.131.1.10:559/openUrl/pKjVju8',
-      'ws://135.131.1.10:559/openUrl/pKyY3ny',
-      'ws://135.131.1.10:559/openUrl/pKNrB0Q'
-    ]
+    type: String,
+    default: 'ws://135.131.1.10:559/openUrl/FMSg0dW'
   },
   id: {
     type: [Number, String],
     default: 'player'
-  }
+  },
+   width: {
+        type: Number,
+        default: 250
+    },
+    height: {
+        type: Number,
+        default: 190
+    }
 })
 
 const player = ref(null)
-const splitNum=ref(3)
+
 const init = () => {
   // 设置播放容器的宽高并监听窗口大小变化
   window.addEventListener('resize', () => {
@@ -43,7 +41,9 @@ const createPlayer = () => {
   player.value = new JSPlugin({
     szId: props.id,
     szBasePath: '/demo/',
-    iMaxSplit: 3,
+    iMaxSplit: 1,
+    iWidth: props.width,
+    iHeight: props.height,
     openDebug: true,
     oStyle: {
       borderSelect: '#FFCC00',
@@ -55,7 +55,7 @@ const createPlayer = () => {
       console.log('windowSelect callback: ', iWndIndex);
     },
     pluginErrorHandler: (iWndIndex, iErrorCode, oError) => {
-      
+      realplay()
     },
     windowEventOver: (iWndIndex) => {
       //console.log(iWndIndex);
@@ -77,10 +77,10 @@ const createPlayer = () => {
     }
   });
 }
-function realplay(url,index) {
+function realplay() {
   const mode = 1;  //解码方式：0普通模式 1高级模式
- 
-  const playURL = url
+  const index = 0;
+  const playURL = props.playUrl
   if (player.value) {
     player.value.JS_Play(playURL, { playURL, mode }, index).then(
       () => { console.log('realplay success'); },
@@ -88,26 +88,32 @@ function realplay(url,index) {
     );
   }
 }
-const realplayList=(num)=> {
-  const urls=props.playUrl
-  console.log('urls',urls)
-  // 这里的分屏，是以列来算的，如果这里参数2，那么就是横竖两列，就是4格
-  player.value.JS_ArrangeWindow(num).then(
-    () => {
-      // 循环取流
-      for (let i = 0; i < num * num; i++) {
-        const url=urls[i]
-        realplay(url,i)
-      }
-    },
-    e => { console.error(e) }
-  )
-}
-
+// 监听 playUrl 和 id 的变化，确保它们有值后再初始化播放器
+watch(
+  () => [props.playUrl, props.id],
+  ([newPlayUrl, newId]) => {
+    if (newPlayUrl && newId) {
+      createPlayer();
+      init();
+      realplay();
+    }
+  }
+);
 // 在组件挂载时初始化播放器
 onMounted(() => {
   createPlayer();
   init();
-  realplayList(splitNum.value)
+  realplay()
+});
+// 销毁播放器实例
+const destroyPlayer = () => {
+  if (player.value) {
+    player.value.JS_Destroy(); // 假设 JSPlugin 有 JS_Destroy 方法用于销毁实例
+    player.value = null;
+  }
+};
+// 在组件卸载时销毁播放器
+onUnmounted(() => {
+  destroyPlayer();
 });
 </script>

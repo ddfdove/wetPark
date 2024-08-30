@@ -122,7 +122,34 @@ const previewVideo = cameraIndexCode => {
         argument: JSON.stringify(params)
     })
 }
+const CuttingPartWindow=(iLeft,iTop,iWidth,iHeight)=>{
+    if(oWebControl.value){
+        oWebControl.value.JS_CuttingPartWindow(iLeft,iTop,iWidth,iHeight)
+    }
+}
+const RepairPartWindow=(iLeft,iTop,iWidth,iHeight)=>{
+    if(oWebControl.value){
+        oWebControl.value.JS_RepairPartWindow(iLeft, iTop, iWidth, iHeight)
+    }
+}
+const HideWnd=()=>{
+    if(oWebControl.value){
+        oWebControl.value.JS_HideWnd()
+    }
+}
+const ShowWnd=()=>{
+    if(oWebControl.value){
+        oWebControl.value.JS_ShowWnd()
+    }
+}
 
+// 通过 defineExpose 暴露 CuttingPartWindow 方法
+defineExpose({
+    CuttingPartWindow,
+    RepairPartWindow,
+    HideWnd,
+    ShowWnd
+})
 // 监听 cameraIndexCode 变化，重新触发预览功能
 watch(() => props.cameraIndexCode, (newCode) => {
     if (newCode) {
@@ -135,7 +162,6 @@ watch([() => props.width, () => props.height], ([newWidth, newHeight]) => {
     console.log('New height:', newHeight);
     if (oWebControl.value) {
         oWebControl.value.JS_Resize(newWidth, newHeight)
-       
     }
 })
 onMounted(() => {

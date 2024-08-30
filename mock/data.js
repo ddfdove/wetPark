@@ -665,5 +665,51 @@ export default defineFakeRoute([
       };
     },
   },
+  //人流分布
+  {
+    url: "/api/wp/wpRenliu/getRenliusByRen",
+    method: "get",
+    response: () => {
+      // 返回静态假数据
+      return {
+        code: "0",
+        msg: "success",
+        data: [
+          {
+              date_hour: "2024-08-28 16",
+              snumber: 4,
+              camera_name: "北岸铁桥入口照西",
+              camera_index_code: "0308705cce474837bdff18ee844b6ff9"
+          },
+          {
+              date_hour: "2024-08-28 16",
+              snumber: 4,
+              camera_name: "北岸北门入口",
+              camera_index_code: "1cb987bd726b48498b46e9a63e8abf55"
+          },
+          {
+              date_hour: "2024-08-28 16",
+              snumber: 4,
+              camera_name: "北岸北河道入口照东",
+              camera_index_code: "28c0f903c5554462aebc5d22b2a1e380"
+          },
+          {
+              date_hour: "2024-08-28 16",
+              snumber: 3,
+              camera_name: "北岸木栈道北入口球机",
+              camera_index_code: "2b2d5477898943fc9682b33082ece440"
+          },
+          {
+              date_hour: "2024-08-28 15",
+              snumber: 6,
+              camera_name: "北岸河道入口东侧照西",
+              camera_index_code: "c11063a633164413bfe77536a36c043a"
+          }
+        ],
+        pageSize: 10,
+        pageNum: 1
+      };
+    },
+  },
 ]);
 
