@@ -34,18 +34,20 @@
             <!-- </panelboard> -->
         </div>
         <div class="middle">
-            <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>返回</span>
-            </button>
-            <button class="moreButton2" @click="fetchAnnualData">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>年度数据</span>
-            </button>
-            <button class="moreButton3" @click="fetchRealTimeData">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>实时数据</span>
-            </button>
+            <div class="btn-group">
+                <el-button @click="fetchRealTimeData">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    实时数据
+                </el-button>
+                <el-button @click="fetchAnnualData">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    年度数据
+                </el-button>
+                <el-button @click=" $router.push({ path: '/monitor/environment' })">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    返回
+                </el-button>
+            </div>
             <div class="environment">
                 <ul>
                     <li>
@@ -89,7 +91,8 @@
                 </li>
                 <li>
                     <div>
-                        <AreaChart :dataList="{ atmosphericPressureList: envChartData.dataList.atmosphericPressureList }"
+                        <AreaChart
+                            :dataList="{ atmosphericPressureList: envChartData.dataList.atmosphericPressureList }"
                             :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </AreaChart>
                     </div>
@@ -111,14 +114,6 @@ import BarChart from '../components/bar.vue'
 import PieChart from '../components/pie.vue'
 import lineChart from '../components/line.vue'
 import PolarChart from '../components/polar.vue'
-import BoxChart from '../box.vue'
-import PyramidChart from '../pyramid.vue'
-import TleftChart from '../MiddleChart/tLeft.vue'
-import TrightChart from '../MiddleChart/tRighr.vue'
-import BleftChart from '../MiddleChart/bLeft.vue'
-import BrightChart from '../MiddleChart/bRight.vue'
-import panelboard from "@/components/panelboard/index.vue"
-
 
 
 let intervalId = null;
@@ -388,102 +383,6 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     height: 100%;
     background-color: #030025;
 
-    .switchButton {
-        margin-left: 160px;
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-
-        li {
-            margin: 0 20px;
-            margin-bottom: 10px;
-            color: #021f66;
-            width: 160px;
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-            background: url('/cut/未选中@1x.png');
-            background-size: cover;
-
-            &.active-link {
-
-                background: url('/cut/选中@1x.png');
-
-            }
-
-            span {
-                font-family: YouSheBiaoTiHei;
-                font-size: 20px;
-                font-weight: normal;
-                // line-height: 12px;
-                text-align: center;
-                color: #FFFFFF;
-            }
-        }
-
-        // li:hover {
-        //   background-color: #0f3890;
-        // }
-
-    }
-
-    .moreButton {
-        position: absolute;
-        top: 0px;
-        right: 20px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .moreButton2 {
-        position: absolute;
-        top: 0px;
-        right: 200px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .moreButton3 {
-        position: absolute;
-        top: 0px;
-        right: 400px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .moreButton:hover {
-        color: aquamarine
-    }
-
-    .moreButton2:hover {
-        color: aquamarine
-    }
-
-    .moreButton3:hover {
-        color: aquamarine
-    }
-
     .left {
         flex: 1;
         height: 100%;
@@ -507,6 +406,30 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         flex-direction: column;
         position: relative;
 
+        .btn-group {
+            display: flex;
+            justify-content: space-evenly;
+            position: absolute;
+            /* 使用绝对定位 */
+            top: 0px;
+            /* 根据需要调整位置 */
+            left: 0;
+            right: 0;
+            margin-bottom: 10px;
+
+            .el-button {
+                background-color: #021f66;
+                /* 设置按钮背景颜色 */
+                color: white;
+                /* 设置按钮文字颜色 */
+                border: none;
+                /* 去掉边框 */
+            }
+
+            .el-button:hover {
+                color: aquamarine
+            }
+        }
 
         li {
             flex: 1;

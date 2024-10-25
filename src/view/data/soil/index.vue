@@ -3,46 +3,52 @@
         <div class="left">
             <ul>
                 <li>
-                    <AreaChart :dataList="{ soilTemperatureList:soilChartData.dataList.soilTemperatureList, thirdPartySoilTemperatureList:thirdSoilChartData.SoilTemperatureList }"
+                    <AreaChart
+                        :dataList="{ soilTemperatureList: soilChartData.dataList.soilTemperatureList, thirdPartySoilTemperatureList: thirdSoilChartData.SoilTemperatureList }"
                         :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </AreaChart>
                 </li>
                 <li>
-                    <BarChart :dataList="{ soilNitrogenList:soilChartData.dataList.soilNitrogenList }" :categories="soilChartData.soilCollectTimeList"
-                        :isExcellent="soilChartData.isSoilExcellent">
+                    <BarChart :dataList="{ soilNitrogenList: soilChartData.dataList.soilNitrogenList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </BarChart>
                 </li>
                 <li>
-                    <lineChart :dataList="{ soilMoistureList:soilChartData.dataList.soilMoistureList, thirdPartySoilHumidityList:thirdSoilChartData.SoilHumidityList }"
+                    <lineChart
+                        :dataList="{ soilMoistureList: soilChartData.dataList.soilMoistureList, thirdPartySoilHumidityList: thirdSoilChartData.SoilHumidityList }"
                         :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </lineChart>
                 </li>
             </ul>
         </div>
         <div class="middle">
-            <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>返回</span>
-            </button>
-            <button class="moreButton2" @click="fetchAnnualData">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>年度数据</span>
-            </button>
-            <button class="moreButton3" @click="fetchRealTimeData">
-                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>实时数据</span>
-            </button>
+            <div class="btn-group">
+                <el-button @click="fetchRealTimeData">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    实时数据
+                </el-button>
+                <el-button @click="fetchAnnualData">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    年度数据
+                </el-button>
+                <el-button @click=" $router.push({ path: '/monitor/environment' })">
+                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                    返回
+                </el-button>
+            </div>
             <div class="environment">
                 <ul>
                     <li>
-                        <BarChart :dataList="{ soilConductivityList:soilChartData.dataList.soilConductivityList, thirdPartySoilElectricalConductivityList:thirdSoilChartData.SoilElectricalConductivityList }"
-                            :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
+                        <BarChart
+                            :dataList="{ soilConductivityList: soilChartData.dataList.soilConductivityList, thirdPartySoilElectricalConductivityList: thirdSoilChartData.SoilElectricalConductivityList }"
+                            :categories="soilChartData.soilCollectTimeList"
+                            :isExcellent="soilChartData.isSoilExcellent">
                         </BarChart>
                     </li>
                     <li>
-                        <AreaRangeChart
-                            :dataList="soilChartData.dataList"
-                            :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
+                        <AreaRangeChart :dataList="soilChartData.dataList"
+                            :categories="soilChartData.soilCollectTimeList"
+                            :isExcellent="soilChartData.isSoilExcellent">
                         </AreaRangeChart>
                     </li>
                     <li>
@@ -78,18 +84,19 @@
         <div class="right">
             <ul>
                 <li>
-                    <AreaChart :dataList="{ soilPHList:soilChartData.dataList.soilPHList, thirdPartySoilPhList:thirdSoilChartData.SoilPhList }" :categories="soilChartData.soilCollectTimeList"
-                        :isExcellent="soilChartData.isSoilExcellent">
+                    <AreaChart
+                        :dataList="{ soilPHList: soilChartData.dataList.soilPHList, thirdPartySoilPhList: thirdSoilChartData.SoilPhList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </AreaChart>
                 </li>
                 <li>
-                    <BarChart :dataList="{ soilPhosphorusList:soilChartData.dataList.soilPhosphorusList }" :categories="soilChartData.soilCollectTimeList"
-                        :isExcellent="soilChartData.isSoilExcellent">
+                    <BarChart :dataList="{ soilPhosphorusList: soilChartData.dataList.soilPhosphorusList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </BarChart>
                 </li>
                 <li>
-                    <lineChart :dataList="{ soilPotassiumList:soilChartData.dataList.soilPotassiumList }" :categories="soilChartData.soilCollectTimeList"
-                        :isExcellent="soilChartData.isSoilExcellent">
+                    <lineChart :dataList="{ soilPotassiumList: soilChartData.dataList.soilPotassiumList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </lineChart>
                 </li>
             </ul>
@@ -108,7 +115,7 @@ import LineChart from '../components/line.vue'
 import AreaRangeChart from '../components/arearange.vue'
 import * as mapping from '@/utils/mapping.js'
 
-
+const store = useDataStore(); // 使用 Pinia store
 let intervalId = null;
 let isFetching = false;
 const params = ref({
@@ -176,7 +183,7 @@ const getSoilMonInfo = async (data) => {
         console.error('获取失败', error);
     }
 }
-const store = useDataStore(); // 使用 Pinia store
+
 const fetchData = async () => {
     if (isFetching) return; // 如果正在获取数据，直接返回
     isFetching = true; // 标记正在获取数据
@@ -315,66 +322,6 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     height: 100%;
     background-color: #030025;
 
-    .moreButton {
-        position: absolute;
-        top: 0px;
-        right: 80px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        z-index: 99;
-    }
-
-    .moreButton:hover {
-        color: aquamarine
-    }
-
-    .moreButton2 {
-        position: absolute;
-        top: 0px;
-        right: 280px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        z-index: 99;
-    }
-
-    .moreButton2:hover {
-        color: aquamarine
-    }
-
-    .moreButton3 {
-        position: absolute;
-        top: 0px;
-        right: 500px;
-        width: 100px;
-        height: 30px;
-        border: none;
-        background-color: #021f66;
-        border-radius: 5px;
-        line-height: 30px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        z-index: 99;
-    }
-
-    .moreButton3:hover {
-        color: aquamarine
-    }
-
     .left {
         flex: 0.9;
         height: 100%;
@@ -398,6 +345,31 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         flex-direction: column;
         position: relative;
 
+        .btn-group {
+            display: flex;
+            justify-content: space-evenly;
+            position: absolute;
+            /* 使用绝对定位 */
+            top: 0px;
+            /* 根据需要调整位置 */
+            left: 0;
+            right: 0;
+            margin-bottom: 10px;
+            z-index: 100;
+
+            .el-button {
+                background-color: #021f66;
+                /* 设置按钮背景颜色 */
+                color: white;
+                /* 设置按钮文字颜色 */
+                border: none;
+                /* 去掉边框 */
+            }
+
+            .el-button:hover {
+                color: aquamarine
+            }
+        }
 
         li {
             flex: 1;
