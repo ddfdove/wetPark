@@ -1,6 +1,6 @@
 <template>
   <div class="left">
-    <div class="errEqui" @click="handleAbnormalDevicesClick">
+    <!-- <div class="errEqui" @click="handleAbnormalDevicesClick">
       <el-tooltip :content="abnormalDevicesTooltip" placement="right">
         <div class="icon-container">
           <i v-if="abnormalDevicesCount > 0" class="iconfont icon-yichangshebei">
@@ -9,7 +9,7 @@
           <i v-else class="iconfont icon-zhengchangshebei"></i>
         </div>
       </el-tooltip>
-    </div>
+    </div> -->
     <panel-board :chTitle="'设备管理'" :enTitle="'Device Management'">
       <div class="table-box">
         <el-tabs v-model="activeName" class="demo-tabs">
@@ -20,10 +20,10 @@
               <el-table-column type="index" width="80" label="序号" />
               <el-table-column v-if="item.name !== 'tv'" prop="parkNames" label="园区" width="160" />
 
-              <el-table-column v-if="item.name !== 'tv'" prop="parkAttractionNames" label="景区" width="160" />
-              <el-table-column v-if="item.name !== 'tv'" prop="device" label="设备(在线/总数)" width="160">
+              <el-table-column v-if="item.name !== 'tv'" prop="parkAttractionNames" label="地点" width="160" />
+              <el-table-column v-if="item.name !== 'tv'" prop="device" label="设备" width="160">
                 <template #default="scope">
-                  {{ scope.row.onlineNum }}/{{ scope.row.totalNum }}
+                 {{ scope.row.totalNum }}
                 </template>
               </el-table-column>
               <el-table-column v-if="item.name === 'tv'" prop="cameraName" label="监控点名称" width="160" />

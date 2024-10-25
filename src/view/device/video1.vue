@@ -72,7 +72,7 @@ const init = () => {
             layout: objData.value.layout,
             enableHTTPS: 1,
             encryptedFields: "secret",
-            showToolbar: 0,
+            showToolbar: 1,
             showSmart: 0,
             buttonIDs: "0"
         }
