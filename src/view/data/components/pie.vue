@@ -86,6 +86,13 @@ const chartOptions = ref({
             }
         }
     },
+    legend: {
+    enabled: true,
+    layout: 'horizontal',
+    align: 'center',
+    verticalAlign: 'top',
+    itemStyle: { 'color': '#FFFFFF' }
+  },
     tooltip: {
         enable: false,
         headerFormat: '',

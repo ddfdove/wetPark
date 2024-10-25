@@ -6,7 +6,7 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue"
-import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate ,unitMap} from '@/utils/mapping.js'
+import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate, unitMap } from '@/utils/mapping.js'
 
 // 定义组件的 props
 const props = defineProps({
@@ -109,7 +109,7 @@ const chartOptions = ref({
     }
   },
   legend: {
-    enabled: false,
+    enabled: true,
     layout: 'horizontal',
     align: 'center',
     verticalAlign: 'top',
@@ -164,9 +164,15 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
   let globalMax = -Infinity;
   //更新series数据
   chartOptions.value.series = Object.keys(dataList).map(key => {
+    // console.log('Object.keys(dataList)',Object.keys(dataList));
+    // console.log('key',key);
     const seriesData = dataList[key];
+    // console.log('seriesData', seriesData);
     const baseKey = findBaseKey(key);
 
+    // 检查 seriesData 是否为空
+    // 检查 seriesData 是否为数组
+    const isEmptyData = Array.isArray(seriesData) && seriesData.length === 0;
     if (baseKey) {
       const excellentRange = findExcellentRange(baseKey, isExcellent);
       if (excellentRange) {
@@ -179,7 +185,7 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
     }
 
     return {
-      name: keyToChineseMap[key],
+      name:  keyToChineseMap[key],
       data: seriesData,
       color: '#00eaff',
       fillColor: {
@@ -225,7 +231,7 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
     return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
   };
   //标题
-  chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
+  // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 }
 const updateYAxis = (globalMin, globalMax) => {
   // 调整最大值和最小值，并计算间隔

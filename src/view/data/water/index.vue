@@ -3,40 +3,50 @@
     <div class="left">
       <ul>
         <li>
-          <AreaChart :dataList="{ waterTemperatureList }" :categories="waterCollectTimeList"
-            :isExcellent="isWaterExcellent">
+          <AreaChart
+            :dataList="{ waterTemperatureList: waterChartData.dataList.waterTemperatureList, thirdPartyWaterTemperatureList: thirdWaterChartData.WaterTemperatureList }"
+            :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
           </AreaChart>
         </li>
         <li>
-          <BarChart :dataList="{ waterTurbidityList }" :categories="waterCollectTimeList"
-            :isExcellent="isWaterExcellent">
+          <BarChart
+            :dataList="{ waterTurbidityList: waterChartData.dataList.waterTurbidityList, thirdPartyWaterTurbidityList: thirdWaterChartData.WaterTurbidityList }"
+            :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
           </BarChart>
         </li>
         <li>
-          <lineChart :dataList="{ waterDissolvedOxygenList }" :categories="waterCollectTimeList"
-            :isExcellent="isWaterExcellent">
+          <lineChart
+            :dataList="{ waterDissolvedOxygenList: waterChartData.dataList.waterDissolvedOxygenList, thirdPartyWaterDissolvedOxygenList: thirdWaterChartData.WaterDissolvedOxygenList }"
+            :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
           </lineChart>
         </li>
       </ul>
     </div>
     <div class="middle">
       <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
-          <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-          <span>BACK</span>
-        </button>
+        <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+        <span>返回</span>
+      </button>
+      <button class="moreButton2" @click="fetchAnnualData">
+        <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+        <span>年度数据</span>
+      </button>
+      <button class="moreButton3" @click="fetchRealTimeData">
+        <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+        <span>实时数据</span>
+      </button>
       <div class="environment">
         <ul>
           <li>
-            <AreaRangeChart
-              :dataList="{ waterPHList, waterDissolvedOxygenList, waterTurbidityList, waterTemperatureList, waterChlorophyllList, waterConductivityList }"
-              :categories="waterCollectTimeList" :isExcellent="isWaterExcellent" name="水质" height="500">
+            <AreaRangeChart :dataList="waterChartData.dataList" :categories="waterChartData.waterCollectTimeList"
+              :isExcellent="waterChartData.isWaterExcellent" name="水质" height="500">
             </AreaRangeChart>
           </li>
           <li>
             <div class="table-wrapper">
               <div class="table-container">
                 <el-table :data="waterMonitorInfo" height="370"
-                  style="width: 100%;background-color: #030632;color:#ffffff;margin-bottom: 5px;"
+                  style="width: 720px;background-color: #030632;color:#ffffff;margin-bottom: 5px;"
                   :header-row-style="headerRowStyle" :header-cell-style="headerCellStyle" :row-style="rowStyle"
                   :cell-style="cellStyle">
                   <el-table-column type="index" width="60" label="序号" />
@@ -47,7 +57,12 @@
                   <el-table-column prop="waterConductivity" label="电导率" width="80"></el-table-column>
                   <el-table-column prop="waterTemperature" label="水温" width="80"></el-table-column>
                   <el-table-column prop="chlorophyll" label="叶绿素" width="70"></el-table-column>
-                  <el-table-column prop="collectTime" label="收集时间" width="130" fixed="right" sortable></el-table-column>
+                  <el-table-column prop="collectTime" label="收集时间" width="130" sortable></el-table-column>
+                  <el-table-column prop="collectPlace" label="收集地点" width="110" fixed="right" sortable>
+                    <template #default="{ row }">
+                      {{ row.collectPlace == null ? '无' : row.collectPlace }}
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
               <el-pagination background layout="prev, pager, next" :total="total" :page-size="data.pageSize"
@@ -62,21 +77,24 @@
       <ul>
         <li>
           <div>
-            <AreaChart :dataList="{ waterPHList }" :categories="waterCollectTimeList" :isExcellent="isWaterExcellent">
+            <AreaChart
+              :dataList="{ waterPHList: waterChartData.dataList.waterPHList, thirdPartyWaterPhList: thirdWaterChartData.WaterPhList }"
+              :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
             </AreaChart>
           </div>
         </li>
         <li>
           <div>
-            <BarChart :dataList="{ waterChlorophyllList }" :categories="waterCollectTimeList"
-              :isExcellent="isWaterExcellent">
+            <BarChart :dataList="{ waterChlorophyllList: waterChartData.dataList.waterTurbidityList }"
+              :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
             </BarChart>
           </div>
         </li>
         <li>
           <div>
-            <lineChart :dataList="{ waterConductivityList }" :categories="waterCollectTimeList"
-              :isExcellent="isWaterExcellent">
+            <lineChart
+              :dataList="{ waterConductivityList: waterChartData.dataList.waterConductivityList, thirdPartyWaterElectricalConductivityList: thirdWaterChartData.WaterElectricalConductivityList }"
+              :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
             </lineChart>
           </div>
         </li>
@@ -88,11 +106,12 @@
 <script setup>
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useDataStore } from '@/store/modules/data.js'
-import { getWaterEquMonitorInfo } from '@/api/index.js'
+import { getWaterEquMonitorInfo, getThirdWaterData } from '@/api/index.js'
 import AreaChart from '../components/area.vue'
 import AreaRangeChart from '../components/arearange.vue'
 import BarChart from '../components/bar.vue'
 import lineChart from '../components/line.vue'
+import * as mapping from '@/utils/mapping.js'
 
 
 let intervalId = null;
@@ -113,81 +132,27 @@ const data = ref({
 const waterMonitorInfo = ref([])
 const total = ref(0)
 //水数据
-const waterCollectTimeList = ref([])
-const isWaterExcellent = ref([])
-const waterPHList = ref([])  //PH值
-const waterDissolvedOxygenList = ref([]) //溶解氧值
-const waterTurbidityList = ref([])  //浊度
-const waterTemperatureList = ref([]) //水温
-const waterChlorophyllList = ref([]) //叶绿素
-const waterConductivityList = ref([]) //导电率
+const waterChartData = ref({
+  dataList: {
+    waterPHList: [],  //PH值
+    waterDissolvedOxygenList: [], //溶解氧值
+    waterTurbidityList: [],      //浊度
+    waterTemperatureList: [],     //水温
+    waterChlorophyllList: [],    //叶绿素
+    waterConductivityList: [],   //导电率
+  },
+  waterCollectTimeList: [],
+  isWaterExcellent: []
+})
 
-
-//土壤数据
-const soilCollectTimeList = ref([])
-const isSoilExcellent = ref([])
-const soilPHList = ref([])  //土壤PH值
-const soilTemperatureList = ref([])  //土壤温度
-const soilMoistureList = ref([])  //土壤水分
-const soilConductivityList = ref([])  //土壤电导率
-const soilNitrogenList = ref([])  //土壤氮含量
-const soilPhosphorusList = ref([])  //土壤磷含量
-const soilPotassiumList = ref([])  //土壤钾含量
-
-//环境数据
-const evnCollectTimeList = ref([])
-const isEnvExcellent = ref([])
-const airTemperatureList = ref([])  //空气温度
-const airHumidityList = ref([])  //空气湿度
-const atmosphericPressureList = ref([])  //气压
-const carbonDioxideList = ref([])  //二氧化碳
-const sulfurDioxideList = ref([])  //二氧化硫
-const totalRadiationList = ref([])  //总辐射
-const windDirectionList = ref([])  //风向
-const windSpeedList = ref([])  //风速
-const rainfallList = ref([])  //降雨量
-const pm25List = ref([])  //PM2.5
-
-//映射水数据
-const mappingWater = (waterData) => {
-  console.log('函数和执行');
-  waterCollectTimeList.value = waterData.collectTimeList;
-  isWaterExcellent.value = waterData.mapList
-  waterPHList.value = waterData.pHList;
-  waterDissolvedOxygenList.value = waterData.doList;
-  waterTurbidityList.value = waterData.tList;
-  waterTemperatureList.value = waterData.wtList;
-  waterChlorophyllList.value = waterData.wcList;
-  waterConductivityList.value = waterData.cList;
-}
-//映射土壤数据
-const mappingSoil = (soilData) => {
-  soilCollectTimeList.value = soilData.collectTimeList;
-  isSoilExcellent.value = soilData.mapList
-  soilPHList.value = soilData.pHList;
-  soilTemperatureList.value = soilData.stList;
-  soilMoistureList.value = soilData.smList;
-  soilConductivityList.value = soilData.scList;
-  soilNitrogenList.value = soilData.sncList;
-  soilPhosphorusList.value = soilData.sphcList;
-  soilPotassiumList.value = soilData.spocList;
-}
-
-//映射环境数据
-const mappingEnv = (envData) => {
-  evnCollectTimeList.value = envData.collectTimeList;
-  isEnvExcellent.value = envData.mapList
-  airTemperatureList.value = envData.airTemperatureList;
-  airHumidityList.value = envData.airHumidityList;
-  atmosphericPressureList.value = envData.atmosphericPressureList;
-  carbonDioxideList.value = envData.carbonDeviceList;
-  sulfurDioxideList.value = envData.sulfurDioxideList;
-  totalRadiationList.value = envData.totalRadiationList;
-  windDirectionList.value = envData.windDirection360List;
-  windSpeedList.value = envData.windSpeedList;
-  rainfallList.value = envData.rainList;
-  pm25List.value = envData.pm2_5List;
-}
+//第三方水数据
+const thirdWaterChartData = ref({
+  WaterPhList: [],    //PH值
+  WaterTemperatureList: [],  //水温
+  WaterElectricalConductivityList: [],  //电导率
+  WaterDissolvedOxygenList: [],  //溶解氧值
+  WaterTurbidityList: [],  //浊度
+})
 //获取水质监测信息
 const getWaterMonInfo = async (data) => {
   try {
@@ -219,21 +184,64 @@ const fetchData = async () => {
   isFetching = true; // 标记正在获取数据
   try {
     await Promise.all([
-      setParams(null, 5),
       store.getWaterData(params.value),
-      // store.getSoilData(params.value),
-      // store.getEnvironmentData(params.value),
       getWaterMonInfo(data.value)
     ]);
-
-    mappingWater(store.waterData.value)
-    // mappingSoil(store.soilData.value)
-    // mappingEnv(store.envData.value)
+    mapping.mappingWater(store.waterData.value, waterChartData.value)
+    if (params.value.number === 12) {
+      waterChartData.value.waterCollectTimeList = waterChartData.value.waterCollectTimeList.map(item => {
+        return item.slice(5, 7) + '月'; // 提取月份并加上“月”
+      });
+    }
 
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
     isFetching = false; // 请求完成，重置标志
+  }
+};
+//获取第三方数据
+const fetchThirdPartyData = async () => {
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  try {
+    const response = await getThirdWaterData({ year: currentYear }); // 需要根据你的实际 API 调整
+    return response; // 返回数据
+  } catch (error) {
+    console.error('获取第三方数据失败', error);
+    return null; // 返回 null 表示获取失败
+  }
+};
+//获取年度数据
+const fetchAnnualData = async () => {
+  setParams(2, 12); // 设置为年度数据
+  await fetchData(); // 获取数据
+  thirdWaterChartData.value = {
+    WaterPhList: [],    //PH值
+    WaterTemperatureList: [],  //水温
+    WaterElectricalConductivityList: [],  //电导率
+    WaterDissolvedOxygenList: [],  //溶解氧值
+    WaterTurbidityList: [],  //浊度
+  }
+  const thirdPartyData = await fetchThirdPartyData(); // 获取第三方数据
+  thirdPartyData.forEach(item => {
+    thirdWaterChartData.value.WaterPhList.push(item.waterPh);
+    thirdWaterChartData.value.WaterTemperatureList.push(item.waterTemperature);
+    thirdWaterChartData.value.WaterElectricalConductivityList.push(item.ricalConductivity);
+    thirdWaterChartData.value.WaterDissolvedOxygenList.push(item.waterDissolvedOxygen);
+    thirdWaterChartData.value.WaterTurbidityList.push(item.waterTurbidity);
+  });
+};
+//获取实时数据
+const fetchRealTimeData = () => {
+  setParams(null, 5); // 设置为实时数据
+  fetchData(); // 获取数据
+  thirdWaterChartData.value = {
+    WaterPhList: [],    //PH值
+    WaterTemperatureList: [],  //水温
+    WaterElectricalConductivityList: [],  //电导率
+    WaterDissolvedOxygenList: [],  //溶解氧值
+    WaterTurbidityList: [],  //浊度
   }
 };
 const handlePageChange = (newPage) => {
@@ -300,7 +308,6 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
 
 
 <style scoped lang="less">
-
 :deep(.el-table__inner-wrapper::before) {
   height: 0px;
 }
@@ -312,7 +319,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   background-color: #030025;
 
   .moreButton {
-   
+
     position: absolute;
     top: 0px;
     right: 20px;
@@ -325,11 +332,55 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     text-align: center;
     color: #fff;
     cursor: pointer;
-    z-index:99;
+    z-index: 99;
   }
-  .moreButton:hover{
-    color:aquamarine
+
+  .moreButton:hover {
+    color: aquamarine
   }
+
+  .moreButton2 {
+
+    position: absolute;
+    top: 0px;
+    right: 260px;
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: #021f66;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    z-index: 99;
+  }
+
+  .moreButton2:hover {
+    color: aquamarine
+  }
+
+  .moreButton3 {
+
+    position: absolute;
+    top: 0px;
+    right: 500px;
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: #021f66;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    z-index: 99;
+  }
+
+  .moreButton3:hover {
+    color: aquamarine
+  }
+
   .left {
     flex: 1;
     height: 100%;

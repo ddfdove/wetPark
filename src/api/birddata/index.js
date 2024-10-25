@@ -8,10 +8,10 @@ export const getBirdsByJi = (params) => {
     params
   });
 };
-//获取日增长
+//获取月增长
 export const getBirdsByRi = (params) => {
   return http({
-    url: "/api/wp/wpBird/getBirdsByRi",
+    url: "/api/wp/wpBird/getBirdsByMonth",
     method: "get",
     params
   });

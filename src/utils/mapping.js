@@ -55,28 +55,42 @@ export const colorMap = {
 //定义series中name中文名映射
 export const keyToChineseMap = {
   waterPHList: "水PH值",
+  thirdPartyWaterPhList: "第三方水PH值",
   waterDissolvedOxygenList: "溶解氧值",
+  thirdPartyWaterDissolvedOxygenList: "第三方溶解氧值",
   waterTurbidityList: "浊度",
+  thirdPartyWaterTurbidityList: "第三方水浊度",
   waterTemperatureList: "水温",
+  thirdPartyWaterTemperatureList: "第三方水温",
   waterChlorophyllList: "叶绿素",
   waterConductivityList: "水电导率",
+  thirdPartyWaterElectricalConductivityList: "第三方水电导率",
   soilPHList: "土壤PH值",
+  thirdPartySoilPhList: "第三方土壤PH值",
   soilTemperatureList: "温度",
+  thirdPartySoilTemperatureList: "第三方温度",
   soilMoistureList: "湿度",
+  thirdPartySoilHumidityList: "第三方湿度",
   soilConductivityList: "土壤电导率",
+  thirdPartySoilElectricalConductivityList: "第三方土壤电导率",
   soilNitrogenList: "氮含量",
   soilPhosphorusList: "土壤磷含量",
   soilPotassiumList: "土壤钾含量",
   airTemperatureList: "空气温度",
+  thirdPartyTempValueList: "第三方空气温度",
   airHumidityList: "空气湿度",
+  thirdPartyHumidityValueList: "第三方空气湿度",
   atmosphericPressureList: "气压",
   carbonDioxideList: "二氧化碳",
+  thirdPartyEryangValueList: "第三方二氧化碳",
   sulfurDioxideList: "二氧化硫",
   totalRadiationList: "总辐射",
   windDirectionList: "风向",
   windSpeedList: "风速",
   rainfallList: "降雨量",
+  thirdPartyRainfallValueList: "第三方降雨量",
   pm25List: "PM2.5",
+  thirdPartyPm25ValueList: "第三方PM2.5",
 };
 //定义各项指标的单位
 export const unitMap = {
@@ -363,4 +377,47 @@ export const formatDate = (date) => {
     // 不符合任何预期格式的情况，返回原日期字符串
     return date;
   }
+}
+
+//映射水数据
+export const mappingWater = (waterData,waterChartData) => {
+
+  waterChartData.waterCollectTimeList = waterData.collectTimeList;
+  waterChartData.isWaterExcellent = waterData.mapList
+  waterChartData.dataList.waterPHList = waterData.pHList;
+  waterChartData.dataList.waterDissolvedOxygenList = waterData.doList;
+  waterChartData.dataList.waterTemperatureList = waterData.wtList;
+  waterChartData.dataList.waterConductivityList = waterData.wcList;
+  waterChartData.dataList.waterTurbidityList = waterData.tList;
+  waterChartData.dataList.waterChlorophyllList = waterData.cList;
+}
+
+//映射土壤数据
+export const mappingSoil = (soilData,soilChartData) => {
+  soilChartData.soilCollectTimeList = soilData.collectTimeList;
+  soilChartData.isSoilExcellent = soilData.mapList
+  soilChartData.dataList.soilPHList = soilData.pHList;
+  soilChartData.dataList.soilTemperatureList = soilData.stList;
+  soilChartData.dataList.soilMoistureList = soilData.smList;
+  soilChartData.dataList.soilConductivityList = soilData.scList;
+  soilChartData.dataList.soilNitrogenList = soilData.sncList;
+  soilChartData.dataList.soilPhosphorusList = soilData.sphcList;
+  soilChartData.dataList.soilPotassiumList = soilData.spocList;
+}
+
+//映射环境数据
+export const mappingEnv = (envData,envChartData) => {
+  envChartData.envCollectTimeList = envData.collectTimeList;
+  envChartData.isEnvExcellent = envData.mapList
+  envChartData.dataList.airTemperatureList = envData.airTemperatureList;
+  envChartData.dataList.airHumidityList = envData.airHumidityList;
+  envChartData.dataList.pm25List = envData.pm2_5List;
+  envChartData.dataList.atmosphericPressureList = envData.atmosphericPressureList;
+  envChartData.dataList.carbonDioxideList = envData.carbonDeviceList;
+  envChartData.dataList.sulfurDioxideList = envData.sulfurDioxideList;
+  envChartData.dataList.totalRadiationList = envData.totalRadiationList;
+  envChartData.dataList.windDirectionList = envData.windDirection360List;
+  envChartData.dataList.windSpeedList = envData.windSpeedList;
+  envChartData.dataList.rainfallList = envData.rainList;
+
 }

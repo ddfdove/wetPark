@@ -33,19 +33,6 @@ const chartOptions = ref({
         backgroundColor: '#030025',
         // width:400,
         height: props.height,
-        // events: {
-        //     load() {
-        //         const chart = this;
-        //         chart.series.forEach(series => {
-        //             series.update({
-        //                 events: {
-        //                     hide: updateChartAxes,
-        //                     show: updateChartAxes
-        //                 }
-        //             });
-        //         });
-        //     }
-        // }
     },
     title: {
         text: null
@@ -65,8 +52,8 @@ const chartOptions = ref({
         }
     },
     yAxis: {
-        categories: [],
-        type: 'logarithmic', // 使用对数轴
+        // categories: [],
+        // type: 'logarithmic', // 使用对数轴
         title: {
             text: null
         },
@@ -168,7 +155,8 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
     chartOptions.value.series = Object.keys(dataList).map(key => {
         const seriesData = dataList[key];
         const baseKey = findBaseKey(key);
-
+        // 检查 seriesData 是否为空
+        const isEmptyData = Array.isArray(seriesData) && seriesData.length === 0;
         if (baseKey) {
             const excellentRange = findExcellentRange(baseKey, isExcellent);
             if (excellentRange) {
@@ -181,7 +169,8 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
         }
 
         return {
-            name: keyToChineseMap[key],
+            // name: isEmptyData ? '' : keyToChineseMap[key],
+            name:  keyToChineseMap[key],
             data: seriesData,
             color: colorMap[key],
             lineWidth: 1

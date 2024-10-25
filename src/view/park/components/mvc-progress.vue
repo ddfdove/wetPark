@@ -50,7 +50,7 @@ const newList = computed(() => {
     align-items: center;
     margin-bottom:10px;
     .progress-name{
-      width: 60.42px;
+      width: 85.42px;
       line-height: 28px;
       color:#fff;
       text-align: center;

@@ -6,7 +6,7 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue"
-import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate,unitMap } from '@/utils/mapping.js'
+import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate, unitMap } from '@/utils/mapping.js'
 const props = defineProps({
     dataList: {
         type: Object,
@@ -43,7 +43,7 @@ const chartOptions = ref({
         type: 'column',
         backgroundColor: '#030025',
         height: props.height,
-       
+
         // spacing:[0,0,0,0],
         options3d: {
             enabled: true,
@@ -81,7 +81,7 @@ const chartOptions = ref({
     yAxis: {
         // categories: ['0', '100', '200', '300','400','500','600'],
         //   min: 0,
-        type: 'logarithmic', // 使用对数轴
+        // type: 'logarithmic', // 使用对数轴
         title: {
             text: null,
         },
@@ -133,7 +133,11 @@ const chartOptions = ref({
         },
     },
     legend: {
-        enabled: false
+        enabled: true,
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'top',
+        itemStyle: { 'color': '#FFFFFF' }
     },
     credits: {
         enabled: false
@@ -174,18 +178,10 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
         const seriesData = dataList[key];
         const baseKey = findBaseKey(key);
 
-        // if (baseKey) {
-        //     const excellentRange = findExcellentRange(baseKey, isExcellent);
-        //     if (excellentRange) {
-        //         const seriesMin = Math.min(...seriesData);
-        //         const seriesMax = Math.max(...seriesData);
-
-        //         globalMin = Math.min(globalMin, seriesMin);
-        //         globalMax = Math.max(globalMax, seriesMax);
-        //     }
-        // }
+       
         return {
-            name: keyToChineseMap[key],
+            // name: isEmptyData ? '' : keyToChineseMap[key],
+            name:  keyToChineseMap[key],
             data: seriesData,
             color: {
                 linearGradient: { x1: 0, y1: 1, x2: 0, y2: 0 }, // 从底部到顶部渐变
@@ -222,13 +218,13 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
             getIndicators(englishName, this.y, min.value, max.value, status)
 
         }
-        
+
         // 获取对应的单位，如果没有找到则使用空字符串
         const unit = unitMap[chineseName] || '';
         return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
     };
     //标题显示
-    chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '柱状图';
+    // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '柱状图';
 }
 
 // const updateYAxis = (globalMin, globalMax) => {

@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref,onMounted,watch } from "vue"
+import { ref, onMounted, watch } from "vue"
 
 const props = defineProps({
     dataList: {
@@ -93,23 +93,24 @@ const chartOptions = ref({
     },
     series: [{
         name: '鸟类',
-        size: '110%',
+        size: '100%',
         innerSize: '70%',
         data: props.dataList,
         colors: [
+           
+            '#10a34c',
             '#f25e00',
-            '#0084e6',
-            '#10a34c'
+            '#f2bd42',
         ]
     }]
 })
 onMounted(() => {
-  // 在组件挂载时更新 series 数据
-  chartOptions.value.series[0].data = props.dataList;
+    // 在组件挂载时更新 series 数据
+    chartOptions.value.series[0].data = props.dataList;
 });
 
 // 监控 props.dataList 的变化并更新图表数据
 watch(() => props.dataList, (newData) => {
-  chartOptions.value.series[0].data = newData;
+    chartOptions.value.series[0].data = newData;
 }, { immediate: true });
 </script>

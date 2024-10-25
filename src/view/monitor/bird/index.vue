@@ -15,7 +15,6 @@
                   <el-dropdown-menu style="background-color:#030636;color:#ffffff">
                     <el-dropdown-item style="color:#ffffff" v-for="item in deviceOptions" :key="item.id"
                       :command="item.id">{{ item.name }}</el-dropdown-item>
-
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -25,7 +24,7 @@
               <!-- 日期选择器 1 -->
               <span class="time-box">
                 <el-date-picker v-model="birdParam.beginTime1" type="date" placeholder="开始" value-format="YYYY-MM-DD"
-                  teleported ref="beginDatePicker" @focus="startTimeFocus"  @change="handleDateChange()"
+                  teleported ref="beginDatePicker" @focus="startTimeFocus" @change="handleDateChange()"
                   popper-class="popperClass" :locale="locale"></el-date-picker>
               </span>
               <span>—</span>
@@ -33,7 +32,7 @@
               <span class="time-box">
                 <el-date-picker v-model="birdParam.endTime1" type="date" placeholder="结束" value-format="YYYY-MM-DD"
                   ref="endDatePicker" teleported @focus="endTimeFocus" @blur="endTimeBlur" @change="handleDateChange()"
-                   popper-class="popperClass"></el-date-picker>
+                  popper-class="popperClass"></el-date-picker>
               </span>
             </div>
           </div>
@@ -139,8 +138,9 @@
                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
               </span>
               <template #dropdown>
-                <el-dropdown-menu  style="background-color:#030636;max-height: 280px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-                  <el-dropdown-item v-for="item in birdOptions" :key="item.id" :command="item.id" >
+                <el-dropdown-menu
+                  style="background-color:#030636;max-height: 280px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                  <el-dropdown-item v-for="item in birdOptions" :key="item.id" :command="item.id">
                     {{ item.name }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -152,21 +152,22 @@
             <!-- 日期选择器 1 -->
             <span class="time-box">
               <el-date-picker v-model="birdParam.beginTime2" type="date" placeholder="开始" value-format="YYYY-MM-DD"
-                teleported ref="beginDatePicker" @focus="startTimeFocus"   @change="handleDateChange()"
+                teleported ref="beginDatePicker" @focus="startTimeFocus" @change="handleDateChange()"
                 popper-class="popperClass" :locale="locale"></el-date-picker>
             </span>
             <span>—</span>
             <!-- 日期选择器 2 -->
             <span class="time-box">
               <el-date-picker v-model="birdParam.endTime2" type="date" placeholder="结束" value-format="YYYY-MM-DD"
-                ref="endDatePicker" teleported @focus="startTimeFocus" @blur="startTimeBlur"   @change="handleDateChange()"
-                popper-class="popperClass"></el-date-picker>
+                ref="endDatePicker" teleported @focus="startTimeFocus" @blur="startTimeBlur"
+                @change="handleDateChange()" popper-class="popperClass"></el-date-picker>
             </span>
           </div>
         </div>
-        <div class="bird">
+        <div class="bird" @click="handleClickOutside">
           <ul>
-            <li v-for="(item, index) in birdsStaticList2" :key="index">
+            <li v-for="(item, index) in birdsStaticList2" :key="index"
+              @click="popUpSnapshot.stop(item.cameraIndexCode)">
               <div>
                 <span class="font-25">{{ item.recognition_count }}</span>
                 <span class="font-18">只</span>
@@ -174,8 +175,11 @@
               <h5 class="font-18">{{ item.cameraName }}</h5>
             </li>
           </ul>
+          <img v-if="imgUrl" :src="imgUrl" alt="实时抓拍图" classs="snapshot-img" referrerpolicy="no-referrer"
+            style="width: 250px; height: 180px; border-radius: 10px;position: fixed;right: 30px;top: 500px;" />
         </div>
       </panelboard>
+
       <panelboard :chTitle="'鸟类展示'" :enTitle="'Bird Show'">
         <div class=" animal">
           <div class="name" style="display: flex;justify-content: space-between;padding:0 10px;">
@@ -218,7 +222,7 @@ import PeopleChart from './people.vue'
 import WaterChart from './water.vue'
 import AirChart from './air.vue'
 import axios from 'axios';
-import { getCameraEquipment, getPlaceList, getSearchByPlace, getRealTimeMonitoring, getSpeciesList, getSearchBySpecies, getBirdDetail } from '@/api/index.js'
+import { getCameraEquipment, getPlaceList, getSearchByPlace, getRealTimeMonitoring, getSpeciesList, getSearchBySpecies, getBirdDetail, getSnapshotBySpecies } from '@/api/index.js'
 import { getBirdsByJi, getBirdsByRi } from "@/api/birddata/index.js";
 import { formatDate } from '@/utils/mapping.js'
 import http from "@/utils/http";
@@ -248,6 +252,7 @@ const getBirdsList = async () => {
     const response = await getBirdsByJi();
     const response2 = await getBirdsByRi();
     //重新构造数据结构
+    // console.log('response2', response2.data);
     seasonList.value = configuredBrids(response.data);
     dayList.value = configuredDayBrids(response2.data);
     loding.value = true;
@@ -262,10 +267,10 @@ const configuredBrids = (data) => {
   // 按季度排序
   data.sort((a, b) => a.quarter - b.quarter);
   const quarterMap = {
-    1: "春",
-    2: "夏",
-    3: "秋",
-    4: "冬",
+    1: "一季度",
+    2: "二季度",
+    3: "三季度",
+    4: "四季度",
   };
   let yearMap = {}; // 按年份分组
   data.forEach((item) => {
@@ -287,14 +292,16 @@ const configuredBrids = (data) => {
 };
 //日增长
 const configuredDayBrids = (data) => {
+  // console.log('年',data[0].momth.slice(0,4));
+  
   let result = {
-    name: "今日",
+    name: data[0].month.slice(0,4),
     data: [],
     new_birds_count: [],
   };
 
-  data.slice(0, 5).forEach((item) => {
-    result.data.push(item.date);
+  data.slice(0, 12).forEach((item) => {
+    result.data.push(item.month);
     result.new_birds_count.push(item.new_birds_count);
   });
 
@@ -313,11 +320,11 @@ const getCameraEqui = async (params) => {
   try {
     const res = await getCameraEquipment(params)
     if (res.code == 0) {
-      console.log('code为0')
-      console.log('res', res)
+      // console.log('code为0')
+      // console.log('res', res)
       birdVideoSrc.value = res.data.url
     }
-    console.log('birdVideoSrc.value', birdVideoSrc.value)
+    // console.log('birdVideoSrc.value', birdVideoSrc.value)
   } catch (error) {
     console.log('获取失败');
   }
@@ -361,7 +368,7 @@ const getBirdsSearchByPlace = async (params) => {
     const data = await getSearchByPlace(params);
 
     birdsStaticList.value = data.data.filter((item, index) => index <= 5)
-    console.log('birdsStaticList.value', birdsStaticList.value)
+    // console.log('birdsStaticList.value', birdsStaticList.value)
   } catch (error) {
     console.error('实时监控错误！', error);
   }
@@ -382,7 +389,7 @@ watch(() => [birdParam.value.beginTime, birdParam.value.endTime], ([newBeginTime
     // 将 newEndTime 转换为北京时间，并格式化为 "YYYY-MM-DD 23:59:59"
     birdParam.value.endTime = dayjs(newEndTime).format('YYYY-MM-DD 23:59:59');
   }
-  console.log('Date range changed:', newBeginTime, newEndTime);
+  // console.log('Date range changed:', newBeginTime, newEndTime);
   getBirdsSearchByPlace(birdParam.value)
 });
 //日期选择器弹出海康插件隐藏
@@ -421,7 +428,7 @@ const endTimeBlur = () => {
 const handleDateChange = (pickerRefName) => {
   // 日期选择器值发生变化时，确保海康插件隐藏
   nextTick(() => {
-   
+
     if (birdVideo.value) {
       birdVideo.value.ShowWnd();
     }
@@ -475,7 +482,7 @@ const getDevicesBySpecies = async (params) => {
     const data = await getSearchBySpecies(params);
 
     birdsStaticList2.value = data.data.filter((item, index) => index <= 5)
-    console.log('birdsStaticList.value', birdsStaticList.value)
+    // console.log('birdsStaticList.value', birdsStaticList.value)
   } catch (error) {
     console.error('实时监控错误！', error);
   }
@@ -495,10 +502,37 @@ watch(() => [birdParam.value.beginTime2, birdParam.value.endTime2], ([newBeginTi
     // 将 newEndTime 转换为北京时间，并格式化为 "YYYY-MM-DD 23:59:59"
     birdParam.value.endTime = dayjs(newEndTime).format('YYYY-MM-DD 23:59:59');
   }
-  console.log('Date range changed:', newBeginTime, newEndTime);
+  // console.log('Date range changed:', newBeginTime, newEndTime);
   getDevicesBySpecies(birdParam2.value)
 });
+//点击云台展示抓拍数据
+const imgUrl = ref(null);
+const currentCameraCode = ref(null);
 
+const popUpSnapshot = async (code) => {
+  if (imgUrl.value && currentCameraCode.value === code) {
+    // 如果图片已经显示并且是同一个相机，点击关闭
+    imgUrl.value = null;
+    currentCameraCode.value = null;
+  } else {
+    // 如果是新的相机，获取新的数据
+    try {
+      const data = await getSnapshotBySpecies({code});
+      imgUrl.value = data.recognition;
+      currentCameraCode.value = code; // 保存当前相机代码
+    } catch (error) {
+      console.error('实时抓拍错误！', error);
+    }
+  }
+};
+
+const handleClickOutside = (event) => {
+  const imgElement = event.target.closest('img');
+  if (!imgElement) {
+    imgUrl.value = null; // 隐藏图片
+    currentCameraCode.value = null; // 重置当前相机代码
+  }
+};
 //================鸟类展示==============
 const discription = ref({})
 const getBirdInfo = async (id) => {
@@ -522,7 +556,7 @@ const fetchData = async () => {
       getBirdsList(),
       asyncRealTimeMonitor()//实时监控
     ]);
-    console.log('进入')
+    // console.log('进入')
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -865,6 +899,9 @@ onUnmounted(() => {
       margin: 20px 0 0 10px;
       border: 1px solid #021757;
       background-color: #030636;
+      position: relative;
+
+      .snapshot-img {}
 
       ul {
         display: flex;
@@ -913,7 +950,7 @@ onUnmounted(() => {
       .animal-content {
         padding: 10px;
         height: auto;
-        overflow:hidden;
+        overflow: hidden;
 
         .family {
           height: 384px;

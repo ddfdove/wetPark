@@ -21,6 +21,7 @@ const chartOptions = ref({
     height: 280,
   },
   title: {
+    // text: null,
     text: `季增长`,
     style: {
       color: "#ffffff",

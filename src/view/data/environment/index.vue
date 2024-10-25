@@ -8,24 +8,24 @@
             <!-- <panelboard :chTitle="'水质监测'" :enTitle="'Water quality Monitoring'"> -->
             <ul>
                 <li>
-
-                    <AreaChart :dataList="{ airTemperatureList }" :categories="evnCollectTimeList"
-                        :isExcellent="isEnvExcellent">
+                    <AreaChart
+                        :dataList="{ airTemperatureList: envChartData.dataList.airTemperatureList, thirdPartyTempValueList: thirdenvChartData.thirdPartyTempValueList }"
+                        :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                     </AreaChart>
-
                 </li>
                 <li>
 
-                    <lineChart :dataList="{ carbonDioxideList, sulfurDioxideList }" :categories="evnCollectTimeList"
-                        :isExcellent="isEnvExcellent">
+                    <lineChart
+                        :dataList="{ carbonDioxideList: envChartData.dataList.carbonDioxideList, sulfurDioxideList: envChartData.dataList.sulfurDioxideList, thirdPartyEryangValueList: thirdenvChartData.thirdPartyEryangValueList }"
+                        :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                     </lineChart>
 
 
                 </li>
 
                 <li>
-                    <AreaChart :dataList="{ totalRadiationList }" :categories="evnCollectTimeList"
-                        :isExcellent="isEnvExcellent">
+                    <AreaChart :dataList="{ totalRadiationList: envChartData.dataList.totalRadiationList }"
+                        :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                     </AreaChart>
 
 
@@ -33,56 +33,36 @@
             </ul>
             <!-- </panelboard> -->
         </div>
-
-
         <div class="middle">
             <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
                 <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>BACK</span>
+                <span>返回</span>
+            </button>
+            <button class="moreButton2" @click="fetchAnnualData">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>年度数据</span>
+            </button>
+            <button class="moreButton3" @click="fetchRealTimeData">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>实时数据</span>
             </button>
             <div class="environment">
-                <!-- <button class="moreButton" @click=" $router.push({ path: '/data/enviroment' })">
-                    <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                    <span>MORE</span>
-                </button> -->
-                <!-- <panelboard :chTitle="'环境监测'" :enTitle="'Environmental Monitoring'"> -->
-
-                <!-- <ul>
-                        <li>
-                            <div style="margin:10px 0 40px 0;">
-                                <lineChart :dataList="{ airTemperatureList, airHumidityList }"
-                                    :categories="evnCollectTimeList" :isExcellent="isEnvExcellent">
-                                </lineChart>
-                            </div>
-                        </li>
-                        <li style="flex:1">
-                            <div>
-                                <lineChart :dataList="{ carbonDioxideList, sulfurDioxideList }"
-                                    :categories="evnCollectTimeList" :isExcellent="isEnvExcellent">
-                                </lineChart>
-                            </div>
-                        </li>
-                    </ul> -->
                 <ul>
                     <li>
-                        <PolarChart :dataList="{ windSpeedList }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent">
+                        <PolarChart :dataList="{ windSpeedList: envChartData.dataList.windSpeedList }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </PolarChart>
-
-
-
                     </li>
                     <li>
-                        <PieChart :dataList="{ pm25List }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent">
+                        <PieChart :dataList="{ pm25List: envChartData.dataList.pm25List }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </PieChart>
                     </li>
 
                     <li>
-                        <PolarChart :dataList="{ windDirectionList }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent"></PolarChart>
-
-
+                        <PolarChart :dataList="{ windDirectionList: envChartData.dataList.windDirectionList }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
+                        </PolarChart>
                     </li>
                 </ul>
                 <!-- </panelboard> -->
@@ -93,33 +73,29 @@
             <ul>
                 <li>
                     <div>
-                        <AreaChart :dataList="{ airHumidityList }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent">
+                        <AreaChart
+                            :dataList="{ airHumidityList: envChartData.dataList.airHumidityList, thirdPartyHumidityValueList: thirdenvChartData.thirdPartyHumidityValueList }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </AreaChart>
                     </div>
                 </li>
                 <li>
                     <div>
-                        <BarChart :dataList="{ rainfallList }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent">
+                        <BarChart
+                            :dataList="{ rainfallList: envChartData.dataList.rainfallList, thirdPartyRainfallValueList: thirdenvChartData.thirdPartyRainfallValueList }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </BarChart>
-
-
-
-
                     </div>
                 </li>
-
                 <li>
                     <div>
-                        <AreaChart :dataList="{ atmosphericPressureList }" :categories="evnCollectTimeList"
-                            :isExcellent="isEnvExcellent">
+                        <AreaChart :dataList="{ atmosphericPressureList: envChartData.dataList.atmosphericPressureList }"
+                            :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent">
                         </AreaChart>
                     </div>
                 </li>
             </ul>
             <!-- </panelboard> -->
-
         </div>
     </div>
 </template>
@@ -128,6 +104,8 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
+import { getThirdEnvironmentData } from '@/api/index.js'
+import * as mapping from '@/utils/mapping.js'
 import AreaChart from '../components/area.vue'
 import BarChart from '../components/bar.vue'
 import PieChart from '../components/pie.vue'
@@ -153,106 +131,120 @@ const setParams = (type, number) => {
     params.value.timeType = type
     params.value.number = number
 }
-//水数据
-const waterCollectTimeList = ref([])
-const isWaterExcellent = ref([])
-const waterPHList = ref([])  //PH值
-const waterDissolvedOxygenList = ref([]) //溶解氧值
-const waterTurbidityList = ref([])  //浊度
-const waterTemperatureList = ref([]) //水温
-const waterChlorophyllList = ref([]) //叶绿素
-const waterConductivityList = ref([]) //导电率
-
-
-//土壤数据
-const soilCollectTimeList = ref([])
-const isSoilExcellent = ref([])
-const soilPHList = ref([])  //土壤PH值
-const soilTemperatureList = ref([])  //土壤温度
-const soilMoistureList = ref([])  //土壤水分
-const soilConductivityList = ref([])  //土壤电导率
-const soilNitrogenList = ref([])  //土壤氮含量
-const soilPhosphorusList = ref([])  //土壤磷含量
-const soilPotassiumList = ref([])  //土壤钾含量
 
 //环境数据
-const evnCollectTimeList = ref([])
-const isEnvExcellent = ref([])
-const airTemperatureList = ref([])  //空气温度
-const airHumidityList = ref([])  //空气湿度
-const atmosphericPressureList = ref([])  //气压
-const carbonDioxideList = ref([])  //二氧化碳
-const sulfurDioxideList = ref([])  //二氧化硫
-const totalRadiationList = ref([])  //总辐射
-const windDirectionList = ref([])  //风向
-const windSpeedList = ref([])  //风速
-const rainfallList = ref([])  //降雨量
-const pm25List = ref([])  //PM2.5
+const envChartData = ref({
+    dataList: {
+        airTemperatureList: [],  //空气温度
+        airHumidityList: [],  //空气湿度
+        atmosphericPressureList: [],  //气压
+        carbonDioxideList: [],  //二氧化碳
+        sulfurDioxideList: [], //二氧化硫
+        totalRadiationList: [],  //总辐射
+        windDirectionList: [],  //风向
+        windSpeedList: [],  //风速
+        rainfallList: [],  //降雨量
+        pm25List: []  //PM2.5
+    },
+    envCollectTimeList: [],
+    isEnvExcellent: []  //优良指标
+})
 
-//映射水数据
-const mappingWater = (waterData) => {
-    console.log('函数和执行');
-    waterCollectTimeList.value = waterData.collectTimeList;
-    isWaterExcellent.value = waterData.mapList
-    waterPHList.value = waterData.pHList;
-    waterDissolvedOxygenList.value = waterData.doList;
-    waterTurbidityList.value = waterData.tList;
-    waterTemperatureList.value = waterData.wtList;
-    waterChlorophyllList.value = waterData.wcList;
-    waterConductivityList.value = waterData.cList;
-}
-//映射土壤数据
-const mappingSoil = (soilData) => {
-    soilCollectTimeList.value = soilData.collectTimeList;
-    isSoilExcellent.value = soilData.mapList
-    soilPHList.value = soilData.pHList;
-    soilTemperatureList.value = soilData.stList;
-    soilMoistureList.value = soilData.smList;
-    soilConductivityList.value = soilData.scList;
-    soilNitrogenList.value = soilData.sncList;
-    soilPhosphorusList.value = soilData.sphcList;
-    soilPotassiumList.value = soilData.spocList;
-}
+//第三方环境数据
+const thirdenvChartData = ref({
+    thirdPartyEryangValueList: [], // 二氧化碳
+    thirdPartyYqValueList: [],    // 氧气值
+    thirdPartyPm25ValueList: [],   // PM2.5值
+    thirdPartyPm10ValueList: [],  // PM10值
+    thirdPartyTempValueList: [],  // 温度值
+    thirdPartyHumidityValueList: [], // 湿度值
+    thirdPartyWindDirectionValueList: [], // 风向值
+    thirdPartyWindSpeedValueList: [], // 风速值
+    thirdPartyRainfallValueList: [], // 降雨量值
+})
 
-//映射环境数据
-const mappingEnv = (envData) => {
-    evnCollectTimeList.value = envData.collectTimeList;
-    isEnvExcellent.value = envData.mapList
-    airTemperatureList.value = envData.airTemperatureList;
-    airHumidityList.value = envData.airHumidityList;
-    atmosphericPressureList.value = envData.atmosphericPressureList;
-    carbonDioxideList.value = envData.carbonDeviceList;
-    sulfurDioxideList.value = envData.sulfurDioxideList;
-    totalRadiationList.value = envData.totalRadiationList;
-    windDirectionList.value = envData.windDirection360List;
-    windSpeedList.value = envData.windSpeedList;
-    rainfallList.value = envData.rainList;
-    pm25List.value = envData.pm2_5List;
-}
-// const collectTimeList = ref([])
 const store = useDataStore(); // 使用 Pinia store
 const fetchData = async () => {
     if (isFetching) return; // 如果正在获取数据，直接返回
     isFetching = true; // 标记正在获取数据
     try {
         await Promise.all([
-            setParams(null, 5),
-            // store.getWaterData(params.value),
-            // store.getSoilData(params.value),
             store.getEnvironmentData(params.value)
         ]);
-
-        // mappingWater(store.waterData.value)
-        // mappingSoil(store.soilData.value)
-        mappingEnv(store.envData.value)
-
+        mapping.mappingEnv(store.envData.value, envChartData.value)
+        if (params.value.number === 12) {
+            envChartData.value.envCollectTimeList = envChartData.value.envCollectTimeList.map(item => {
+                return item.slice(5, 7) + '月'; // 提取月份并加上“月”
+            });
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
     } finally {
         isFetching = false; // 请求完成，重置标志
     }
 };
+//获取第三方数据
+const fetchThirdPartyData = async () => {
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    try {
+        const response = await getThirdEnvironmentData({ year: currentYear }); // 需要根据你的实际 API 调整
+        return response; // 返回数据
+    } catch (error) {
+        console.error('获取第三方数据失败', error);
+        return null; // 返回 null 表示获取失败
+    }
+};
+//获取年度数据
+const fetchAnnualData = async () => {
+    setParams(2, 12); // 设置为年度数据
+    await fetchData(); // 获取数据
 
+    thirdenvChartData.value = {
+        thirdPartyEryangValueList: [], // 二氧化碳
+        thirdPartyYqValueList: [],    // 氧气值
+        thirdPartyPm25ValueList: [],   // PM2.5值
+        thirdPartyPm10ValueList: [],  // PM10值
+        thirdPartyTempValueList: [],  // 温度值
+        thirdPartyHumidityValueList: [], // 湿度值
+        thirdPartyWindDirectionValueList: [], // 风向值
+        thirdPartyWindSpeedValueList: [], // 风速值
+        thirdPartyRainfallValueList: [], // 降雨量值
+    }
+    const thirdPartyData = await fetchThirdPartyData(); // 获取第三方数据
+    thirdPartyData.forEach(item => {
+        // console.log('item.month.slice(4,6)',item.month.slice(4,6));
+        // evnCollectTimeList.value.push(item.month.slice(5, 7) + '月');
+        thirdenvChartData.value.thirdPartyEryangValueList.push(item.eryangvalue);
+        thirdenvChartData.value.thirdPartyYqValueList.push(item.yqvalue);
+        thirdenvChartData.value.thirdPartyPm25ValueList.push(item.pm25value);
+        thirdenvChartData.value.thirdPartyPm10ValueList.push(item.pm10value);
+        thirdenvChartData.value.thirdPartyTempValueList.push(item.tempvalue);
+        thirdenvChartData.value.thirdPartyHumidityValueList.push(item.humidityvalue);
+        thirdenvChartData.value.thirdPartyWindDirectionValueList.push(item.winddirectionvalue);
+        thirdenvChartData.value.thirdPartyWindSpeedValueList.push(item.windspeedvalue);
+        thirdenvChartData.value.thirdPartyRainfallValueList.push(item.rainfallvalue);
+    });
+    console.log('thirdenvChartData.value', thirdenvChartData.value);
+
+
+};
+//获取实时数据
+const fetchRealTimeData = () => {
+    setParams(null, 5); // 设置为实时数据
+    fetchData(); // 获取数据
+    thirdenvChartData.value = {
+        thirdPartyEryangValueList: [], // 二氧化碳
+        thirdPartyYqValueList: [],    // 氧气值
+        thirdPartyPm25ValueList: [],   // PM2.5值
+        thirdPartyPm10ValueList: [],  // PM10值
+        thirdPartyTempValueList: [],  // 温度值
+        thirdPartyHumidityValueList: [], // 湿度值
+        thirdPartyWindDirectionValueList: [], // 风向值
+        thirdPartyWindSpeedValueList: [], // 风速值
+        thirdPartyRainfallValueList: [], // 降雨量值
+    }
+};
 
 const startPolling = () => {
     fetchData(); // 初始加载数据
@@ -269,10 +261,6 @@ const stopPolling = () => {
 
 onMounted(() => {
     startPolling();
-    // console.log('store.waterData.value.pHList',store.waterData.value.pHList);
-    // console.log('waterPHList',waterPHList.value);
-    // console.log('waterDissolvedOxygenList',waterDissolvedOxygenList.value);
-    // console.log('soilPHList',soilPHList.value);
 });
 
 onUnmounted(() => {
@@ -454,7 +442,45 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         cursor: pointer;
     }
 
+    .moreButton2 {
+        position: absolute;
+        top: 0px;
+        right: 200px;
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #021f66;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .moreButton3 {
+        position: absolute;
+        top: 0px;
+        right: 400px;
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #021f66;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+    }
+
     .moreButton:hover {
+        color: aquamarine
+    }
+
+    .moreButton2:hover {
+        color: aquamarine
+    }
+
+    .moreButton3:hover {
         color: aquamarine
     }
 

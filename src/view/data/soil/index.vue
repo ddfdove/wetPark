@@ -3,18 +3,18 @@
         <div class="left">
             <ul>
                 <li>
-                    <AreaChart :dataList="{ soilTemperatureList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <AreaChart :dataList="{ soilTemperatureList:soilChartData.dataList.soilTemperatureList, thirdPartySoilTemperatureList:thirdSoilChartData.SoilTemperatureList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </AreaChart>
                 </li>
                 <li>
-                    <BarChart :dataList="{ soilNitrogenList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <BarChart :dataList="{ soilNitrogenList:soilChartData.dataList.soilNitrogenList }" :categories="soilChartData.soilCollectTimeList"
+                        :isExcellent="soilChartData.isSoilExcellent">
                     </BarChart>
                 </li>
                 <li>
-                    <lineChart :dataList="{ soilMoistureList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <lineChart :dataList="{ soilMoistureList:soilChartData.dataList.soilMoistureList, thirdPartySoilHumidityList:thirdSoilChartData.SoilHumidityList }"
+                        :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                     </lineChart>
                 </li>
             </ul>
@@ -22,28 +22,33 @@
         <div class="middle">
             <button class="moreButton" @click=" $router.push({ path: '/monitor/environment' })">
                 <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
-                <span>BACK</span>
+                <span>返回</span>
+            </button>
+            <button class="moreButton2" @click="fetchAnnualData">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>年度数据</span>
+            </button>
+            <button class="moreButton3" @click="fetchRealTimeData">
+                <i class="iconfont icon-gengduoshuangjiantou" style="font-size: 12px;margin-right: 8px;"></i>
+                <span>实时数据</span>
             </button>
             <div class="environment">
                 <ul>
                     <li>
-                        <BarChart :dataList="{ soilConductivityList }" :categories="soilCollectTimeList"
-                            :isExcellent="isSoilExcellent">
+                        <BarChart :dataList="{ soilConductivityList:soilChartData.dataList.soilConductivityList, thirdPartySoilElectricalConductivityList:thirdSoilChartData.SoilElectricalConductivityList }"
+                            :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                         </BarChart>
                     </li>
                     <li>
                         <AreaRangeChart
-                            :dataList="{ soilPHList, soilTemperatureList, soilMoistureList, soilConductivityList, soilNitrogenList, soilPhosphorusList, soilPotassiumList }"
-                            :categories="soilCollectTimeList" :isExcellent="isSoilExcellent">
+                            :dataList="soilChartData.dataList"
+                            :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
                         </AreaRangeChart>
                     </li>
                     <li>
-                        <!-- <BarChart :dataList="{ soilConductivityList }" :categories="soilCollectTimeList"
-                            :isExcellent="isSoilExcellent">
-                        </BarChart> -->
                         <div style="margin: 0;padding: 0;">
                             <el-table :data="waterMonitorInfo" height="260"
-                                style="width: 100%;background-color: #030632;color:#ffffff"
+                                style="width: 800px;background-color: #030632;color:#ffffff"
                                 :header-row-style="headerRowStyle" :header-cell-style="headerCellStyle"
                                 :row-style="rowStyle" :cell-style="cellStyle">
                                 <el-table-column type="index" width="60" label="序号" />
@@ -55,8 +60,12 @@
                                 <el-table-column prop="nitrogenContent" label="氮含量" width="70"></el-table-column>
                                 <el-table-column prop="phosphorusContent" label="磷含量" width="70"></el-table-column>
                                 <el-table-column prop="potassiumContent" label="钾含量" width="70"></el-table-column>
-                                <el-table-column prop="collectTime" label="收集时间" width="110" fixed="right"
-                                    sortable></el-table-column>
+                                <el-table-column prop="collectTime" label="收集时间" width="110" sortable></el-table-column>
+                                <el-table-column prop="collectPlace" label="收集地点" width="110" fixed="right" sortable>
+                                    <template #default="{ row }">
+                                        {{ row.collectPlace == null ? '无' : row.collectPlace }}
+                                    </template>
+                                </el-table-column>
                             </el-table>
                             <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
                                 @current-change="handlePageChange">
@@ -69,18 +78,18 @@
         <div class="right">
             <ul>
                 <li>
-                    <AreaChart :dataList="{ soilPHList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <AreaChart :dataList="{ soilPHList:soilChartData.dataList.soilPHList, thirdPartySoilPhList:thirdSoilChartData.SoilPhList }" :categories="soilChartData.soilCollectTimeList"
+                        :isExcellent="soilChartData.isSoilExcellent">
                     </AreaChart>
                 </li>
                 <li>
-                    <BarChart :dataList="{ soilPhosphorusList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <BarChart :dataList="{ soilPhosphorusList:soilChartData.dataList.soilPhosphorusList }" :categories="soilChartData.soilCollectTimeList"
+                        :isExcellent="soilChartData.isSoilExcellent">
                     </BarChart>
                 </li>
                 <li>
-                    <lineChart :dataList="{ soilPotassiumList }" :categories="soilCollectTimeList"
-                        :isExcellent="isSoilExcellent">
+                    <lineChart :dataList="{ soilPotassiumList:soilChartData.dataList.soilPotassiumList }" :categories="soilChartData.soilCollectTimeList"
+                        :isExcellent="soilChartData.isSoilExcellent">
                     </lineChart>
                 </li>
             </ul>
@@ -92,24 +101,13 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
-import { getSoilEquMonitorInfo } from '@/api/index.js'
+import { getSoilEquMonitorInfo, getThirdSoilData } from '@/api/index.js'
 import AreaChart from '../components/area.vue'
 import BarChart from '../components/bar.vue'
 import LineChart from '../components/line.vue'
 import AreaRangeChart from '../components/arearange.vue'
+import * as mapping from '@/utils/mapping.js'
 
-import PieChart from '../components/pie.vue'
-import BoxChart from '../box.vue'
-import PyramidChart from '../pyramid.vue'
-import PolarChart from '../components/polar.vue'
-import CylinderChart from '../cylinder.vue'
-import RadarChart from '../radar.vue'
-
-import TleftChart from '../MiddleChart/tLeft.vue'
-import TrightChart from '../MiddleChart/tRighr.vue'
-import BleftChart from '../MiddleChart/bLeft.vue'
-import BrightChart from '../MiddleChart/bRight.vue'
-import panelboard from "@/components/panelboard/index.vue"
 
 let intervalId = null;
 let isFetching = false;
@@ -128,84 +126,32 @@ const data = ref({
 //表格数据土壤信息
 const waterMonitorInfo = ref([])
 const total = ref(0)
-//水数据
-const waterCollectTimeList = ref([])
-const isWaterExcellent = ref([])
-const waterPHList = ref([])  //PH值
-const waterDissolvedOxygenList = ref([]) //溶解氧值
-const waterTurbidityList = ref([])  //浊度
-const waterTemperatureList = ref([]) //水温
-const waterChlorophyllList = ref([]) //叶绿素
-const waterConductivityList = ref([]) //导电率
-
 
 //土壤数据
-const soilCollectTimeList = ref([])
-const isSoilExcellent = ref([])
-const soilPHList = ref([])  //土壤PH值
-const soilTemperatureList = ref([])  //土壤温度
-const soilMoistureList = ref([])  //土壤水分
-const soilConductivityList = ref([])  //土壤电导率
-const soilNitrogenList = ref([])  //土壤氮含量
-const soilPhosphorusList = ref([])  //土壤磷含量
-const soilPotassiumList = ref([])  //土壤钾含量
+const soilChartData = ref({
+    dataList: {
+        soilPHList: [],  //土壤PH值
+        soilTemperatureList: [],  //土壤温度
+        soilMoistureList: [],  //土壤湿度
+        soilConductivityList: [],  //土壤电导率
+        soilNitrogenList: [],  //土壤氮含量
+        soilPhosphorusList: [],  //土壤磷含量
+        soilPotassiumList: []  //土壤钾含量
+    },
+    soilCollectTimeList: [],
+    isSoilExcellent: []
+})
 
-//环境数据
-const evnCollectTimeList = ref([])
-const isEnvExcellent = ref([])
-const airTemperatureList = ref([])  //空气温度
-const airHumidityList = ref([])  //空气湿度
-const atmosphericPressureList = ref([])  //气压
-const carbonDioxideList = ref([])  //二氧化碳
-const sulfurDioxideList = ref([])  //二氧化硫
-const totalRadiationList = ref([])  //总辐射
-const windDirectionList = ref([])  //风向
-const windSpeedList = ref([])  //风速
-const rainfallList = ref([])  //降雨量
-const pm25List = ref([])  //PM2.5
+//第三方土壤数据
+const thirdSoilChartData = ref({
+    SoilTemperatureList: [],    // 土壤温度
+    SoilHumidityList: [],  // 土壤湿度
+    SoilElectricalConductivityList: [],  // 土壤电导率
+    SoilPhList: [],  // 土壤pH值
+})
 
-//映射水数据
-const mappingWater = (waterData) => {
-    console.log('函数和执行');
-    waterCollectTimeList.value = waterData.collectTimeList;
-    isWaterExcellent.value = waterData.mapList
-    waterPHList.value = waterData.pHList;
-    waterDissolvedOxygenList.value = waterData.doList;
-    waterTurbidityList.value = waterData.tList;
-    waterTemperatureList.value = waterData.wtList;
-    waterChlorophyllList.value = waterData.wcList;
-    waterConductivityList.value = waterData.cList;
-}
-//映射土壤数据
-const mappingSoil = (soilData) => {
-    soilCollectTimeList.value = soilData.collectTimeList;
-    isSoilExcellent.value = soilData.mapList
-    soilPHList.value = soilData.pHList;
-    soilTemperatureList.value = soilData.stList;
-    soilMoistureList.value = soilData.smList;
-    soilConductivityList.value = soilData.scList;
-    soilNitrogenList.value = soilData.sncList;
-    soilPhosphorusList.value = soilData.sphcList;
-    soilPotassiumList.value = soilData.spocList;
-}
-
-//映射环境数据
-const mappingEnv = (envData) => {
-    evnCollectTimeList.value = envData.collectTimeList;
-    isEnvExcellent.value = envData.mapList
-    airTemperatureList.value = envData.airTemperatureList;
-    airHumidityList.value = envData.airHumidityList;
-    atmosphericPressureList.value = envData.atmosphericPressureList;
-    carbonDioxideList.value = envData.carbonDeviceList;
-    sulfurDioxideList.value = envData.sulfurDioxideList;
-    totalRadiationList.value = envData.totalRadiationList;
-    windDirectionList.value = envData.windDirection360List;
-    windSpeedList.value = envData.windSpeedList;
-    rainfallList.value = envData.rainList;
-    pm25List.value = envData.pm2_5List;
-}
 //获取土壤监测信息
-const getWaterMonInfo = async (data) => {
+const getSoilMonInfo = async (data) => {
     try {
         const res = await getSoilEquMonitorInfo(data);
         if (res.code === 0) {
@@ -236,26 +182,68 @@ const fetchData = async () => {
     isFetching = true; // 标记正在获取数据
     try {
         await Promise.all([
-            setParams(null, 5),
-            // store.getWaterData(params.value),
             store.getSoilData(params.value),
-            // store.getEnvironmentData(params.value),
-            getWaterMonInfo(data.value)
+            getSoilMonInfo(data.value)
         ]);
 
-        // mappingWater(store.waterData.value)
-        mappingSoil(store.soilData.value)
-        // mappingEnv(store.envData.value)
-
+        mapping.mappingSoil(store.soilData.value, soilChartData.value)
+        if (params.value.number === 12) {
+            soilChartData.value.soilCollectTimeList = soilChartData.value.soilCollectTimeList.map(item => {
+                return item.slice(5, 7) + '月'; // 提取月份并加上“月”
+            });
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
     } finally {
         isFetching = false; // 请求完成，重置标志
     }
 };
+//获取第三方数据
+const fetchThirdPartyData = async () => {
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    try {
+        const response = await getThirdSoilData({ year: currentYear }); // 需要根据你的实际 API 调整
+        return response; // 返回数据
+    } catch (error) {
+        console.error('获取第三方数据失败', error);
+        return null; // 返回 null 表示获取失败
+    }
+};
+//获取年度数据
+const fetchAnnualData = async () => {
+    setParams(2, 12); // 设置为年度数据
+    await fetchData(); // 获取数据
+    thirdSoilChartData.value = {
+        SoilTemperatureList: [],    // 土壤温度
+        SoilHumidityList: [],  // 土壤湿度
+        SoilElectricalConductivityList: [],  // 土壤电导率
+        SoilPhList: [],  // 土壤pH值
+    }
+    const thirdPartyData = await fetchThirdPartyData(); // 获取第三方数据
+    thirdPartyData.forEach(item => {
+        // soilCollectTimeList.value.push(item.month);
+        thirdSoilChartData.value.SoilTemperatureList.push(item.soilTemperature);
+        thirdSoilChartData.value.SoilHumidityList.push(item.soilHumidity);
+        thirdSoilChartData.value.SoilElectricalConductivityList.push(item.soilElectricalConductivity);
+        thirdSoilChartData.value.SoilPhList.push(item.soilPh);
+    });
+
+};
+//获取实时数据
+const fetchRealTimeData = () => {
+    setParams(null, 5); // 设置为实时数据
+    fetchData(); // 获取数据
+    thirdSoilChartData.value = {
+        SoilTemperatureList: [],    // 土壤温度
+        SoilHumidityList: [],  // 土壤湿度
+        SoilElectricalConductivityList: [],  // 土壤电导率
+        SoilPhList: [],  // 土壤pH值
+    }
+};
 const handlePageChange = (newPage) => {
     data.value.pageNum = newPage;
-    getWaterMonInfo(data.value)
+    getSoilMonInfo(data.value)
 };
 
 const startPolling = () => {
@@ -330,7 +318,7 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     .moreButton {
         position: absolute;
         top: 0px;
-        right: 20px;
+        right: 80px;
         width: 100px;
         height: 30px;
         border: none;
@@ -344,6 +332,46 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     }
 
     .moreButton:hover {
+        color: aquamarine
+    }
+
+    .moreButton2 {
+        position: absolute;
+        top: 0px;
+        right: 280px;
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #021f66;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 99;
+    }
+
+    .moreButton2:hover {
+        color: aquamarine
+    }
+
+    .moreButton3 {
+        position: absolute;
+        top: 0px;
+        right: 500px;
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #021f66;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 99;
+    }
+
+    .moreButton3:hover {
         color: aquamarine
     }
 

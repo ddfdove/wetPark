@@ -47,7 +47,13 @@
       <li id="right">
         <panelboard :chTitle="'区域人员分布对比'" :enTitle="'Staff Distribution'" style="margin-top: 20px;">
           <!-- <mvcProgress :list="personList" style="width: 530px;margin-top: 50px;"></mvcProgress> -->
-          <Personnel style="width: 530px;margin-top: 30px;" :dataList="regionalPersonnelData"></Personnel>
+          <!-- <Personnel style="width: 530px;margin-top: 30px;" :dataList="regionalPersonnelData"></Personnel> -->
+          <PolarChart :dataList="{ valueList }" :categories="categoriesList"></PolarChart>
+          <ul style="display: flex;justify-content: space-evenly;align-items: center;">
+            <li @click="getDayRegionalPersonnelData" class="regionalPersonnel"> 年流量</li>
+            <li @click="getMonthRegionalPersonnelData" class="regionalPersonnel">月流量</li>
+            <li @click="getYearRegionalPersonnelData" class="regionalPersonnel"> 日流量</li>
+          </ul>
         </panelboard>
       </li>
     </ul>
@@ -76,9 +82,9 @@ import Regional from './regional.vue'
 import Garden from './garden.vue'
 import HotMap from './hotMap.vue'
 import { useRoute } from 'vue-router';
-import {getVisitorByji, getVisitor, getRegionalPersonnel, getPersonnelDistribution, getTimeRank, getGardenTop } from '@/api/index.js'
+import { getVisitorByji, getVisitor, getRegionalPersonnel, getPersonnelDistribution, getTimeRank, getGardenTop } from '@/api/index.js'
 import panelboard from "../../../components/panelboard/index.vue"
-import mvcProgress from "./components/mvc-progress.vue"
+import PolarChart from "./components/polar.vue"
 
 
 const $route = useRoute();
@@ -127,7 +133,9 @@ const personList = reactive([
     value: 23,
   }
 ])
-const visitorByjiData=ref([])
+const valueList = ref([])
+const categoriesList = ref([])
+const visitorByjiData = ref([])
 const vistorData = ref([])
 const regionalPersonnelData = ref({})
 const personnelDistributionData = ref({
@@ -176,7 +184,7 @@ const getVisitorByjiData = async () => {
         };
       });
 
-      
+
     } else {
       console.error('Failed to fetch data, response code:', res.code);
     }
@@ -257,7 +265,6 @@ const getVisitorData = async () => {
 const getPersonnelDistributionData = async () => {
   try {
     const res = await getPersonnelDistribution();
-    console.log('API response:', res);
     if (res.code == 0) {
       const data = res.data;
       const xCategories = [];
@@ -266,14 +273,14 @@ const getPersonnelDistributionData = async () => {
 
       // 创建yCategories
       data.forEach(item => {
-          yCategories.push(item.camera_name);
-          xCategories.push(item.date_hour);
+        yCategories.push(item.camera_name);
+        xCategories.push(item.date_hour);
       });
 
       // 生成 mapData
       xCategories.forEach((xCategory, xIndex) => {
         yCategories.forEach((yCategory, yIndex) => {
-          const matchingItem = data.find(item => 
+          const matchingItem = data.find(item =>
             item.date_hour === xCategory && item.camera_name === yCategory
           );
           const value = matchingItem ? matchingItem.snumber : 0;
@@ -286,8 +293,6 @@ const getPersonnelDistributionData = async () => {
         yCategories,
         mapData,
       };
-
-      console.log('personnelDistributionData data:', personnelDistributionData.value);
     } else {
       console.error('Unexpected data format:', res.data);
     }
@@ -296,30 +301,47 @@ const getPersonnelDistributionData = async () => {
   }
 };
 
+const type = ref({
+  timeType: 3,
+  year: 2024,
+  month: 8,
+  day: 19,
+})
+const setTimeType = (typeValue) => {
+  const today = new Date(); // 获取当前日期
+  if (typeValue === 1) {
+    type.value.timeType = 1
+    type.value.year = today.getFullYear()
 
+  } else if (typeValue === 2) {
+    type.value.timeType = 2
+    type.value.year = today.getFullYear()
+    type.value.month = today.getMonth() + 1
+
+  } else if (typeValue === 3) {
+    type.value.timeType = 3
+    type.value.year = today.getFullYear()
+    type.value.month = today.getMonth() + 1
+    type.value.day = today.getDate()
+  }
+}
 //区域人员数据
 const getRegionalPersonnelData = async () => {
   try {
-    const res = await getRegionalPersonnel(); // 替换为实际的 API 请求
+
+    const res = await getRegionalPersonnel(type.value); // 替换为实际的 API 请求
     if (res.code == 0) {
-    
-    
-      // 处理数据
-     
-     
-      const  categories=res.data.categories
-      const seriesData=res.data.mlist.map(item=>{
-        return {
-          name:item.name,
-          data:item.data
+      categoriesList.value = res.data.valueList.slice(0, 5).map(item => item.name);
+      valueList.value = res.data.valueList.slice(0, 5).map(item => {
+        if (item.data.length > 0) {
+          return item.data[0]
+        } else {
+          return 0
         }
-      })
-      regionalPersonnelData.value={
-        categories:categories,
-        series:seriesData
-      }
-     
-      
+      });
+      // console.log('categoriesList.value', categoriesList.value);
+      // console.log('valueList.value', valueList.value);
+
     } else {
       console.error('Failed to fetch data, response code:', res.code);
     }
@@ -327,12 +349,23 @@ const getRegionalPersonnelData = async () => {
     console.error('Failed to fetch personnel distribution data:', error);
   }
 };
-
+const getDayRegionalPersonnelData = () => {
+  setTimeType(1)
+  getRegionalPersonnelData()
+}
+const getMonthRegionalPersonnelData = () => {
+  setTimeType(2)
+  getRegionalPersonnelData()
+}
+const getYearRegionalPersonnelData = () => {
+  setTimeType(3)
+  getRegionalPersonnelData()
+}
 
 //时段排行数据
 const getTimeRankData = async () => {
   try {
-    const res = await getTimeRank(); 
+    const res = await getTimeRank();
 
     if (res.code === 0) {
       // 获取后端返回的数据
@@ -348,7 +381,7 @@ const getTimeRankData = async () => {
         };
       });
 
-      
+
     } else {
       console.error('Failed to fetch data, response code:', res.code);
     }
@@ -382,15 +415,16 @@ const fetchData = async () => {
   isFetching = true; // 标记正在获取数据
 
   try {
+    setTimeType(1)
     await Promise.all([
-    getVisitorByjiData(),
+      getVisitorByjiData(),
       getVisitorData(),
       getRegionalPersonnelData(),
       getPersonnelDistributionData(),
       getTimeRankData(),
       getGardenTopData()
     ]);
-
+    console.log('regionalPersonnelData.value', regionalPersonnelData.value);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -572,8 +606,20 @@ onUnmounted(() => {
       flex: 0.6;
       margin-top: 20px;
       padding: 0 20px 0 10px;
-      // margin-left: 30px;
 
+      // margin-left: 30px;
+      .regionalPersonnel {
+        width: 90px;
+        background: #021f66;
+        text-align: center;
+        padding: 8px;
+        border-radius: 15px;
+        cursor: pointer;
+      }
+
+      .regionalPersonnel:hover {
+        color: aquamarine
+      }
     }
   }
 

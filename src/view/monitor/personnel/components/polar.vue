@@ -17,13 +17,9 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    isExcellent: {
-        type: Array,
-        required: true
-    },
     height: {
         type: Number,
-        default: 290
+        default: 330
     },
 
 });
@@ -33,7 +29,8 @@ const chartOptions = ref({
         type: 'column',
         // backgroundColor: '#030632',
         backgroundColor: 'transparent',
-        height: props.height,
+        // height: props.height,
+        width: 530,
         // spacing: [0, 0, 0, 0]
     },
     title: {
@@ -93,7 +90,7 @@ const chartOptions = ref({
             fontSize: '14px',
         },
         headerFormat: '{point.key}<br>',
-        pointFormat: ' <b> {series.name}</b>&nbsp&nbsp&nbsp {point.y}℃ <br>',
+        pointFormat: ' <b>&nbsp &nbsp &nbsp人流量： {point.y} <br>',
         style: {
             color: '#ccc',
             letterSpacing: '2px',
@@ -104,47 +101,21 @@ const chartOptions = ref({
         enabled: false
     },
     exporting: { enabled: false },
-    series: [{
-        name: 'Wind Direction',
-        data: [1, 8, 200, 356, 2],
-        pointPlacement: 'on'
-    }]
+    series: []
 })
 
-let min = ref(null)
-let max = ref(null)
-let status = ref('良')
-const findBaseKey = (key) => keyMap[key];
 
-const findExcellentRange = (baseKey, isExcellent) => {
-    if (!baseKey) return undefined;
-    return isExcellent.find(item => item[`${baseKey}_min`] !== undefined && item[`${baseKey}_max`] !== undefined);
-};
 // 更新 chartOptions 的方法
-const updateChartOptions = (dataList, categories,isExcellent) => {
-    // console.log('props.dataList',dataList);
-    // console.log('props.categories',categories);
-    // console.log('props.isExcellent',isExcellent);
+const updateChartOptions = (dataList, categories) => {
     if (!dataList || !categories) {
         return;
     }
-    // let globalMin = Infinity;
-    // let globalMax = -Infinity;
+    console.log('dataList',dataList);
+    console.log('categories',categories);
     //更新series数据
     chartOptions.value.series = Object.keys(dataList).map(key => {
         const seriesData = dataList[key];
-        // const baseKey = findBaseKey(key);
-
-        // if (baseKey) {
-        //     const excellentRange = findExcellentRange(baseKey, isExcellent);
-        //     if (excellentRange) {
-        //         const seriesMin = Math.min(...seriesData);
-        //         const seriesMax = Math.max(...seriesData);
-
-        //         globalMin = Math.min(globalMin, seriesMin);
-        //         globalMax = Math.max(globalMax, seriesMax);
-        //     }
-        // }
+       
 
         return {
             name: keyToChineseMap[key],
@@ -154,53 +125,24 @@ const updateChartOptions = (dataList, categories,isExcellent) => {
             // lineWidth: 1
         };
     });
-    // //更新y轴的最小值，最小值和间隔y
-    // updateYAxis(globalMin, globalMax);
-
+   console.log('chartOptions.value.series',chartOptions.value.series);
     // 更新x轴 categories 的显示格式
-    const cleanedCategories = categories.map(date => formatDate(date));
-    chartOptions.value.xAxis.categories = cleanedCategories;
-    //更新 tooltip 中 pointFormatter 的数据
-    chartOptions.value.tooltip.pointFormatter = function () {
-        const getEnglishName = (chineseName) => {
-            for (const key in keyToChineseMap) {
-                if (keyToChineseMap[key] === chineseName) {
-                    return key;
-                }
-            }
-            return null; // 如果没有找到对应的英文名，可以根据需要返回 null 或其他默认值
-        }
-        const chineseName = this.series.name
-        const englishName = getEnglishName(this.series.name);
-        const baseKey = findBaseKey(englishName);
-        const excellentRange = findExcellentRange(baseKey, isExcellent);
-
-
-        if (excellentRange) {
-            min.value = excellentRange[`${baseKey}_min`];
-            max.value = excellentRange[`${baseKey}_max`];
-            getIndicators(englishName, this.y, min.value, max.value, status)
-
-        }
-        // 获取对应的单位，如果没有找到则使用空字符串
-        const unit = unitMap[chineseName] || '';
-        return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
-    };
+   
+    chartOptions.value.xAxis.categories = categories;
     //标题
     chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 };
 // 监听 props.dataList、props.categories 和 props.isExcellent 的变化，并更新 chartOptions
 watch(
-    [() => props.dataList, () => props.categories, () => props.isExcellent],
-    ([newDataList, newCategories, newIsExcellent]) => {
-        updateChartOptions(newDataList, newCategories, newIsExcellent);
+    [() => props.dataList, () => props.categories],
+    ([newDataList, newCategories]) => {
+        updateChartOptions(newDataList, newCategories);
     },
     { immediate: true }
 );
 
 // 初次加载时更新 chartOptions
 onMounted(() => {
-    
-    updateChartOptions(props.dataList, props.categories, props.isExcellent);
+    updateChartOptions(props.dataList, props.categories);
 });
 </script>

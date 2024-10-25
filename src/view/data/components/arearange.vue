@@ -54,7 +54,7 @@ const chartOptions = ref({
         }
     },
     yAxis: {
-        type: 'logarithmic', // 设置为对数轴
+        // type: 'logarithmic', // 设置为对数轴
         gridLineInterpolation: 'polygon',
         lineWidth: 0,
         // min: 0,

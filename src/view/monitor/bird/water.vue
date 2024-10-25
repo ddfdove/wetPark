@@ -28,7 +28,8 @@ const chartOptions = ref({
     height: 280,
   },
   title: {
-    text: "日增长",
+    text: "月增长",
+    // text: null,
     style: {
       color: "#ffffff",
       fontSize: "20px",
