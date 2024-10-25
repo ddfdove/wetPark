@@ -18,25 +18,25 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(@types/video.js@7.3.58)(video.js@8.19.1)(vue@3.5.12)
       axios:
-        specifier: ^1.7.2
+        specifier: ^1.7.7
         version: 1.7.7
       cesium:
-        specifier: ^1.116.0
+        specifier: ^1.122.0
         version: 1.122.0
       core-js:
-        specifier: ^3.37.0
+        specifier: ^3.38.1
         version: 3.38.1
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
       element-plus:
-        specifier: ^2.7.0
+        specifier: ^2.8.6
         version: 2.8.6(vue@3.5.12)
       font-awesome:
         specifier: ^4.7.0
         version: 4.7.0
       highcharts:
-        specifier: ^11.4.1
+        specifier: ^11.4.8
         version: 11.4.8
       highcharts-vue:
         specifier: ^2.0.1
@@ -48,22 +48,22 @@ importers:
         specifier: ^2.30.1
         version: 2.30.1
       pinia:
-        specifier: ^2.1.7
+        specifier: ^2.2.4
         version: 2.2.4(vue@3.5.12)
       swiper:
-        specifier: ^11.1.4
+        specifier: ^11.1.14
         version: 11.1.14
       video.js:
-        specifier: ^8.12.0
+        specifier: ^8.19.1
         version: 8.19.1
       vite-plugin-cesium:
-        specifier: ^1.2.22
+        specifier: ^1.2.23
         version: 1.2.23(cesium@1.122.0)(rollup@4.24.0)(vite@5.4.10(@types/node@20.17.0)(less@4.2.0)(sass@1.80.4))
       vite-plugin-fake-server:
-        specifier: ^2.1.1
+        specifier: ^2.1.2
         version: 2.1.2
       vue:
-        specifier: ^3.4.21
+        specifier: ^3.5.12
         version: 3.5.12
       vue-awesome-swiper:
         specifier: ^5.0.1
@@ -72,7 +72,7 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(eslint@9.13.0)
       vue-router:
-        specifier: ^4.3.0
+        specifier: ^4.4.5
         version: 4.4.5(vue@3.5.12)
       vue-skycons:
         specifier: ^4.3.4
@@ -85,10 +85,10 @@ importers:
         version: 1.0.3(vue@3.5.12)
     devDependencies:
       '@types/node':
-        specifier: ^20.12.7
+        specifier: ^20.17.0
         version: 20.17.0
       '@vitejs/plugin-vue':
-        specifier: ^5.0.4
+        specifier: ^5.1.4
         version: 5.1.4(vite@5.4.10(@types/node@20.17.0)(less@4.2.0)(sass@1.80.4))(vue@3.5.12)
       less:
         specifier: ^4.2.0
@@ -97,10 +97,10 @@ importers:
         specifier: ^12.2.0
         version: 12.2.0(less@4.2.0)
       sass:
-        specifier: ^1.77.5
+        specifier: ^1.80.4
         version: 1.80.4
       vite:
-        specifier: ^5.2.10
+        specifier: ^5.4.10
         version: 5.4.10(@types/node@20.17.0)(less@4.2.0)(sass@1.80.4)
 
 packages:

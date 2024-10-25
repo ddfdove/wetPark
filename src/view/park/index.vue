@@ -10,8 +10,8 @@
         <li>
           <panelboard :chTitle="'水质监测'" :enTitle="'Water quality Monitoring'">
             <div class="monitarChart">
-              <LineChart  :dataList="waterChartData.dataList"
-                :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent">
+              <LineChart :dataList="waterChartData.dataList" :categories="waterChartData.waterCollectTimeList"
+                :isExcellent="waterChartData.isWaterExcellent">
               </LineChart>
             </div>
           </panelboard>
@@ -19,8 +19,8 @@
         <li>
           <panelboard :chTitle="'土壤监测'" :enTitle="'Soil Monitoring'">
             <div class="monitarChart">
-              <LineChart  :dataList="soilChartData.dataList"
-                :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent">
+              <LineChart :dataList="soilChartData.dataList" :categories="soilChartData.soilCollectTimeList"
+                :isExcellent="soilChartData.isSoilExcellent">
               </LineChart>
             </div>
           </panelboard>
@@ -28,7 +28,7 @@
         <li>
           <panelboard :chTitle="'环境监测'" :enTitle="'Environmental Monitoring'">
             <div class="monitarChart">
-              <LineChart  :dataList="envChartData.dataList" :categories="envChartData.envCollectTimeList"
+              <LineChart :dataList="envChartData.dataList" :categories="envChartData.envCollectTimeList"
                 :isExcellent="envChartData.isEnvExcellent"></LineChart>
             </div>
           </panelboard>
@@ -39,32 +39,12 @@
       <div class="statisticTop">
         <panelboard :chTitle="'数据统计'" :enTitle="'Statistics'">
           <ul>
-            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
-              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">总面积</div>
+            <li class="flex-1" v-for="(item, index) in stats" :key="index"
+              :style="{ backgroundImage: `url('/cut/rect.png')` }">
+              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">{{ item.label }}</div>
               <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{ parkArea }}</span>
-                <span style="font-size: 14px;">公顷</span>
-              </div>
-            </li>
-            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
-              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">人流量</div>
-              <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{ parkTraffic }}</span>
-                <span style="font-size: 14px;">人</span>
-              </div>
-            </li>
-            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
-              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">野生动物种类</div>
-              <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{ parkBirds }}</span>
-                <span style="font-size: 14px;">种</span>
-              </div>
-            </li>
-            <li class="flex-1" :style="{ backgroundImage: `url('/cut/rect.png')` }">
-              <div style="  color: #00A3FF;margin-bottom: 10px;font-size: 22px;">设备</div>
-              <div>
-                <span style="font-size: 30px;margin-right: 5px; ">{{ parkEquirments }}</span>
-                <span style="font-size: 14px;">台</span>
+                <span style="font-size: 30px;margin-right: 5px; ">{{ item.value }}</span>
+                <span style="font-size: 14px;">{{ item.unit }}</span>
               </div>
             </li>
           </ul>
@@ -214,13 +194,13 @@ import moment from 'moment'
 import "moment/dist/locale/zh-cn";
 
 
-import PopulationChart from './population.vue'
-import LineChart from './line.vue'
-import BarChart from './bar.vue'
+import PopulationChart from './components/population.vue'
+import LineChart from './components/line.vue'
+import BarChart from './components/bar.vue'
 import panelboard from "@/components/panelboard/index.vue"
 import mvcProgress from "./components/mvc-progress.vue"
-import Video from './video.vue'
-import Video1 from './video1.vue'
+import Video from './components/video.vue'
+import Video1 from './components/video1.vue'
 
 const store = useDataStore(); // 使用 Pinia store
 const parkStore = useParkStore()
@@ -291,7 +271,13 @@ const parkTraffic = ref('5765')
 const parkBirds = ref(null)
 //数据统计园区设备
 const parkEquirments = ref(2563)
-
+// 统计项数组
+const stats = ref([
+  { label: '总面积', value: parkArea.value, unit: '公顷' },
+  { label: '人流量', value: parkTraffic.value, unit: '人' },
+  { label: '野生动物种类', value: parkBirds.value, unit: '种' },
+  { label: '设备', value: parkEquirments.value, unit: '台' }
+]);
 //视频监控海康插件宽度
 const videoWidth = ref(760)
 //视频监控海康插件高度
@@ -303,6 +289,7 @@ const cameraWidth = ref(178)
 //地区摄像海康插件高度
 const cameraHeight = ref(103)
 const caemraContainer = ref(null)
+
 //野生鸟类种类数据
 const parkWildBirds = ref([
   {
@@ -431,49 +418,50 @@ const setParams = (type, number) => {
   params.value.timeType = type
   params.value.number = number
 }
+// 更新统计项值
+const updateStats = () => {
+  stats.value[2].value = parkBirds.value || 0; // 更新鸟类数量
+  stats.value[3].value = parkEquirments.value;  // 更新设备数量
+}
 //获取园区展示中间动物种类
 const getParkBirds = async () => {
   try {
-    const res = await getBirds()
-    parkBirds.value = res.data
+    const res = await getBirds();
+    parkBirds.value = res.data;
+    updateStats();
   } catch (error) {
+    console.error("获取鸟类数据失败:", error);
   }
 }
 //获取园区展示设备总数
 const getParkEquirments = async () => {
   try {
     const res = await getMonitorEquipment();
-    if (res.code == 0) {
-      // 初始化设备总数
-      let totalDeviceCount = 0;
-
-      // 遍历 res.data 以计算总设备数
-      res.data.forEach(category => {
+    if (res.code === 0) {
+      const totalDeviceCount = res.data.reduce((count, category) => {
         if (category.tvdata) {
-          // 如果该类别有 tvdata 数组，则计算其设备数量
-          totalDeviceCount += category.tvdata.length;
+          count += category.tvdata.length;
         }
         if (category.data) {
-          // 如果该类别有 data 数组，则遍历每一个 data 对象并计算设备数量
           category.data.forEach(subCategory => {
             if (subCategory.detail) {
-              totalDeviceCount += subCategory.detail.length;
+              count += subCategory.detail.length;
             }
           });
         }
-      });
+        return count;
+      }, 0);
 
-      // 将计算得到的设备总数赋值给 parkEquirments
       parkEquirments.value = totalDeviceCount;
-      console.log("设备总数:", parkEquirments.value);
+      updateStats();
     } else {
-      console.log("获取设备数据失败:", res.msg);
+      console.error("获取设备数据失败:", res.msg);
     }
   } catch (err) {
     console.error("请求失败", err);
-    // 处理请求失败的情况
   }
-};
+}
+
 //根据页面的放大缩小自动获取海康插件的宽高
 const updateVideoDimensions = () => {
   if (videoContainer.value) {
@@ -816,8 +804,10 @@ onUnmounted(() => {
 
     .statisticTop {
       margin: 10px 0;
+
       ul {
         display: flex;
+
         li {
           background-size: 100% 100%;
           background-repeat: no-repeat;
@@ -835,6 +825,7 @@ onUnmounted(() => {
 
     .surveillance {
       flex: 1;
+
       .video-container {
         width: 100%;
         height: 420px;
@@ -1045,11 +1036,13 @@ onUnmounted(() => {
     .rBottom {
       display: flex;
       flex-direction: column;
+
       span {
         margin: 0 5px;
         height: 32px;
         line-height: 32px;
       }
+
       .bird {
         width: 520px;
         height: 290px;
@@ -1085,9 +1078,6 @@ onUnmounted(() => {
         }
       }
     }
-
   }
-
-
 }
 </style>
