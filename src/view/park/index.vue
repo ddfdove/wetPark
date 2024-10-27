@@ -134,7 +134,7 @@
       </div>
       <div class="rBottom">
         <panelboard :chTitle="'监测数据'" :enTitle="'Monitoring data'">
-          <div class="flex area">
+          <div class="flex ">
             <div>
               <span style="margin-right: 10px;font-size: 16px;">设备对比:</span>
               <el-dropdown @command="handleFirstDropdown" class="leading-10 h-10">
@@ -170,7 +170,7 @@
               </el-dropdown>
             </div>
           </div>
-          <div class="monitarChart">
+          <div>
             <BarChart :dataList="waterCompData" :categories="valueList" :isExcellent="isWaterComExcellent"
               :devicesList="devicesList"></BarChart>
           </div>
@@ -214,8 +214,9 @@ let isFetching = false;  //是否正在获取数据
 let timer = ref(0)   //清除定时器传的时间
 //请求水质土壤环境图表的参数
 const params = ref({
-  timeType: null,
-  number: 4
+  timeType: 4,
+  number: 4,
+  parkId: 1
 })
 //水质图表数据
 const waterChartData = ref({
@@ -268,9 +269,15 @@ const parkArea = ref('120')
 //数据统计园区人流量
 const parkTraffic = ref('5765')
 //数据统计野生动物种类
-const parkBirds = ref(null)
+const birdParams = ref({
+  parkId: 1
+})
+const parkBirds = ref(0)
 //数据统计园区设备
-const parkEquirments = ref(2563)
+const monitorParams = ref({
+  parkId: 1
+})
+const parkEquirments = ref(0)
 // 统计项数组
 const stats = ref([
   { label: '总面积', value: parkArea.value, unit: '公顷' },
@@ -384,7 +391,8 @@ const videoCode = ref('9dd014fd77964be29b236769949dfbdf')
 //水质双设备对比参数
 const waterComParams = ref({
   edId1: null,
-  edId2: null
+  edId2: null,
+  parkId: 1
 })
 //双设备对比数据
 const waterCompData = ref({
@@ -398,20 +406,23 @@ const firstOptions = ref([])
 const secondOptions = ref([])
 const firstSelected = ref(null)
 const secondSelected = ref(null)
-const equipmentType = ref({ Type: 2 })
+const equipmentType = ref({
+  Type: 2,
+  parkId: 1
+})
 
 //获取园区介绍
-const getParkIntroduce = () => {
+const getParkIntroduce = async () => {
   const id = route.query.id;
   if (id) {
-    const params = {
-      parkId: id
-    }
-    parkStore.getParkIntroduce(params);
-    console.log(parkStore.parkIntroduce);
-  } else {
-    console.error('ID parameter is missing in the URL');
+    await parkStore.setParkId(id)
   }
+  parkStore.getParkIntroduce();
+  params.value.parkId = parkStore.parkId
+  equipmentType.value.parkId = parkStore.parkId
+  waterComParams.value.parkId = parkStore.parkId
+  birdParams.value.parkId = parkStore.parkId
+  monitorParams.value.parkId = parkStore.parkId
 };
 //设置水质土壤环境图表的请求参数
 const setParams = (type, number) => {
@@ -426,7 +437,7 @@ const updateStats = () => {
 //获取园区展示中间动物种类
 const getParkBirds = async () => {
   try {
-    const res = await getBirds();
+    const res = await getBirds(birdParams.value);
     parkBirds.value = res.data;
     updateStats();
   } catch (error) {
@@ -436,7 +447,7 @@ const getParkBirds = async () => {
 //获取园区展示设备总数
 const getParkEquirments = async () => {
   try {
-    const res = await getMonitorEquipment();
+    const res = await getMonitorEquipment(monitorParams.value);
     if (res.code === 0) {
       const totalDeviceCount = res.data.reduce((count, category) => {
         if (category.tvdata) {
@@ -685,7 +696,7 @@ const fetchData = async () => {
   getWeather();
   try {
     await Promise.all([
-      setParams(null, 5),
+      setParams(4, 5),
       store.getWaterData(params.value),
       store.getSoilData(params.value),
       store.getEnvironmentData(params.value),
@@ -712,8 +723,8 @@ const fetchData = async () => {
 const startPolling = async () => {
   fetchData(); // 初始加载数据
 
-  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {
@@ -722,9 +733,9 @@ const stopPolling = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('resize', updateVideoDimensions)
-  getParkIntroduce()
+  await getParkIntroduce()
   getParkBirds()
   getParkEquirments()
   getCameraEquipmentList(cameraParams.value)

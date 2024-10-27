@@ -41,7 +41,7 @@
         <ul>
           <li>
             <AreaRangeChart :dataList="waterChartData.dataList" :categories="waterChartData.waterCollectTimeList"
-              :isExcellent="waterChartData.isWaterExcellent" name="水质" height="500">
+              :isExcellent="waterChartData.isWaterExcellent" name="水质" height="480">
             </AreaRangeChart>
           </li>
           <li>
@@ -67,7 +67,7 @@
                   </el-table-column>
                 </el-table>
               </div>
-              <el-pagination background layout="prev, pager, next" :total="total" :page-size="data.pageSize"
+              <el-pagination background layout="prev, pager, next" :total="total" :page-size="waterInfoParams.pageSize"
                 @current-change="handlePageChange">
               </el-pagination>
             </div>
@@ -114,22 +114,34 @@ import AreaRangeChart from '../components/arearange.vue'
 import BarChart from '../components/bar.vue'
 import lineChart from '../components/line.vue'
 import * as mapping from '@/utils/mapping.js'
+import { useParkStore } from '@/store/modules/park.js'
 
+
+const parkStore = useParkStore()
 
 let intervalId = null;
 let isFetching = false;
 const params = ref({
-  timeType: null,
-  number: 5
+  timeType: 4,
+  number: 5,
+  parkId: 1
 })
-const setParams = (type, number) => {
-  params.value.timeType = type
-  params.value.number = number
+const setParams = (type, number, parkId) => {
+  if (type) params.value.timeType = type
+  if (number) params.value.number = number
+  if (parkId) params.value.parkId = parkId
 }
-const data = ref({
+
+const waterInfoParams=ref({
   pageSize: 10,
-  pageNum: 1
+  pageNum: 1,
+  parkId:1
 })
+const setWaterParamsData = (id) => {
+  // if(pageSize)  waterInfoParams.value.pageSize=pageSize
+  // if(pageNum)  waterInfoParams.value.pageNum=pageNum
+  waterInfoParams.value.parkId=id
+}
 //表格数据水质信息
 const waterMonitorInfo = ref([])
 const total = ref(0)
@@ -156,9 +168,9 @@ const thirdWaterChartData = ref({
   WaterTurbidityList: [],  //浊度
 })
 //获取水质监测信息
-const getWaterMonInfo = async (data) => {
+const getWaterMonInfo = async () => {
   try {
-    const res = await getWaterEquMonitorInfo(data);
+    const res = await getWaterEquMonitorInfo(waterInfoParams.value);
     if (res.code === 0) {
       waterMonitorInfo.value = res.data.map(item => {
         return {
@@ -187,7 +199,7 @@ const fetchData = async () => {
   try {
     await Promise.all([
       store.getWaterData(params.value),
-      getWaterMonInfo(data.value)
+      getWaterMonInfo()
     ]);
     mapping.mappingWater(store.waterData.value, waterChartData.value)
     if (params.value.number === 12) {
@@ -236,7 +248,7 @@ const fetchAnnualData = async () => {
 };
 //获取实时数据
 const fetchRealTimeData = () => {
-  setParams(null, 5); // 设置为实时数据
+  setParams(4, 5); // 设置为实时数据
   fetchData(); // 获取数据
   thirdWaterChartData.value = {
     WaterPhList: [],    //PH值
@@ -247,8 +259,8 @@ const fetchRealTimeData = () => {
   }
 };
 const handlePageChange = (newPage) => {
-  data.value.pageNum = newPage;
-  getWaterMonInfo(data.value)
+  waterInfoParams.value.pageNum = newPage;
+  getWaterMonInfo(waterInfoParams.value)
 };
 
 const startPolling = () => {
@@ -263,7 +275,9 @@ const stopPolling = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await setParams(4, 5, parkStore.parkId)
+  await setWaterParamsData(parkStore.parkId)
   startPolling();
 });
 
@@ -343,18 +357,19 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
     display: flex;
     flex-direction: column;
     position: relative;
+    padding-top: 20px;
 
     .btn-group {
       display: flex;
       justify-content: space-evenly;
       position: absolute;
       /* 使用绝对定位 */
-      top: 0px;
+      top: 5px;
       /* 根据需要调整位置 */
       left: 0;
       right: 0;
       margin-bottom: 10px;
-      z-index:100;
+      z-index: 100;
 
       .el-button {
         background-color: #021f66;

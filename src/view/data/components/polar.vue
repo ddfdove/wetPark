@@ -74,7 +74,7 @@ const chartOptions = ref({
         }
     },
     legend: {
-        enabled: false,
+        enabled: true,
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'top',
@@ -187,7 +187,7 @@ const updateChartOptions = (dataList, categories,isExcellent) => {
         return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
     };
     //标题
-    chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
+    // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 };
 // 监听 props.dataList、props.categories 和 props.isExcellent 的变化，并更新 chartOptions
 watch(

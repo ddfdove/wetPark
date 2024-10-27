@@ -38,6 +38,9 @@ import { useRoute } from 'vue-router';
 import {useParkStore} from '@/store/modules/park.js'
 const parkStore=useParkStore()
 const $route = useRoute();
+// onMounted(()=>{
+//   parkStore.getParkIntroduce({paekId:parkStore.paekId})
+// })
 </script>
 
 <style lang="less" scoped>

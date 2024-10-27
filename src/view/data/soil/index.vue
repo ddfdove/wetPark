@@ -42,7 +42,7 @@
                         <BarChart
                             :dataList="{ soilConductivityList: soilChartData.dataList.soilConductivityList, thirdPartySoilElectricalConductivityList: thirdSoilChartData.SoilElectricalConductivityList }"
                             :categories="soilChartData.soilCollectTimeList"
-                            :isExcellent="soilChartData.isSoilExcellent">
+                            :isExcellent="soilChartData.isSoilExcellent" :height="270">
                         </BarChart>
                     </li>
                     <li>
@@ -73,7 +73,7 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
-                            <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+                            <el-pagination background layout="prev, pager, next" :total="total" :page-size="waterInfoParams.pageSize"
                                 @current-change="handlePageChange">
                             </el-pagination>
                         </div>
@@ -108,6 +108,7 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
+import { useParkStore } from '@/store/modules/park.js'
 import { getSoilEquMonitorInfo, getThirdSoilData } from '@/api/index.js'
 import AreaChart from '../components/area.vue'
 import BarChart from '../components/bar.vue'
@@ -115,21 +116,32 @@ import LineChart from '../components/line.vue'
 import AreaRangeChart from '../components/arearange.vue'
 import * as mapping from '@/utils/mapping.js'
 
+
+
+const parkStore = useParkStore()
 const store = useDataStore(); // 使用 Pinia store
 let intervalId = null;
 let isFetching = false;
 const params = ref({
-    timeType: null,
-    number: 5
+  timeType: 4,
+  number: 5,
+  parkId:1
 })
-const setParams = (type, number) => {
-    params.value.timeType = type
-    params.value.number = number
+const setParams = (type, number, parkId) => {
+  if(type) params.value.timeType = type
+  if(number) params.value.number = number
+  if(parkId) params.value.parkId = parkId
 }
-const data = ref({
-    pageSize: '10',
-    pageNum: '1'
+const waterInfoParams=ref({
+  pageSize: 10,
+  pageNum: 1,
+  parkId:1
 })
+const setWaterParamsData = (id) => {
+  // if(pageSize)  waterInfoParams.value.pageSize=pageSize
+  // if(pageNum)  waterInfoParams.value.pageNum=pageNum
+  waterInfoParams.value.parkId=id
+}
 //表格数据土壤信息
 const waterMonitorInfo = ref([])
 const total = ref(0)
@@ -160,7 +172,7 @@ const thirdSoilChartData = ref({
 //获取土壤监测信息
 const getSoilMonInfo = async (data) => {
     try {
-        const res = await getSoilEquMonitorInfo(data);
+        const res = await getSoilEquMonitorInfo(waterInfoParams.value);
         if (res.code === 0) {
             waterMonitorInfo.value = res.data.map(item => {
                 return {
@@ -190,7 +202,7 @@ const fetchData = async () => {
     try {
         await Promise.all([
             store.getSoilData(params.value),
-            getSoilMonInfo(data.value)
+            getSoilMonInfo()
         ]);
 
         mapping.mappingSoil(store.soilData.value, soilChartData.value)
@@ -239,7 +251,7 @@ const fetchAnnualData = async () => {
 };
 //获取实时数据
 const fetchRealTimeData = () => {
-    setParams(null, 5); // 设置为实时数据
+    setParams(4, 5); // 设置为实时数据
     fetchData(); // 获取数据
     thirdSoilChartData.value = {
         SoilTemperatureList: [],    // 土壤温度
@@ -249,8 +261,8 @@ const fetchRealTimeData = () => {
     }
 };
 const handlePageChange = (newPage) => {
-    data.value.pageNum = newPage;
-    getSoilMonInfo(data.value)
+    waterInfoParams.value.pageNum = newPage;
+    getSoilMonInfo(waterInfoParams.value)
 };
 
 const startPolling = () => {
@@ -265,7 +277,9 @@ const stopPolling = () => {
     }
 };
 
-onMounted(() => {
+onMounted(async() => {
+    await setParams(4,5,parkStore.parkId)
+    await setWaterParamsData(parkStore.parkId)
     startPolling();
 });
 
@@ -344,13 +358,14 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         display: flex;
         flex-direction: column;
         position: relative;
+        padding-top: 20px;
 
         .btn-group {
             display: flex;
             justify-content: space-evenly;
             position: absolute;
             /* 使用绝对定位 */
-            top: 0px;
+            top: 5px;
             /* 根据需要调整位置 */
             left: 0;
             right: 0;

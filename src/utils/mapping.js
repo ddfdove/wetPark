@@ -94,32 +94,32 @@ export const keyToChineseMap = {
 };
 //定义各项指标的单位
 export const unitMap = {
-  '水PH值': 'pH',
-  'PH值': 'pH',
-  '溶解氧值': 'mg/L',
-  '溶解氧': 'mg/L',
-  '浊度': 'NTU',
-  '水温': '℃',
-  '叶绿素': 'μg/L',
-  '水电导率': 'μS/cm',
-  '电导率': 'μS/cm',
-  '土壤PH值': 'pH',
-  '温度': '℃',
-  '湿度': '%',
-  '土壤电导率': 'μS/cm',
-  '氮含量': 'mg/kg',
-  '壤磷含量': 'mg/kg',
-  '壤钾含量': 'mg/kg',
-  '空气温度': '℃',
-  '空气湿度': '%',
-  '气压': 'hPa',
-  '二氧化碳': 'ppm',
-  '二氧化硫': 'ppm',
-  '总辐射': 'W/m²',
-  '风向': '°',
-  '风速': 'm/s',
-  '降雨量': 'mm',
-  'PM2.5': 'μg/m³'
+  水PH值: "pH",
+  PH值: "pH",
+  溶解氧值: "mg/L",
+  溶解氧: "mg/L",
+  浊度: "NTU",
+  水温: "℃",
+  叶绿素: "μg/L",
+  水电导率: "μS/cm",
+  电导率: "μS/cm",
+  土壤PH值: "pH",
+  温度: "℃",
+  湿度: "%",
+  土壤电导率: "μS/cm",
+  氮含量: "mg/kg",
+  壤磷含量: "mg/kg",
+  壤钾含量: "mg/kg",
+  空气温度: "℃",
+  空气湿度: "%",
+  气压: "hPa",
+  二氧化碳: "ppm",
+  二氧化硫: "ppm",
+  总辐射: "W/m²",
+  风向: "°",
+  风速: "m/s",
+  降雨量: "mm",
+  "PM2.5": "μg/m³",
 };
 //定义数据的指标
 export const getIndicators = (baseKey, value, min, max, status) => {
@@ -191,7 +191,7 @@ export const getIndicators = (baseKey, value, min, max, status) => {
       // 土壤湿度: 小于最小值为差，大于最大值为优，否则为良
       if (value < min) {
         status.value = "差";
-      } else if (value > max) {                         
+      } else if (value > max) {
         status.value = "优";
       } else {
         status.value = "良";
@@ -242,7 +242,6 @@ export const getIndicators = (baseKey, value, min, max, status) => {
       // 空气温度: 小于最小值为差，大于最大值为优，否则为良
       if (value >= min && value <= max) {
         status.value = "优";
-        
       } else {
         status.value = "差";
       }
@@ -335,17 +334,16 @@ export const getIndicators = (baseKey, value, min, max, status) => {
   }
 
   return status.value;
- 
 };
 //定义日期格式化函数和
 export const formatDate = (date) => {
   if (!date) {
     // 如果 date 为 undefined、null 或空字符串，返回空字符串或其他默认值
-    return '';
+    return "";
   }
-  const dateTimeParts = date.split(' '); // 拆分日期和时间部分
-  const dateParts = dateTimeParts[0].split('-'); // 拆分日期部分
-  
+  const dateTimeParts = date.split(" "); // 拆分日期和时间部分
+  const dateParts = dateTimeParts[0].split("-"); // 拆分日期部分
+
   if (dateParts.length === 1) {
     // 只有年份的情况，如 "2024"
     return date;
@@ -356,12 +354,12 @@ export const formatDate = (date) => {
     // 完整日期的情况，如 "2024-07-02" 或 "2024-07-02 00:00"
     const [year, month, day] = dateParts;
     const formattedDate = `${parseInt(month)}月${parseInt(day)}日`;
-    
+
     if (dateTimeParts.length > 1) {
       // 包含时间部分
       const timePart = dateTimeParts[1];
-      const [hours, minutes] = timePart.split(':');
-      
+      const [hours, minutes] = timePart.split(":");
+
       if (minutes) {
         // 完整时间 "00:00"
         return `${formattedDate} ${hours}:${minutes}`;
@@ -377,25 +375,24 @@ export const formatDate = (date) => {
     // 不符合任何预期格式的情况，返回原日期字符串
     return date;
   }
-}
+};
 
 //映射水数据
-export const mappingWater = (waterData,waterChartData) => {
-
+export const mappingWater = (waterData, waterChartData) => {
   waterChartData.waterCollectTimeList = waterData.collectTimeList;
-  waterChartData.isWaterExcellent = waterData.mapList
+  waterChartData.isWaterExcellent = waterData.mapList;
   waterChartData.dataList.waterPHList = waterData.pHList;
   waterChartData.dataList.waterDissolvedOxygenList = waterData.doList;
   waterChartData.dataList.waterTemperatureList = waterData.wtList;
   waterChartData.dataList.waterConductivityList = waterData.wcList;
   waterChartData.dataList.waterTurbidityList = waterData.tList;
   waterChartData.dataList.waterChlorophyllList = waterData.cList;
-}
+};
 
 //映射土壤数据
-export const mappingSoil = (soilData,soilChartData) => {
+export const mappingSoil = (soilData, soilChartData) => {
   soilChartData.soilCollectTimeList = soilData.collectTimeList;
-  soilChartData.isSoilExcellent = soilData.mapList
+  soilChartData.isSoilExcellent = soilData.mapList;
   soilChartData.dataList.soilPHList = soilData.pHList;
   soilChartData.dataList.soilTemperatureList = soilData.stList;
   soilChartData.dataList.soilMoistureList = soilData.smList;
@@ -403,21 +400,21 @@ export const mappingSoil = (soilData,soilChartData) => {
   soilChartData.dataList.soilNitrogenList = soilData.sncList;
   soilChartData.dataList.soilPhosphorusList = soilData.sphcList;
   soilChartData.dataList.soilPotassiumList = soilData.spocList;
-}
+};
 
 //映射环境数据
-export const mappingEnv = (envData,envChartData) => {
+export const mappingEnv = (envData, envChartData) => {
   envChartData.envCollectTimeList = envData.collectTimeList;
-  envChartData.isEnvExcellent = envData.mapList
+  envChartData.isEnvExcellent = envData.mapList;
   envChartData.dataList.airTemperatureList = envData.airTemperatureList;
   envChartData.dataList.airHumidityList = envData.airHumidityList;
   envChartData.dataList.pm25List = envData.pm2_5List;
-  envChartData.dataList.atmosphericPressureList = envData.atmosphericPressureList;
+  envChartData.dataList.atmosphericPressureList =
+    envData.atmosphericPressureList;
   envChartData.dataList.carbonDioxideList = envData.carbonDeviceList;
   envChartData.dataList.sulfurDioxideList = envData.sulfurDioxideList;
   envChartData.dataList.totalRadiationList = envData.totalRadiationList;
   envChartData.dataList.windDirectionList = envData.windDirection360List;
   envChartData.dataList.windSpeedList = envData.windSpeedList;
   envChartData.dataList.rainfallList = envData.rainList;
-
-}
+};

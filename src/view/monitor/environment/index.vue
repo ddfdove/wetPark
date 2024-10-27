@@ -128,18 +128,23 @@ import TrightChart from './MiddleChart/tRighr.vue'
 import BleftChart from './MiddleChart/bLeft.vue'
 import BrightChart from './MiddleChart/bRight.vue'
 import panelboard from "../../../components/panelboard/index.vue"
+import { useParkStore } from '@/store/modules/park.js'
 
+
+const parkStore = useParkStore()
 
 
 let intervalId = null;
 let isFetching = false;
 const params = ref({
-  timeType: null,
-  number: 5
+  timeType: 4,
+  number: 5,
+  parkId: 1
 })
-const setParams = (type, number) => {
-  params.value.timeType = type
-  params.value.number = number
+const setParams = (type, number, parkId) => {
+  if (type) params.value.timeType = type
+  if (number) params.value.number = number
+  if (parkId) params.value.parkId = parkId
 }
 //水数据
 const waterCollectTimeList = ref([])
@@ -224,10 +229,10 @@ const fetchData = async () => {
   isFetching = true; // 标记正在获取数据
   try {
     await Promise.all([
-      setParams(null, 5),
+      setParams(4, 5),
       store.getWaterData(params.value),
       store.getSoilData(params.value),
-      setParams(null, 6),
+      setParams(4, 6),
       store.getEnvironmentData(params.value)
     ]);
 
@@ -255,7 +260,8 @@ const stopPolling = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async() => {
+  await setParams(4, 5, parkStore.parkId)
   startPolling();
   // console.log('store.waterData.value.pHList',store.waterData.value.pHList);
   // console.log('waterPHList',waterPHList.value);

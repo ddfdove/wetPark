@@ -49,6 +49,14 @@ export const getThirdEnvironmentData = (params) => {
     params,
   });
 };
+//获取水质设备列表
+export const getWaterEquipmentList = (params) => {
+  return http({
+    url: "/api/wp/EquipmentInformation/getByIdsAndNames",
+    method: "get",
+    params,
+  });
+};
 //获取双设备对比信息
 export const getWaterEquipmentComparison = (params) => {
   return http({
@@ -58,10 +66,11 @@ export const getWaterEquipmentComparison = (params) => {
   });
 };
 //获取点位监测设备信息
-export const getMonitorEquipment = () => {
+export const getMonitorEquipment = (params) => {
   return http({
     url: "/api/wp/location/getWpLocationVo",
     method: "get",
+    params
   });
 };
 // export const getMonitorEquipment1=()=>{
@@ -71,28 +80,36 @@ export const getMonitorEquipment = () => {
 //   });
 // }
 
-//获取水质设备列表
-export const getWaterEquipmentList = (params) => {
-  return http({
-    url: "/api/wp/EquipmentInformation/getByIdsAndNames",
-    method: "get",
-    params,
-  });
-};
+
 //获取水质设备监测信息
-export const getWaterEquMonitorInfo = (data) => {
+// export const getWaterEquMonitorInfo = (data,params) => {
+//   return http({
+//     url: "/api/wp/EquipmentInformation/waterMonitoringList",
+//     method: "post",
+//     data,
+//     params
+//   });
+// };
+export const getWaterEquMonitorInfo = (params) => {
   return http({
-    url: "/api/wp/EquipmentInformation/waterMonitoringList",
-    method: "post",
-    data,
+    url: "/api/wp/EquipmentInformation/getwaterMonitoringList",
+    method: "get",
+    params
   });
 };
 //获取土壤设备监测信息
-export const getSoilEquMonitorInfo = (data) => {
+// export const getSoilEquMonitorInfo = (data) => {
+//   return http({
+//     url: "/api/wp/EquipmentInformation/soilMonitoringList",
+//     method: "post",
+//     data,
+//   });
+// };
+export const getSoilEquMonitorInfo = (params) => {
   return http({
-    url: "/api/wp/EquipmentInformation/soilMonitoringList",
-    method: "post",
-    data,
+    url: "/api/wp/EquipmentInformation/getSoilMonitoringList",
+    method: "get",
+    params,
   });
 };
 //获取环境设备监测信息
@@ -131,10 +148,11 @@ export const getCameraEquipments = (params) => {
 
 //*****************************园区展示 *********************//
 //获取园区展示中间野生动物种类
-export const getBirds = () => {
+export const getBirds = (params) => {
   return http({
     url: "/api/wp/wpBird/getBirds",
     method: "get",
+    params
   });
 };
 //获取园区展示种群趋势分析

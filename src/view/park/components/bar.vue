@@ -34,7 +34,7 @@ const chartOptions = ref({
         type: "cylinder",
         backgroundColor: "#030025",
         spacing: [0, 0, 0, 0], // 去掉图表的内边距
-        height: 290,
+        height: 270,
         width: 600,
         options3d: {
             enabled: true,

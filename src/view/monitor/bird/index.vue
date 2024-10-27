@@ -214,7 +214,7 @@ import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { ElMessage } from 'element-plus'
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import { ArrowDown } from '@element-plus/icons-vue'
-import Carousel from './carousel.vue'
+// import Carousel from './carousel.vue'
 import panelboard from "../../../components/panelboard/index.vue"
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
@@ -567,8 +567,8 @@ const startPolling = async () => {
 
   await fetchData(); // 初始加载数据
 
-  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {

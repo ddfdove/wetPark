@@ -23,7 +23,7 @@
               <el-table-column v-if="item.name !== 'tv'" prop="parkAttractionNames" label="地点" width="160" />
               <el-table-column v-if="item.name !== 'tv'" prop="device" label="设备" width="160">
                 <template #default="scope">
-                 {{ scope.row.totalNum }}
+                  {{ scope.row.totalNum }}
                 </template>
               </el-table-column>
               <el-table-column v-if="item.name === 'tv'" prop="cameraName" label="监控点名称" width="160" />
@@ -76,9 +76,7 @@ watch(
     if (Array.isArray(newValue)) {
       console.log('dataList', newValue);
       tabsList.value = newValue.map((item) => {
-        if (item.label === "tv") {
-          console.log('对吗', item.label === "tv");
-          // 处理 "camera" 选项卡的数据
+        if (item.label === "tv" && Array.isArray(item.tvdata)) {
           return {
             label: item.name,
             name: item.label,
@@ -91,19 +89,20 @@ watch(
             })),
           };
         } else {
-          // 处理其他选项卡的数据
+          console.log('否则');
           return {
             label: item.name,
             name: item.label,
-            data: item.data.map((dataItem) => ({
+            data: Array.isArray(item.data) ? item.data.map((dataItem) => ({
               parkNames: dataItem.parkNames,
               parkAttractionNames: dataItem.parkAttractionNames,
               onlineNum: dataItem.onlineNum,
               totalNum: dataItem.totalNum,
               detail: dataItem.detail,
-            })),
+            })) : [], // 如果 data 不是数组，返回空数组
           };
         }
+
       });
       console.log('tabsList.value', tabsList.value);
       // 设置默认激活的选项卡，如果未设置

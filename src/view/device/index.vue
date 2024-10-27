@@ -65,10 +65,13 @@ import { ElMessage, ElTooltip } from "element-plus"; // 引入 ElMessage 组件
 import MeasureTool from "@/utils/cesiumCtrl/measure.js";
 import DrawTool from "@/utils/cesiumCtrl/drawGraphic";
 import { restorePosition } from '@/utils/cesiumCtrl/position.js'
+import { useParkStore } from '@/store/modules/park.js'
+
 import Left from './left.vue'
 import Device from './device.vue'
 import Right from './right.vue'
 
+const parkStore = useParkStore()
 const buttonBackgroundImage = ref('/cut/toolBox.png');
 const props = defineProps({ scale: Number })
 const viewer = ref(null)
@@ -93,11 +96,17 @@ const camerasParams = ref({
   pageNo: 1,
   pageSize: 20
 })
+const monitorParams = ref({
+  parkId: 1
+})
+const setParams = () => {
+  monitorParams.value.parkId = parkStore.parkId
+}
 //设备经纬度
 const EquimentLatAndLong = ref([])
 const getMonitorEqu = async () => {
   try {
-    const res = await getMonitorEquipment();
+    const res = await getMonitorEquipment(monitorParams.value);
     if (res.code == 0) {
       monitorEqu.value = res.data;
 
@@ -105,14 +114,13 @@ const getMonitorEqu = async () => {
       const cameraData = res.data.find(item => item.label === "tv");
 
       if (cameraData && cameraData.tvdata) {
-        // 提取经纬度并映射到新的数组
+        // 提取经纬度并映射到新的数
         EquimentLatAndLong.value = cameraData.tvdata.map(camera => ({
           latitude: camera.latitude,
           longitude: camera.longitude,
           cameraName: camera.cameraName,
           cameraIndexCode: camera.cameraIndexCode
         }));
-        console.log('EquimentLatAndLong.value', EquimentLatAndLong.value);
       } else {
         EquimentLatAndLong.value = [];
         console.log('摄像头数据未找到');
@@ -148,6 +156,7 @@ const fetchData = async () => {
 };
 
 const startPolling = () => {
+
   fetchData(); // 初始加载数据
   // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
   intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
@@ -161,7 +170,8 @@ const stopPolling = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await setParams()
   startPolling();
   switchMap()
   isMapInitialized.value = true
@@ -262,10 +272,10 @@ const addBillboards = (viewer) => {
       const longitude = parseFloat(item.longitude);
       const height = 10;
 
-       if (isNaN(latitude) || isNaN(longitude)) {
-        
-         return;
-       }
+      if (isNaN(latitude) || isNaN(longitude)) {
+
+        return;
+      }
 
       // 根据 item.name 设置不同的图片路径
       let imageUrl;
@@ -577,10 +587,10 @@ const switchMap = () => {
     if (pickedObject && pickedObject.id && pickedObject.id.name === 'camera') {
       // 如果拾取到了带有 'camera' 名称的实体
       showIntroduce.value = !showIntroduce.value;
-     
+
       // 获取实体的 cameraCode
-       cameraCode.value = pickedObject.id.properties.cameraCode.getValue();
-       console.log('cameraCode.value',cameraCode.value);
+      cameraCode.value = pickedObject.id.properties.cameraCode.getValue();
+      console.log('cameraCode.value', cameraCode.value);
     } else {
       showIntroduce.value = false;
     }

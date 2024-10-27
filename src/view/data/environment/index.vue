@@ -107,6 +107,7 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
+import { useParkStore } from '@/store/modules/park.js'
 import { getThirdEnvironmentData } from '@/api/index.js'
 import * as mapping from '@/utils/mapping.js'
 import AreaChart from '../components/area.vue'
@@ -116,15 +117,20 @@ import lineChart from '../components/line.vue'
 import PolarChart from '../components/polar.vue'
 
 
+
+const parkStore = useParkStore()
+
 let intervalId = null;
 let isFetching = false;
 const params = ref({
-    timeType: null,
-    number: 5
+  timeType: 4,
+  number: 5,
+  parkId:1
 })
-const setParams = (type, number) => {
-    params.value.timeType = type
-    params.value.number = number
+const setParams = (type, number, parkId) => {
+  if(type) params.value.timeType = type
+  if(number) params.value.number = number
+  if(parkId) params.value.parkId = parkId
 }
 
 //环境数据
@@ -226,7 +232,7 @@ const fetchAnnualData = async () => {
 };
 //获取实时数据
 const fetchRealTimeData = () => {
-    setParams(null, 5); // 设置为实时数据
+    setParams(4, 5); // 设置为实时数据
     fetchData(); // 获取数据
     thirdenvChartData.value = {
         thirdPartyEryangValueList: [], // 二氧化碳
@@ -254,7 +260,8 @@ const stopPolling = () => {
     }
 };
 
-onMounted(() => {
+onMounted(async() => {
+    await setParams(4,5,parkStore.parkId)
     startPolling();
 });
 
@@ -405,13 +412,14 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
         display: flex;
         flex-direction: column;
         position: relative;
+        padding-top: 20px;
 
         .btn-group {
             display: flex;
             justify-content: space-evenly;
             position: absolute;
             /* 使用绝对定位 */
-            top: 0px;
+            top: 10px;
             /* 根据需要调整位置 */
             left: 0;
             right: 0;

@@ -8,8 +8,8 @@ import Cookies from 'js-cookie'
 import ElementPlus from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import 'element-plus/dist/index.css';
-import VueVideoPlayer from '@videojs-player/vue';
-import 'video.js/dist/video-js.css';
+// import VueVideoPlayer from '@videojs-player/vue';
+// import 'video.js/dist/video-js.css';
 import weatherLiquidfill from 'vue-weather-liquidfill'
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/css/fontawesome.css';
@@ -53,7 +53,7 @@ app.use(router);
 app.use(store)
 app.use(HighchartsVue);
 app.use(ElementPlus,{locale:zhCn});
-app.use(VueVideoPlayer);
+// app.use(VueVideoPlayer);
 app.use(weatherLiquidfill)
 // app.use(VueSkycons)
 app.mount('#app');

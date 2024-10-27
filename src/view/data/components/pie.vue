@@ -6,7 +6,7 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue"
-import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate,unitMap } from '@/utils/mapping.js'
+import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate, unitMap } from '@/utils/mapping.js'
 // 定义组件的 props
 const props = defineProps({
     dataList: {
@@ -34,7 +34,7 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    height:{
+    height: {
         type: Number,
         default: 290
     },
@@ -75,24 +75,24 @@ const chartOptions = ref({
             zMin: 0,
             dataLabels: {
                 enabled: true,
-                format:'{point.y}',
+                format: '{point.y}',
                 distance: -40,
                 style: {
-                  color: 'rgb(255,204,0)',
-                  
-                  fontSize: "14px"
+                    color: 'rgb(255,204,0)',
+
+                    fontSize: "14px"
                 }
-                
+
             }
         }
     },
     legend: {
-    enabled: true,
-    layout: 'horizontal',
-    align: 'center',
-    verticalAlign: 'top',
-    itemStyle: { 'color': '#FFFFFF' }
-  },
+        enabled: true,
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'top',
+        itemStyle: { 'color': '#FFFFFF' }
+    },
     tooltip: {
         enable: false,
         headerFormat: '',
@@ -166,33 +166,33 @@ const findExcellentRange = (baseKey, isExcellent) => {
     return isExcellent.find(item => item[`${baseKey}_min`] !== undefined && item[`${baseKey}_max`] !== undefined);
 };
 // 更新 chartOptions 的方法
-const updateChartOptions = (dataList, categories,isExcellent) => {
+const updateChartOptions = (dataList, categories, isExcellent) => {
     if (!dataList || !categories) {
         return; // 数据不完整时直接返回
     }
-   
-     // 使用 map 方法处理每个日期字符串
-     const cleanedCategories = categories.map(date => formatDate(date));
+
+    // 使用 map 方法处理每个日期字符串
+    const cleanedCategories = categories.map(date => formatDate(date));
     chartOptions.value.series = Object.keys(dataList).map(key => {
         return {
             name: keyToChineseMap[key],
-            data: dataList[key].map((value, index) =>({
-                
+            data: dataList[key].map((value, index) => ({
+
                 name: cleanedCategories[index],
                 y: value,
                 z: value
             })),
             colors: [
-            'rgb(88,148,255)',
-            'rgb(114,205,215)',
-            'rgb(88,165,92)',
-            'rgb(242,189,66)',
-            'rgb(238,117,47)',
+                'rgb(88,148,255)',
+                'rgb(114,205,215)',
+                'rgb(88,165,92)',
+                'rgb(242,189,66)',
+                'rgb(238,117,47)',
             ]
-            
+
         };
     });
-   // 更新 tooltip 中 pointFormatter 的数据
+    // 更新 tooltip 中 pointFormatter 的数据
     chartOptions.value.tooltip.pointFormatter = function () {
         const getEnglishName = (chineseName) => {
             for (const key in keyToChineseMap) {
@@ -212,13 +212,13 @@ const updateChartOptions = (dataList, categories,isExcellent) => {
             getIndicators(englishName, this.y, min.value, max.value, status)
 
         }
-        
+
         // 获取对应的单位，如果没有找到则使用空字符串
         const unit = unitMap[chineseName] || '';
         return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
     };
     // chartOptions.value.xAxis.categories = cleanedCategories;
-     //标题显示
+    //标题显示
      chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 }
 
