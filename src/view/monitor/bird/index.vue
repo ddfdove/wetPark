@@ -567,8 +567,8 @@ const startPolling = async () => {
 
   await fetchData(); // 初始加载数据
 
-  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {
