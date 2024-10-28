@@ -91,6 +91,10 @@ export const keyToChineseMap = {
   thirdPartyRainfallValueList: "雀羚飞降雨量",
   pm25List: "PM2.5",
   thirdPartyPm25ValueList: "雀羚飞PM2.5",
+  regionalPersonnelData: "区域人员分布",
+  gardenTopData: "景区人流Top5",
+  seasonList: "季增长",
+  dayList: "月增长",
 };
 //定义各项指标的单位
 export const unitMap = {
@@ -119,6 +123,11 @@ export const unitMap = {
   风向: "°",
   风速: "m/s",
   降雨量: "mm",
+  "PM2.5": "μg/m³",
+  区域人员分布: "人",
+  景区人流Top5: "人",
+  季增长: "只",
+  月增长: "只",
   "PM2.5": "μg/m³",
 };
 //定义数据的指标
@@ -349,7 +358,8 @@ export const formatDate = (date) => {
     return date;
   } else if (dateParts.length === 2) {
     // 只有年月的情况，如 "2024-07"
-    return date;
+    const [year, month] = dateParts;
+    return `${parseInt(month)}月`; // 只有年月的情况，如 "2024-08"
   } else if (dateParts.length === 3) {
     // 完整日期的情况，如 "2024-07-02" 或 "2024-07-02 00:00"
     const [year, month, day] = dateParts;

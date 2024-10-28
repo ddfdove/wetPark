@@ -11,15 +11,6 @@ import {keyMap,colorMap,keyToChineseMap,formatDate} from '@/utils/mapping.js'
 const props = defineProps({
     dataList: {
         type: Object,
-        // default: () => {
-        //     return {
-        //         series: [
-        //             { name: '土壤湿度', data: [88, 232, 876, 312, 94] },
-        //             { name: '土壤温度', data: [842, 512, 132, 332, 958] }
-        //         ]
-        //     }
-
-        // }
         required: true
     },
     categories: {

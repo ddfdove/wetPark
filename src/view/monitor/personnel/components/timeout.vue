@@ -1,67 +1,99 @@
 <template>
     <div>
-        <highcharts :options="chartOptions" ref="chart"></highcharts>
+      <highcharts :options="chartOptions" ref="chart"></highcharts>
     </div>
-</template>
-
-<script setup>
-import { ref, reactive } from "vue"
-
-const chartOptions = ref({
-	chart: {
-		type: 'pie',
-        backgroundColor: 'rgba(0,0,0,0)',
-		options3d: {
-			enabled: true,
-			alpha: 45,
-			beta: 0
-		},
-        height: 320
-	},
-	title: {
-		text: ''
-	},
-	tooltip: {
-		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-	},
-    legend: {
-        enabled:true,
-        // layout: 'vertical',
-        align: 'center',
-        verticalAlign: 'bottom',
-        symbolHeight:14,
-        symbolWidth:20,
-        symbolRadius:0,
-        itemStyle:{'color':'#FFFFFF'}
+  </template>
+  
+  <script setup>
+  import { ref, watchEffect } from 'vue';
+  
+  const props = defineProps({
+    dataList: {
+      type: Array,
+      default: () => []
+    }
+  });
+  
+  const chartOptions = ref({
+    chart: {
+      type: 'pie',
+      backgroundColor: 'rgba(0,0,0,0)',
+      spacing: [0, 0, 10, 0],
+      height: 260,
+      options3d: {
+        enabled: true,
+        alpha: 45,
+        beta: 0
+      },
     },
-	plotOptions: {
-		pie: {
-			allowPointSelect: true,
-			cursor: 'pointer',
-			depth: 80,
-			dataLabels: {
-				enabled: true,
-				format: '{point.name}'
-			}
-		}
-	},
-	series: [{
-		type: 'pie',
-		name: '',
-		data: [
-			['验收超时',   45.0],
-			['派单超时',       26.8],
-			{
-				name: 'Chrome',
-				y: 12.8,
-				sliced: true,
-				selected: true,
-				depth: 45,
-			},
-			['上门超时',    8.5],
-			['接单超时',     6.2],
-		]
-	}]
-})
-
-</script>
+    title: {
+      text: null,
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        showInLegend: true,
+        depth: 80,
+        dataLabels: {
+          enabled: false,
+          format: '<b>{point.name}</b><br>{point.y} ',
+        }
+      }
+    },
+    legend: {
+      enabled: true,
+      layout: 'horizontal',
+      align: 'center',
+      verticalAlign: 'bottom',
+      symbolHeight: 8,
+      symbolWidth: 8,
+      itemStyle: { color: '#FFFFFF' },
+      labelFormatter: function () {
+        return `
+          <span style="font-size: 14px;">${this.name}</span> </br> </br>
+          <span style="color:${this.color}; font-size: 20px; padding:10px">${this.y}</span>
+        `;
+      }
+    },
+    tooltip: {
+      enable: true,
+      headerFormat: '',
+      backgroundColor: 'rgba(0, 170, 255, 0.15)',
+      borderWidth: 1,
+      borderColor: 'rgba(0, 170, 255, 0.5)',
+      style: {
+        color: '#ffffff',
+      },
+      pointFormat: ' <b> {point.name}</b>: {point.y} '
+    },
+    credits: {
+      enabled: false
+    },
+    exporting: { enabled: false },
+    series: [{
+      name: '超时订单',
+      data: [],  // 初始时为空，等到数据传递过来时再更新
+      colors: [
+        'rgb(255,207,72)',
+        '#e02b41',
+        'rgb(22,132,252)',
+        'rgb(96,181,101)',
+        '#9353F4',
+        '#B126BA ',
+      ]
+    }]
+  });
+  
+  watchEffect(() => {
+    if (props.dataList && props.dataList.length) {
+      chartOptions.value.series[0].data = props.dataList;
+    }
+  });
+  </script>
+  

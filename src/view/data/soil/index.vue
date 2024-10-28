@@ -110,10 +110,10 @@ import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
 import { useParkStore } from '@/store/modules/park.js'
 import { getSoilEquMonitorInfo, getThirdSoilData } from '@/api/index.js'
-import AreaChart from '../components/area.vue'
-import BarChart from '../components/bar.vue'
-import LineChart from '../components/line.vue'
-import AreaRangeChart from '../components/arearange.vue'
+import AreaChart from '../../../components/chart/area.vue'
+import BarChart from '../../../components/chart/bar.vue'
+import LineChart from '../../../components/chart/line.vue'
+import AreaRangeChart from '../../../components/chart/arearange.vue'
 import * as mapping from '@/utils/mapping.js'
 
 

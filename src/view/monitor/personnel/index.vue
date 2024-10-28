@@ -37,7 +37,6 @@
         <div class="mtop" style="margin-top: 10px;">
           <panelboard :chTitle="'人员分布情况'" :enTitle="'Personnel distribution'">
             <div class="mBottom">
-              <!-- <Personnel></Personnel> -->
               <HotMap :dataList="personnelDistributionData"></HotMap>
             </div>
           </panelboard>
@@ -46,9 +45,7 @@
       </li>
       <li id="right">
         <panelboard :chTitle="'区域人员分布对比'" :enTitle="'Staff Distribution'" style="margin-top: 20px;">
-          <!-- <mvcProgress :list="personList" style="width: 530px;margin-top: 50px;"></mvcProgress> -->
-          <!-- <Personnel style="width: 530px;margin-top: 30px;" :dataList="regionalPersonnelData"></Personnel> -->
-          <PolarChart :dataList="{ valueList }" :categories="categoriesList"></PolarChart>
+          <PolarChart :dataList="{ regionalPersonnelData }" :categories="categoriesList" width="530" height="430" :isShowLegend="false"></PolarChart>
           <ul style="display: flex;justify-content: space-evenly;align-items: center;">
             <li @click="getDayRegionalPersonnelData" class="regionalPersonnel"> 年流量</li>
             <li @click="getMonthRegionalPersonnelData" class="regionalPersonnel">月流量</li>
@@ -65,7 +62,8 @@
       </div>
       <div id="bRight">
         <panelboard :chTitle="'景区人流排行Top5'" :enTitle="'ScenicSpot flow ranking'">
-          <Garden class="garden" :dataList="gardenTopData"></Garden>
+          <!-- <Garden class="garden" :dataList="gardenTopData"></Garden> -->
+          <BarChart :dataList="{ gardenTopData: gardenTopData.dataList }" :categories="gardenTopData.categories" height="340" :isShowLegend="false"></BarChart>
         </panelboard>
       </div>
     </div>
@@ -73,78 +71,36 @@
 
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { ref, reactive, onMounted, onUnmounted, onBeforeUnmount, } from 'vue';
-import Timeout from './timeout.vue';
-import Visitors from './visitors.vue';
-import Personnel from './personnel.vue'
-import Regional from './regional.vue'
-import Garden from './garden.vue'
-import HotMap from './hotMap.vue'
+import Timeout from './components/timeout.vue';
+import Visitors from './components/visitors.vue';
+import HotMap from './components/hotMap.vue'
+import PolarChart from "@/components/chart/polar.vue";
+import BarChart from '@/components/chart/bar.vue';
+
 import { useRoute } from 'vue-router';
 import { getVisitorByji, getVisitor, getRegionalPersonnel, getPersonnelDistribution, getTimeRank, getGardenTop } from '@/api/index.js'
-import panelboard from "../../../components/panelboard/index.vue"
-import PolarChart from "./components/polar.vue"
+import panelboard from "@/components/panelboard/index.vue"
+// import PolarChart from "./components/polar.vue"
+
 
 
 const $route = useRoute();
-const isBirdLinkActive = (path: string) => {
-  return $route.path === path ||
-    ($route.path === '/personnel' && path === '/bird') ||
-    ($route.path === '/environment' && path === '/bird');
-};
-let statistic = ref([
-  {
-    description: '一季度',
-    quantity: '120',
-    image: '/cut/square.png',
-    color: '#ffffff'
-  },
-  {
-    description: '二季度',
-    quantity: '5675',
-    image: '/cut/square.png',
-    color: '#FFC300'
-  },
-  {
-    description: '三季度',
-    quantity: '800',
-    image: '/cut/square.png',
-    color: '#FF8D1A'
-  },
-  {
-    description: '四季度',
-    quantity: '3000',
-    image: '/cut/square.png',
-    color: '#00FF85'
-  },
-])
-const personList = reactive([
-  {
-    name: "A区",
-    value: 10,
-  },
-  {
-    name: "B区",
-    value: 14,
-  },
-  {
-    name: "C区",
-    value: 23,
-  }
-])
-const valueList = ref([])
 const categoriesList = ref([])
 const visitorByjiData = ref([])
 const vistorData = ref([])
-const regionalPersonnelData = ref({})
+const regionalPersonnelData = ref([])
 const personnelDistributionData = ref({
   xCategories: [],
   yCategories: [],
   mapData: [],
 });
 const timeRankData = ref([])
-const gardenTopData = ref([])
+const gardenTopData = ref({
+  dataList:[],
+  categories:[]
+})
 let intervalId = null;
 let isFetching = false;
 //季度人流数据
@@ -332,7 +288,7 @@ const getRegionalPersonnelData = async () => {
     const res = await getRegionalPersonnel(type.value); // 替换为实际的 API 请求
     if (res.code == 0) {
       categoriesList.value = res.data.valueList.slice(0, 5).map(item => item.name);
-      valueList.value = res.data.valueList.slice(0, 5).map(item => {
+      regionalPersonnelData.value = res.data.valueList.slice(0, 5).map(item => {
         if (item.data.length > 0) {
           return item.data[0]
         } else {
@@ -398,10 +354,7 @@ const getGardenTopData = async () => {
     if (res.code == 0) {
       gardenTopData.value = {
         categories: res.data.map(item => item.camera_name),
-        series: [{
-          name: '园区Top 5数据',
-          data: res.data.map(item => item.snumber)
-        }]
+        dataList: res.data.map(item => item.snumber)
       };
     }
   } catch (error) {
@@ -424,7 +377,7 @@ const fetchData = async () => {
       getTimeRankData(),
       getGardenTopData()
     ]);
-    console.log('regionalPersonnelData.value', regionalPersonnelData.value);
+    console.log('regionalPersonnelData.value人员分布', regionalPersonnelData.value);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {

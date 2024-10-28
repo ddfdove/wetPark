@@ -110,11 +110,11 @@ import { useDataStore } from '@/store/modules/data.js'
 import { useParkStore } from '@/store/modules/park.js'
 import { getThirdEnvironmentData } from '@/api/index.js'
 import * as mapping from '@/utils/mapping.js'
-import AreaChart from '../components/area.vue'
-import BarChart from '../components/bar.vue'
-import PieChart from '../components/pie.vue'
-import lineChart from '../components/line.vue'
-import PolarChart from '../components/polar.vue'
+import AreaChart from '../../../components/chart/area.vue'
+import BarChart from '../../../components/chart/bar.vue'
+import PieChart from '../../../components/chart/pie.vue'
+import lineChart from '../../../components/chart/line.vue'
+import PolarChart from '../../../components/chart/polar.vue'
 
 
 

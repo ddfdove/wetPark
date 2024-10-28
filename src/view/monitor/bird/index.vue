@@ -108,12 +108,16 @@
           <ul class="statisticBottom" style="margin-top: 10px" v-if="loding">
             <li>
               <div class="monitarChart">
-                <PeopleChart class="border" :dataList="seasonList"></PeopleChart>
+                <!-- <PeopleChart class="border" :dataList="seasonList"></PeopleChart> -->
+                <lineChart class="border" :dataList="{seasonList: seasonList.dataList }" :categories="seasonList.categories"
+                   height="280"></lineChart>
               </div>
             </li>
             <li>
               <div class="monitarChart">
-                <WaterChart class="border" :dataList="dayList"></WaterChart>
+                <!-- <WaterChart class="border" :dataList="dayList"></WaterChart> -->
+                <lineChart class="border" :dataList="{dayList: dayList.dataList }" :categories="dayList.categories"
+                   height="280"></lineChart>
               </div>
             </li>
             <!-- <li>
@@ -214,20 +218,14 @@ import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { ElMessage } from 'element-plus'
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import { ArrowDown } from '@element-plus/icons-vue'
-// import Carousel from './carousel.vue'
-import panelboard from "../../../components/panelboard/index.vue"
+import panelboard from "@/components/panelboard/index.vue"
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
-import PeopleChart from './people.vue'
-import WaterChart from './water.vue'
-import AirChart from './air.vue'
-import axios from 'axios';
+import lineChart from '@/components/chart/line.vue'
 import { getCameraEquipment, getPlaceList, getSearchByPlace, getRealTimeMonitoring, getSpeciesList, getSearchBySpecies, getBirdDetail, getSnapshotBySpecies } from '@/api/index.js'
 import { getBirdsByJi, getBirdsByRi } from "@/api/birddata/index.js";
 import { formatDate } from '@/utils/mapping.js'
-import http from "@/utils/http";
 import Video from './video.vue'
-import H5Video from './h5birdplayer.vue'
 import dayjs from 'dayjs'
 
 
@@ -238,8 +236,8 @@ const firstOptions = ref([]);
 const secondOptions = ref([]);
 const thirdOptions = ref([]);
 const birds = ref([]);
-const seasonList = ref([]);
-const dayList = ref([]);
+const seasonList = ref({});
+const dayList = ref({});
 const loding = ref(false)
 let intervalId = null; // 定时器id
 const birdVideo = ref(null)
@@ -254,7 +252,9 @@ const getBirdsList = async () => {
     //重新构造数据结构
     // console.log('response2', response2.data);
     seasonList.value = configuredBrids(response.data);
+    console.log(' seasonList.value', seasonList.value);
     dayList.value = configuredDayBrids(response2.data);
+    console.log(' dayList.value', dayList.value);
     loding.value = true;
   } catch (error) {
     console.error("Error fetching birds:", error);
@@ -272,40 +272,48 @@ const configuredBrids = (data) => {
     3: "三季度",
     4: "四季度",
   };
+  let result = {
+    // name: data[0].month.slice(0,4),
+    dataList: [],
+    categories: [],
+  };
   let yearMap = {}; // 按年份分组
+  // data.forEach((item) => {
+  //   // 遍历插入数据
+  //   if (!yearMap[item.year]) {
+  //     yearMap[item.year] = {
+  //       name: item.year,
+  //       year: item.year,
+  //       data: [],
+  //       quarter: [],
+  //     };
+  //   }
+  //   yearMap[item.year].data.push(item.new_birds_count);
+  //   yearMap[item.year].quarter.push(quarterMap[item.quarter]);
+  // });
   data.forEach((item) => {
-    // 遍历插入数据
-    if (!yearMap[item.year]) {
-      yearMap[item.year] = {
-        name: item.year,
-        year: item.year,
-        data: [],
-        quarter: [],
-      };
-    }
-    yearMap[item.year].data.push(item.new_birds_count);
-    yearMap[item.year].quarter.push(quarterMap[item.quarter]);
+    const quarter=quarterMap[item.quarter]
+    result.categories.push(quarter);
+    result.dataList.push(item.new_birds_count);
   });
-
-  let obj = Object.values(yearMap); // 转换为数组
-  return obj;
+  return result;
 };
 //日增长
 const configuredDayBrids = (data) => {
   // console.log('年',data[0].momth.slice(0,4));
   
   let result = {
-    name: data[0].month.slice(0,4),
-    data: [],
-    new_birds_count: [],
+    // name: data[0].month.slice(0,4),
+    dataList: [],
+    categories: [],
   };
 
-  data.slice(0, 12).forEach((item) => {
-    result.data.push(item.month);
-    result.new_birds_count.push(item.new_birds_count);
+  data.forEach((item) => {
+    result.categories.push(item.month);
+    result.dataList.push(item.new_birds_count);
   });
 
-  return [result];
+  return result;
 };
 const videoCode = ref('9dd014fd77964be29b236769949dfbdf');
 const birdVideoSrc = ref('ws://135.131.1.10:559/openUrl/39wIwdq')

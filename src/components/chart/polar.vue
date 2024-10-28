@@ -19,12 +19,19 @@ const props = defineProps({
     },
     isExcellent: {
         type: Array,
-        required: true
     },
     height: {
         type: Number,
         default: 290
     },
+    width: {
+        type: Number,
+
+    },
+    isShowLegend: {
+        type: Boolean,
+        default: true
+    }
 
 });
 const chartOptions = ref({
@@ -34,6 +41,7 @@ const chartOptions = ref({
         // backgroundColor: '#030632',
         backgroundColor: 'transparent',
         height: props.height,
+        width: props.width,
         // spacing: [0, 0, 0, 0]
     },
     title: {
@@ -121,7 +129,7 @@ const findExcellentRange = (baseKey, isExcellent) => {
     return isExcellent.find(item => item[`${baseKey}_min`] !== undefined && item[`${baseKey}_max`] !== undefined);
 };
 // 更新 chartOptions 的方法
-const updateChartOptions = (dataList, categories,isExcellent) => {
+const updateChartOptions = (dataList, categories, isExcellent) => {
     // console.log('props.dataList',dataList);
     // console.log('props.categories',categories);
     // console.log('props.isExcellent',isExcellent);
@@ -184,23 +192,26 @@ const updateChartOptions = (dataList, categories,isExcellent) => {
         }
         // 获取对应的单位，如果没有找到则使用空字符串
         const unit = unitMap[chineseName] || '';
-        return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
+        return isExcellent && isExcellent.length > 0
+            ? `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br>`
+            : `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}<br>`;
     };
     //标题
     // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 };
 // 监听 props.dataList、props.categories 和 props.isExcellent 的变化，并更新 chartOptions
 watch(
-    [() => props.dataList, () => props.categories, () => props.isExcellent],
-    ([newDataList, newCategories, newIsExcellent]) => {
+    [() => props.dataList, () => props.categories, () => props.isExcellent, () => props.isShowLegend],
+    ([newDataList, newCategories, newIsExcellent, newIsShowLegend]) => {
         updateChartOptions(newDataList, newCategories, newIsExcellent);
+        chartOptions.value.legend.enabled = newIsShowLegend;
     },
     { immediate: true }
 );
 
 // 初次加载时更新 chartOptions
 onMounted(() => {
-    
+
     updateChartOptions(props.dataList, props.categories, props.isExcellent);
 });
 </script>

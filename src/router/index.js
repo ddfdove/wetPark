@@ -105,16 +105,7 @@ const routes = [
         },
       },
     ],
-  },
-
-  {
-    path: "/message",
-    component: () => import("../view/message/index.vue"),
-    meta: {
-      keepAlive: true,
-      title: "message",
-    },
-  },
+  }
 ];
 
 // 创建路由对象

@@ -109,10 +109,10 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useDataStore } from '@/store/modules/data.js'
 import { getWaterEquMonitorInfo, getThirdWaterData } from '@/api/index.js'
-import AreaChart from '../components/area.vue'
-import AreaRangeChart from '../components/arearange.vue'
-import BarChart from '../components/bar.vue'
-import lineChart from '../components/line.vue'
+import AreaChart from '@/components/chart/area.vue'
+import AreaRangeChart from '@/components/chart/arearange.vue'
+import BarChart from '@/components/chart/bar.vue'
+import lineChart from '@/components/chart/line.vue'
 import * as mapping from '@/utils/mapping.js'
 import { useParkStore } from '@/store/modules/park.js'
 

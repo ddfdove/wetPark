@@ -31,12 +31,15 @@ const props = defineProps({
     },
     isExcellent: {
         type: Array,
-        required: true
     },
     height: {
         type: Number,
         default: 290
     },
+    isShowLegend:{
+        type:Boolean,
+        default:true
+    }
 });
 const chartOptions = ref({
     chart: {
@@ -101,6 +104,7 @@ const chartOptions = ref({
         // max: props.parameters.max //最大值
     },
     tooltip: {
+        shared: true,
         backgroundColor: 'rgba(0, 170, 255, 0.15)', // 提示框背景色
         borderWidth: 1, // 提示框边框宽度
         borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
@@ -133,7 +137,7 @@ const chartOptions = ref({
         },
     },
     legend: {
-        enabled: true,
+        enabled: props.isShowLegend,
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'top',
@@ -221,7 +225,9 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
 
         // 获取对应的单位，如果没有找到则使用空字符串
         const unit = unitMap[chineseName] || '';
-        return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
+        return isExcellent && isExcellent.length > 0
+            ? `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br>`
+            : `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}<br>`;
     };
     //标题显示
     // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '柱状图';
@@ -270,9 +276,11 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
 // };
 // 监听 props.dataList、props.categories 和 props.isExcellent 的变化，并更新 chartOptions
 watch(
-    [() => props.dataList, () => props.categories, () => props.isExcellent],
-    ([newDataList, newCategories, newIsExcellent]) => {
-        updateChartOptions(newDataList, newCategories, newIsExcellent);
+    [() => props.dataList, () => props.categories, () => props.isExcellent,() => props.isShowLegend],
+    ([newDataList, newCategories, newIsExcellent,newIsShowLegend]) => {
+        updateChartOptions(newDataList, newCategories, newIsExcellent,);
+        // 也可以在这里更新图例
+        chartOptions.value.legend.enabled = newIsShowLegend;
     },
     { immediate: true }
 );

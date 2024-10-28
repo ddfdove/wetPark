@@ -10,8 +10,13 @@
         <li>
           <panelboard :chTitle="'水质监测'" :enTitle="'Water quality Monitoring'">
             <div class="monitarChart">
-              <LineChart :dataList="waterChartData.dataList" :categories="waterChartData.waterCollectTimeList"
-                :isExcellent="waterChartData.isWaterExcellent">
+              <LineChart
+                :dataList="{
+                  waterPHList: waterChartData.dataList.waterPHList, waterDissolvedOxygenList: waterChartData.dataList.waterDissolvedOxygenList,
+                  waterTurbidityList: waterChartData.dataList.waterTurbidityList, waterTemperatureList: waterChartData.dataList.waterTemperatureList
+                }"
+                :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent"
+                height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -19,8 +24,11 @@
         <li>
           <panelboard :chTitle="'土壤监测'" :enTitle="'Soil Monitoring'">
             <div class="monitarChart">
-              <LineChart :dataList="soilChartData.dataList" :categories="soilChartData.soilCollectTimeList"
-                :isExcellent="soilChartData.isSoilExcellent">
+              <LineChart :dataList="{
+                 soilPHList: soilChartData.dataList.soilPHList, soilTemperatureList: soilChartData.dataList.soilTemperatureList,
+                 soilMoistureList: soilChartData.dataList.soilMoistureList, soilConductivityList: soilChartData.dataList.soilConductivityList
+              }" :categories="soilChartData.soilCollectTimeList"
+                :isExcellent="soilChartData.isSoilExcellent" height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -28,8 +36,11 @@
         <li>
           <panelboard :chTitle="'环境监测'" :enTitle="'Environmental Monitoring'">
             <div class="monitarChart">
-              <LineChart :dataList="envChartData.dataList" :categories="envChartData.envCollectTimeList"
-                :isExcellent="envChartData.isEnvExcellent"></LineChart>
+              <LineChart :dataList="{
+                 airTemperatureList: envChartData.dataList.airTemperatureList, airHumidityList: envChartData.dataList.airHumidityList,
+                 pm25List: envChartData.dataList.pm25List, atmosphericPressureList: envChartData.dataList.atmosphericPressureList
+              }" :categories="envChartData.envCollectTimeList"
+                :isExcellent="envChartData.isEnvExcellent" height="190"></LineChart>
             </div>
           </panelboard>
         </li>
@@ -171,8 +182,8 @@
             </div>
           </div>
           <div>
-            <BarChart :dataList="waterCompData" :categories="valueList" :isExcellent="isWaterComExcellent"
-              :devicesList="devicesList"></BarChart>
+            <CylinderChart :dataList="waterCompData" :categories="valueList" :isExcellent="isWaterComExcellent"
+              :devicesList="devicesList"></CylinderChart>
           </div>
         </panelboard>
       </div>
@@ -195,10 +206,12 @@ import "moment/dist/locale/zh-cn";
 
 
 import PopulationChart from './components/population.vue'
-import LineChart from './components/line.vue'
-import BarChart from './components/bar.vue'
+// import LineChart from './components/line.vue'
+import LineChart from '@/components/chart/line.vue'
+// import BarChart from '@/components/chart/bar.vue'
+import CylinderChart from '../../components/chart/cylinder.vue'
 import panelboard from "@/components/panelboard/index.vue"
-import mvcProgress from "./components/mvc-progress.vue"
+import mvcProgress from "../../components/chart/mvc-progress.vue"
 import Video from './components/video.vue'
 import Video1 from './components/video1.vue'
 

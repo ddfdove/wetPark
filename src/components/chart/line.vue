@@ -19,7 +19,6 @@ const props = defineProps({
     },
     isExcellent: {
         type: Array,
-        required: true
     },
     height: {
         type: Number,
@@ -170,7 +169,7 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
 
         return {
             // name: isEmptyData ? '' : keyToChineseMap[key],
-            name:  keyToChineseMap[key],
+            name: keyToChineseMap[key],
             data: seriesData,
             color: colorMap[key],
             lineWidth: 1
@@ -202,11 +201,14 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
             min.value = excellentRange[`${baseKey}_min`];
             max.value = excellentRange[`${baseKey}_max`];
             getIndicators(englishName, this.y, min.value, max.value, status)
-
         }
         // 获取对应的单位，如果没有找到则使用空字符串
         const unit = unitMap[chineseName] || '';
-        return `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br> `;
+        // 如果 isExcellent 未传入或为空，则不显示状态
+        console.log('status的值',status);
+        return isExcellent && isExcellent.length > 0
+            ? `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}&nbsp&nbsp&nbsp&nbsp ${status.value}<br>`
+            : `<b>${chineseName}</b>&nbsp&nbsp&nbsp&nbsp${this.y}&nbsp${unit}<br>`;
     };
 };
 const updateYAxis = (globalMin, globalMax) => {

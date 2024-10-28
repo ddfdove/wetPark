@@ -58,7 +58,7 @@
             <li>
               <div style="margin:10px 0 40px 0;">
                 <lineChart :dataList="{ airTemperatureList, airHumidityList }" :categories="evnCollectTimeList"
-                  :isExcellent="isEnvExcellent">
+                  :isExcellent="isEnvExcellent" :height="380">
                 </lineChart>
               </div>
             </li>
@@ -71,7 +71,7 @@
             <li style="flex:1">
               <div>
                 <lineChart :dataList="{ carbonDioxideList, sulfurDioxideList }" :categories="evnCollectTimeList"
-                  :isExcellent="isEnvExcellent">
+                  :isExcellent="isEnvExcellent" height="390">
                 </lineChart>
               </div>
             </li>
@@ -118,15 +118,11 @@
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute } from 'vue-router';
 import { useDataStore } from '@/store/modules/data.js'
-import AreaChart from './area.vue'
-import BarChart from './bar.vue'
-import PieChart from './pie.vue'
-import lineChart from './line.vue'
-import PyramidChart from './pyramid.vue'
-import TleftChart from './MiddleChart/tLeft.vue'
-import TrightChart from './MiddleChart/tRighr.vue'
-import BleftChart from './MiddleChart/bLeft.vue'
-import BrightChart from './MiddleChart/bRight.vue'
+import AreaChart from '@/components/chart/area.vue'
+import BarChart from '@/components/chart/bar.vue'
+import PieChart from '@/components/chart/variablepie.vue'
+import lineChart from '@/components/chart/line.vue'
+import PyramidChart from '@/components/chart/pyramid.vue'
 import panelboard from "../../../components/panelboard/index.vue"
 import { useParkStore } from '@/store/modules/park.js'
 

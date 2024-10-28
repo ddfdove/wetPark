@@ -11,23 +11,10 @@ import { keyMap, colorMap, keyToChineseMap, getIndicators, formatDate, unitMap }
 const props = defineProps({
     dataList: {
         type: Object,
-        // default: () => {
-        //     return {
-        //         series: [
-        //             { name: '土壤湿度', data: [88, 232, 876, 312, 94] },
-        //             { name: '土壤温度', data: [842, 512, 132, 332, 958] }
-        //         ]
-        //     }
-
-        // }
         required: true
     },
     categories: {
         type: Array,
-        // default: () => {
-        //   return  ['今日', '本月', '本季度', '上季度', '全年']
-
-        // }
         required: true
     },
     isExcellent: {
@@ -95,7 +82,7 @@ const chartOptions = ref({
     },
     tooltip: {
         enable: false,
-        headerFormat: '',
+        headerFormat: '{point.key}<br>',
         backgroundColor: 'rgba(0, 170, 255, 0.5)', // 提示框背景色
         borderWidth: 1, // 提示框边框宽度
         borderColor: ' rgba(0, 170, 255, 0.5)', // 提示框边框颜色
@@ -106,55 +93,7 @@ const chartOptions = ref({
         enabled: false
     },
     exporting: { enabled: false },
-    series: [{
-        // type: "pie",
-        // minPointSize: 10,
-
-        // borderRadius: 3,
-        // itemStyle: {
-        //     normal: {
-        //         borderColor: '#fff',
-        //         borderWidth: '0'
-        //     },
-        //     emphasis: {
-        //         borderColor: '#fff',
-        //         borderWidth: '0'
-        //     }
-        // },
-        data: [{
-            name: '数据一',
-            y: 40,
-            z: 400,
-
-        }, {
-            name: '数据二',
-            y: 32,
-            z: 320,
-
-        }, {
-            name: '数据三',
-            y: 28,
-            z: 280,
-
-        }, {
-            name: '数据四',
-            y: 25,
-            z: 250,
-
-        }, {
-            name: '数据五',
-            y: 18,
-            z: 180,
-
-        }],
-        colors: [
-            'rgb(88,148,255)',
-            'rgb(114,205,215)',
-            'rgb(88,165,92)',
-            'rgb(242,189,66)',
-            'rgb(238,117,47)',
-        ]
-    }]
+    series: []
 })
 let min = ref(null)
 let max = ref(null)
