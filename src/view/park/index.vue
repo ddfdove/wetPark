@@ -209,9 +209,9 @@ import PopulationChart from './components/population.vue'
 // import LineChart from './components/line.vue'
 import LineChart from '@/components/chart/line.vue'
 // import BarChart from '@/components/chart/bar.vue'
-import CylinderChart from '../../components/chart/cylinder.vue'
+import CylinderChart from '@/components/chart/cylinder.vue'
 import panelboard from "@/components/panelboard/index.vue"
-import mvcProgress from "../../components/chart/mvc-progress.vue"
+import mvcProgress from "@/components/chart/mvc-progress.vue"
 import Video from './components/video.vue'
 import Video1 from './components/video1.vue'
 
