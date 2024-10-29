@@ -126,16 +126,18 @@
         </panelboard>
       </div>
       <div class="rMiddle">
+        <el-button type="primary" @click="downloadFile">下载海康插件</el-button>
         <panelboard :chTitle="'地区摄像'" :enTitle="'Regional Photography'">
+          
           <div class="photography">
             <div>
               <div class="video-grid">
                 <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item">
-                  <div ref="caemraContainer" style="height:85%">
+                  <div ref="caemraContainer" style="height:80%">
                     <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth"
                       :height="cameraHeight"></Video>
                   </div>
-                  <p @click="handleItemClick(source, index)" style="font-size: 14px;cursor: pointer;">{{ source.name }}
+                  <p @click="handleItemClick(source, index)" style="font-size: 13px;cursor: pointer;margin-top:2px">{{ source.name }}
                   </p>
                 </div>
               </div>
@@ -638,6 +640,13 @@ const getCameraEquipmentList = async (params) => {
   }
 
 }
+const downloadFile = () => {
+  const downloadUrl = "http://111.12.140.2:13338/VideoWebPlugin.exe";
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = "VideoWebPlugin.exe"; // 可选，指定下载文件名
+  link.click();
+};
 //双设备对比相关函数
 const handleMouseOver = (event) => {
   event.target.style.backgroundColor = '#223e87'; // 更改背景颜色
@@ -736,8 +745,8 @@ const fetchData = async () => {
 const startPolling = async () => {
   fetchData(); // 初始加载数据
 
-  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {
@@ -747,12 +756,14 @@ const stopPolling = () => {
 };
 
 onMounted(async () => {
+  nextTick(() => {
+    updateVideoDimensions(); // 初次加载时获取尺寸
+  });
   window.addEventListener('resize', updateVideoDimensions)
   await getParkIntroduce()
   getParkBirds()
   getParkEquirments()
   getCameraEquipmentList(cameraParams.value)
-  updateVideoDimensions()
   startPolling();
   timer.value = setInterval(() => {
     time.value = moment().format('h:mm:ss ')

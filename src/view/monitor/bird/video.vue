@@ -32,9 +32,9 @@ const pubKey = ref('')
 const objData = ref({
     appkey: '26970647',
     secret: 'qx4KcMCRzhoDi5N4uvYN',
-    ip: '135.131.1.10:443',
+    ip: '111.12.140.2',
     playMode: 0, // 播放模式
-    port: 443, // 端口号
+    port: 11443, // 端口号
     layout: '1x1' // 布局
 })
 const initPlugin = () => {
