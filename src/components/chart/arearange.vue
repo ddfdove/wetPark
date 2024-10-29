@@ -157,15 +157,31 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
     }
 
     const { rangeData, currentData } = processData(dataList);
+    // 检查 rangeData 和 currentData 是否有零
+    const hasZeroInRangeData = rangeData.some(range => range[0] <= 0 || range[1] <= 0);
+    const hasZeroInCurrentData = currentData.some(value => value <= 0);
+    const hasZero = hasZeroInRangeData || hasZeroInCurrentData;
+    // 更新 yAxis 设置
+    chartOptions.value.yAxis = {
+        type: hasZero ? 'linear' : 'logarithmic', // 根据数据是否包含零设置 yAxis 类型
+        gridLineInterpolation: 'polygon',
+        lineWidth: 0,
+        labels: {
+            style: {
+                color: '#ffffff',
+                fontSize: "14px",
+            }
+        },
+    };
     // 更新series数据
     chartOptions.value.series = [{
-        name: props.name+'参数范围',
+        name: props.name + '参数范围',
         data: rangeData,
         pointPlacement: 'on',
         zIndex: 0,
         fillOpacity: 0.2
     }, {
-        name: props.name+'参数平均值',
+        name: props.name + '参数平均值',
         type: 'line',
         data: currentData,
         pointPlacement: 'on',
@@ -190,9 +206,9 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
             const englishName = getEnglishName(point.x);
             const baseKey = findBaseKey(englishName); // 使用中文名称找到对应的 baseKey
             const excellentRange = findExcellentRange(baseKey, isExcellent);
-             min.value = excellentRange[`${baseKey}_min`];
-             max.value = excellentRange[`${baseKey}_max`];
-           
+            min.value = excellentRange[`${baseKey}_min`];
+            max.value = excellentRange[`${baseKey}_max`];
+
             getIndicators(englishName, point.y, min.value, max.value, status);
             let rangeInfo = '';
             const unit = unitMap[chineseName] || '';
@@ -204,9 +220,9 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
                 rangeInfo = `: ${avg.toFixed(2)}  ${unit} `;
             }
 
-           
+
             return s + `<b>${point.series.name}</b>: ${rangeInfo}<br>`;
-        }, `<b>${this.x} (整体：${status.value})</b><br/> `) ;
+        }, `<b>${this.x} (整体：${status.value})</b><br/> `);
     };
 };
 watch(
