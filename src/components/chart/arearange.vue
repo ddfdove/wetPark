@@ -54,11 +54,11 @@ const chartOptions = ref({
         }
     },
     yAxis: {
-        // type: 'logarithmic', // 设置为对数轴
+        type: 'logarithmic', // 设置为对数轴
         gridLineInterpolation: 'polygon',
         lineWidth: 0,
         // min: 0,
-        // max: 100, // 设置一个合理的最大值，根据你的数据最大值调整
+        // max: 300, // 设置一个合理的最大值，根据你的数据最大值调整
         // tickPositions: [0, 0.1, 1, 10,  100], // 手动设置刻度线位置
         labels: {
             style: {
