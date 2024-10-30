@@ -126,10 +126,11 @@
         </panelboard>
       </div>
       <div class="rMiddle">
-        <el-button type="primary" @click="downloadFile">下载海康插件</el-button>
+        
         <panelboard :chTitle="'地区摄像'" :enTitle="'Regional Photography'">
           
           <div class="photography">
+            <el-button type="primary" @click="downloadFile" style="position:absolute;top:-50px;right:20px;background: #021f66;border:none">下载视频插件</el-button>
             <div>
               <div class="video-grid">
                 <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item">
@@ -513,7 +514,8 @@ const getParkWildBirds = async () => {
       parkWildBirds.value = res.data.slice(0, 6).map((item) => {
         return {
           name: item.acname,
-          value: item.bid
+          value: item.bid,
+          type:item.protectionLevel
         }
       })
     }
@@ -745,8 +747,8 @@ const fetchData = async () => {
 const startPolling = async () => {
   fetchData(); // 初始加载数据
 
-  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {
@@ -1012,6 +1014,7 @@ onUnmounted(() => {
       display: flex;
       flex-direction: column;
       padding: 0px 25px 0px 25px;
+      position: relative;
       // margin-bottom: 20px;
 
       .video-grid {

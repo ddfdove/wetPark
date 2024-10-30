@@ -171,7 +171,7 @@
         <div class="bird" @click="handleClickOutside">
           <ul>
             <li v-for="(item, index) in birdsStaticList2" :key="index"
-              @click="popUpSnapshot.stop(item.cameraIndexCode)">
+              @click="popUpSnapshot(item.cameraIndexCode)">
               <div>
                 <span class="font-25">{{ item.recognition_count }}</span>
                 <span class="font-18">只</span>
@@ -525,8 +525,8 @@ const popUpSnapshot = async (code) => {
   } else {
     // 如果是新的相机，获取新的数据
     try {
-      const data = await getSnapshotBySpecies({code});
-      imgUrl.value = data.recognition;
+      const res = await getSnapshotBySpecies({code});
+      imgUrl.value = res.data.recognition;
       currentCameraCode.value = code; // 保存当前相机代码
     } catch (error) {
       console.error('实时抓拍错误！', error);
@@ -575,8 +575,8 @@ const startPolling = async () => {
 
   await fetchData(); // 初始加载数据
 
-  // intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
-  intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
+  intervalId = setInterval(fetchData, 3 * 60000); // 每隔3分钟秒获取一次数据
+  // intervalId = setInterval(fetchData, 10000); // 每隔10秒获取一次数据
 };
 const stopPolling = () => {
   if (intervalId) {

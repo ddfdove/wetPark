@@ -1,7 +1,7 @@
 <template>
   <div class="group-progress">
     <div class="progress-item" v-for="(item, index) in newList" :key="index">
-      <div class="progress-name" v-text="item.name"></div>
+      <div class="progress-name" :style="{ background: item.color }" v-text="item.name"></div>
       <div class="progress-bar">
         <el-progress :percentage="item.rate" :color="'linear-gradient(270deg, #3981D4 13%, #2861AF 72%)'"
           :show-text="false" />
@@ -33,6 +33,14 @@ const newList = computed(() => {
   }, { value: 0 })
   list.forEach(item => {
     item.rate = (item.value / max.value) * 100;
+    // 根据 type 设置颜色
+    if (item.type === 1) {
+      item.color = '#f25e00';
+    } else if (item.type === 2) {
+      item.color = '#f2bd42';
+    } else {
+      item.color = '#10a34c';
+    }
   })
   return list;
 })
@@ -60,34 +68,6 @@ const newList = computed(() => {
       border-radius: 26px;
       background: #5397F4;
     }
-
-    &:nth-of-type(1) .progress-name {
-      background: #11c4d4;
-
-    }
-
-    &:nth-of-type(2) .progress-name {
-      background: #73BEF5;
-    }
-
-    &:nth-of-type(3) .progress-name {
-      background: #A015B3;
-    }
-
-    &:nth-of-type(4) .progress-name {
-      background: linear-gradient(281deg, #B126BA 12%, #9353F4 71%);
-    }
-
-    &:nth-of-type(5) .progress-name {
-      background: #D655E7;
-    }
-
-    &:nth-of-type(6) .progress-name {
-      background: #D07EDB;
-    }
-
-
-
 
     .progress-bar {
       flex: 1 1 auto;
