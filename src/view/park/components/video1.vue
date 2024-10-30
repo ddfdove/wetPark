@@ -131,8 +131,8 @@ watch(() => props.cameraIndexCode, (newCode) => {
 })
 // 监听 width 和 height 的变化，动态更新播放器尺寸
 watch([() => props.width, () => props.height], ([newWidth, newHeight]) => {
-    console.log('New width:', newWidth);
-    console.log('New height:', newHeight);
+    // console.log('New width:', newWidth);
+    // console.log('New height:', newHeight);
     if (oWebControl.value) {
         oWebControl.value.JS_Resize(newWidth, newHeight)
 

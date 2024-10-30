@@ -10,12 +10,10 @@
         <li>
           <panelboard :chTitle="'水质监测'" :enTitle="'Water quality Monitoring'">
             <div class="monitarChart">
-              <LineChart
-                :dataList="{
-                  waterPHList: waterChartData.dataList.waterPHList, waterDissolvedOxygenList: waterChartData.dataList.waterDissolvedOxygenList,
-                  waterTurbidityList: waterChartData.dataList.waterTurbidityList, waterTemperatureList: waterChartData.dataList.waterTemperatureList
-                }"
-                :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent"
+              <LineChart :dataList="{
+                waterPHList: waterChartData.dataList.waterPHList, waterDissolvedOxygenList: waterChartData.dataList.waterDissolvedOxygenList,
+                waterTurbidityList: waterChartData.dataList.waterTurbidityList, waterTemperatureList: waterChartData.dataList.waterTemperatureList
+              }" :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent"
                 height="190">
               </LineChart>
             </div>
@@ -25,10 +23,10 @@
           <panelboard :chTitle="'土壤监测'" :enTitle="'Soil Monitoring'">
             <div class="monitarChart">
               <LineChart :dataList="{
-                 soilPHList: soilChartData.dataList.soilPHList, soilTemperatureList: soilChartData.dataList.soilTemperatureList,
-                 soilMoistureList: soilChartData.dataList.soilMoistureList, soilConductivityList: soilChartData.dataList.soilConductivityList
-              }" :categories="soilChartData.soilCollectTimeList"
-                :isExcellent="soilChartData.isSoilExcellent" height="190">
+                soilPHList: soilChartData.dataList.soilPHList, soilTemperatureList: soilChartData.dataList.soilTemperatureList,
+                soilMoistureList: soilChartData.dataList.soilMoistureList, soilConductivityList: soilChartData.dataList.soilConductivityList
+              }" :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent"
+                height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -37,10 +35,10 @@
           <panelboard :chTitle="'环境监测'" :enTitle="'Environmental Monitoring'">
             <div class="monitarChart">
               <LineChart :dataList="{
-                 airTemperatureList: envChartData.dataList.airTemperatureList, airHumidityList: envChartData.dataList.airHumidityList,
-                 pm25List: envChartData.dataList.pm25List, atmosphericPressureList: envChartData.dataList.atmosphericPressureList
-              }" :categories="envChartData.envCollectTimeList"
-                :isExcellent="envChartData.isEnvExcellent" height="190"></LineChart>
+                airTemperatureList: envChartData.dataList.airTemperatureList, airHumidityList: envChartData.dataList.airHumidityList,
+                pm25List: envChartData.dataList.pm25List, atmosphericPressureList: envChartData.dataList.atmosphericPressureList
+              }" :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent" height="190">
+              </LineChart>
             </div>
           </panelboard>
         </li>
@@ -126,19 +124,41 @@
         </panelboard>
       </div>
       <div class="rMiddle">
-        
+
         <panelboard :chTitle="'地区摄像'" :enTitle="'Regional Photography'">
-          
+
           <div class="photography">
-            <el-button type="primary" @click="downloadFile" style="position:absolute;top:-50px;right:20px;background: #021f66;border:none">下载视频插件</el-button>
+            <el-button type="primary" @click="downloadFile"
+              style="position:absolute;top:-50px;right:20px;background: #021f66;border:none">下载视频插件</el-button>
             <div>
+              <!-- <div class="video-grid">
+                单独展示第一个视频
+                <div v-if="SurveillanceVideo && SurveillanceVideo.length > 0">
+                  <div ref="cameraContainer" style="height:80%;width:100%">
+                    <Video :cameraIndexCode="SurveillanceVideo[0].cameraIndexCode" :id="0" :width="cameraWidth"
+                      :height="cameraHeight"></Video>
+                  </div>
+                  <p style="font-size: 13px;cursor: pointer;margin-top:5px">{{ SurveillanceVideo[0].name }}</p>
+                </div>
+
+                遍历展示其余视频
+                <div v-for="(source, index) in SurveillanceVideo.slice(1)" :key="index + 1">
+                  <div style="height:80%;width:100%">
+                    <Video :cameraIndexCode="source.cameraIndexCode" :id="index + 1" :width="cameraWidth"
+                      :height="cameraHeight"></Video>
+                  </div>
+                  <p @click="handleItemClick(source, index + 1)" style="font-size: 13px;cursor: pointer;margin-top:5px">
+                    {{ source.name }}</p>
+                </div>
+              </div> -->
               <div class="video-grid">
                 <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item">
-                  <div ref="caemraContainer" style="height:80%">
+                  <div :ref="el => caemraContainers[index] = el" style="height:80%;width:100%">
                     <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth"
                       :height="cameraHeight"></Video>
                   </div>
-                  <p @click="handleItemClick(source, index)" style="font-size: 13px;cursor: pointer;margin-top:2px">{{ source.name }}
+                  <p @click="handleItemClick(source, index)" style="font-size: 13px;cursor: pointer;margin-top:5px">
+                    {{ source.name }}
                   </p>
                 </div>
               </div>
@@ -308,10 +328,11 @@ const videoHeight = ref(443)
 //获取海康
 const videoContainer = ref(null)
 //地区摄像海康插件宽度
-const cameraWidth = ref(178)
+const cameraWidth = ref(155)
 //地区摄像海康插件高度
-const cameraHeight = ref(103)
-const caemraContainer = ref(null)
+const cameraHeight = ref(72)
+const cameraContainer = ref(null);
+const caemraContainers = ref([]);
 
 //野生鸟类种类数据
 const parkWildBirds = ref([
@@ -490,21 +511,33 @@ const getParkEquirments = async () => {
 }
 
 //根据页面的放大缩小自动获取海康插件的宽高
-const updateVideoDimensions = () => {
+const updateVideoDimensions = async () => {
+  await nextTick();
   if (videoContainer.value) {
+    // console.log('videoContainer.value', videoContainer.value);
     const rect = videoContainer.value.getBoundingClientRect()
     videoWidth.value = Math.max(Math.floor(rect.width)) // 保证最小宽度为 100
     videoHeight.value = Math.max(Math.floor(rect.height)) // 保证最小高度为 100
+    // console.log('videoHeight.value', videoHeight.value);
   }
-  if (caemraContainer.value && Array.isArray(caemraContainer.value)) {
-    caemraContainer.value.forEach((container, index) => {
-      if (container) {  // 这里进一步确保每个元素都存在
-        const rect2 = container.getBoundingClientRect();
-        cameraWidth.value = Math.max(Math.floor(rect2.width)); // 保证最小宽度为 100
-        cameraHeight.value = Math.max(Math.floor(rect2.height)); // 保证最小高度为 100
-      }
-    });
-  }
+
+  // if (cameraContainer.value) {
+  //   console.log('进来了');
+  //   console.log('cameraContainer.value', cameraContainer.value);
+  //   const rect = cameraContainer.value.getBoundingClientRect();
+  //   cameraWidth.value = Math.floor(rect.width);
+  //   cameraHeight.value = Math.floor(rect.height);
+  //   console.log('cameraHeight.value', cameraHeight.value);
+  // }
+  caemraContainers.value.forEach((container) => {
+    if (container) {
+      // console.log('container', container);
+      const rect = container.getBoundingClientRect();
+      cameraWidth.value = Math.max(Math.floor(rect.width)); // 保证最小宽度为 100
+      cameraHeight.value = Math.max(Math.floor(rect.height)); // 保证最小高度为 100
+      // console.log('Updated cameraWidth:', cameraWidth.value, 'cameraHeight:', cameraHeight.value);
+    }
+  });
 }
 //获取园区展示野生鸟类种类
 const getParkWildBirds = async () => {
@@ -515,7 +548,7 @@ const getParkWildBirds = async () => {
         return {
           name: item.acname,
           value: item.bid,
-          type:item.protectionLevel
+          type: item.protectionLevel
         }
       })
     }
@@ -717,16 +750,20 @@ const mappingWaterCom = (waterComData) => {
 const fetchData = async () => {
   if (isFetching) return; // 如果正在获取数据，直接返回
   isFetching = true; // 标记正在获取数据
-  getWeather();
+
   try {
     await Promise.all([
+      getWeather(),
       setParams(4, 5),
       store.getWaterData(params.value),
       store.getSoilData(params.value),
       store.getEnvironmentData(params.value),
       getBirdsPopulation(),
       getParkWildBirds(),
-      fetchOptions()
+      fetchOptions(),
+      getParkBirds(),
+      getParkEquirments(),
+
     ]);
     mapping.mappingWater(store.waterData.value, waterChartData.value)
     mapping.mappingSoil(store.soilData.value, soilChartData.value)
@@ -758,15 +795,11 @@ const stopPolling = () => {
 };
 
 onMounted(async () => {
-  nextTick(() => {
-    updateVideoDimensions(); // 初次加载时获取尺寸
-  });
+  getParkIntroduce()
+  startPolling()
+  await getCameraEquipmentList(cameraParams.value)
+  updateVideoDimensions(); // 更新尺寸
   window.addEventListener('resize', updateVideoDimensions)
-  await getParkIntroduce()
-  getParkBirds()
-  getParkEquirments()
-  getCameraEquipmentList(cameraParams.value)
-  startPolling();
   timer.value = setInterval(() => {
     time.value = moment().format('h:mm:ss ')
   }, 1000)
@@ -1023,29 +1056,30 @@ onUnmounted(() => {
         grid-template-rows: repeat(3, 1fr);
         grid-gap: 10px;
         height: 320px;
+        // width: 580px;
 
-        .video-item {
-          position: relative;
-          overflow: hidden;
+        // .video-item {
+        //   position: relative;
+        //   overflow: hidden;
 
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+        //   img {
+        //     width: 100%;
+        //     height: 100%;
+        //     object-fit: cover;
+        //   }
 
-          .content {
-            position: absolute;
-            top: 55%;
-            left: 10%;
-            /* 文字背景颜色 */
-            color: white;
-            /* 文字颜色 */
-            font-size: 14px;
-            /* 文字大小 */
-          }
+        //   .content {
+        //     position: absolute;
+        //     top: 55%;
+        //     left: 10%;
+        //     /* 文字背景颜色 */
+        //     color: white;
+        //     /* 文字颜色 */
+        //     font-size: 14px;
+        //     /* 文字大小 */
+        //   }
 
-        }
+        // }
 
       }
 

@@ -18,11 +18,11 @@ const props = defineProps({
     },
     width: {
         type: Number,
-        default: 760
+        default: 150
     },
     height: {
         type: Number,
-        default: 443
+        default: 72
     }
 })
 
@@ -126,14 +126,15 @@ const previewVideo = cameraIndexCode => {
 
 // 监听 cameraIndexCode 变化，重新触发预览功能
 watch(() => props.cameraIndexCode, (newCode) => {
+   
     if (newCode) {
         previewVideo(newCode)
     }
 })
 // 监听 width 和 height 的变化，动态更新播放器尺寸
 watch([() => props.width, () => props.height], ([newWidth, newHeight]) => {
-    console.log('New width:', newWidth);
-    console.log('New height:', newHeight);
+    // console.log('New width2:', newWidth);
+    // console.log('New height2:', newHeight);
     if (oWebControl.value) {
         oWebControl.value.JS_Resize(newWidth, newHeight)
        
