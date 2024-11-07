@@ -14,7 +14,7 @@
                 waterPHList: waterChartData.dataList.waterPHList, waterDissolvedOxygenList: waterChartData.dataList.waterDissolvedOxygenList,
                 waterTurbidityList: waterChartData.dataList.waterTurbidityList, waterTemperatureList: waterChartData.dataList.waterTemperatureList
               }" :categories="waterChartData.waterCollectTimeList" :isExcellent="waterChartData.isWaterExcellent"
-                height="190">
+                :height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -26,7 +26,7 @@
                 soilPHList: soilChartData.dataList.soilPHList, soilTemperatureList: soilChartData.dataList.soilTemperatureList,
                 soilMoistureList: soilChartData.dataList.soilMoistureList, soilConductivityList: soilChartData.dataList.soilConductivityList
               }" :categories="soilChartData.soilCollectTimeList" :isExcellent="soilChartData.isSoilExcellent"
-                height="190">
+                :height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -37,7 +37,7 @@
               <LineChart :dataList="{
                 airTemperatureList: envChartData.dataList.airTemperatureList, airHumidityList: envChartData.dataList.airHumidityList,
                 pm25List: envChartData.dataList.pm25List, atmosphericPressureList: envChartData.dataList.atmosphericPressureList
-              }" :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent" height="190">
+              }" :categories="envChartData.envCollectTimeList" :isExcellent="envChartData.isEnvExcellent" :height="190">
               </LineChart>
             </div>
           </panelboard>
@@ -62,7 +62,7 @@
       <div class="surveillance">
         <panelboard :chTitle="'视频监控'" :enTitle="'Video Surveillance'">
           <div class="video-container" ref="videoContainer" style="position: relative;">
-            <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5) + '-' + index"
+            <Video1 :cameraIndexCode="videoCode" :id="'prefix-' + videoCode.slice(0, 5)  "
               :width="videoWidth" :height="videoHeight"></Video1>
             <!-- <H5Video :id="`video`+String(videoCode.slice(0,5))" :playUrl="videoSrc" :width="videoWidth" :height="videoHeight"></H5Video> -->
           </div>
@@ -154,7 +154,7 @@
               <div class="video-grid">
                 <div v-for="(source, index) in SurveillanceVideo" :key="index" class="video-item">
                   <div :ref="el => caemraContainers[index] = el" style="height:80%;width:100%">
-                    <Video :cameraIndexCode="source.cameraIndexCode" :id="index" :width="cameraWidth"
+                    <Video :cameraIndexCode="source.cameraIndexCode" :id="`${index}`" :width="cameraWidth"
                       :height="cameraHeight"></Video>
                   </div>
                   <p @click="handleItemClick(source, index)" style="font-size: 13px;cursor: pointer;margin-top:5px">
