@@ -387,44 +387,73 @@ export const formatDate = (date) => {
   }
 };
 
-//映射水数据
+// 映射水数据
 export const mappingWater = (waterData, waterChartData) => {
+  // 映射公共属性
   waterChartData.waterCollectTimeList = waterData.collectTimeList;
   waterChartData.isWaterExcellent = waterData.mapList;
-  waterChartData.dataList.waterPHList = waterData.pHList;
-  waterChartData.dataList.waterDissolvedOxygenList = waterData.doList;
-  waterChartData.dataList.waterTemperatureList = waterData.wtList;
-  waterChartData.dataList.waterConductivityList = waterData.wcList;
-  waterChartData.dataList.waterTurbidityList = waterData.tList;
-  waterChartData.dataList.waterChlorophyllList = waterData.cList;
+  
+  // 映射 dataList 中的水数据列表
+  const waterProperties = [
+    { key: 'waterPHList', value: 'pHList' },
+    { key: 'waterDissolvedOxygenList', value: 'doList' },
+    { key: 'waterTemperatureList', value: 'wtList' },
+    { key: 'waterConductivityList', value: 'wcList' },
+    { key: 'waterTurbidityList', value: 'tList' },
+    { key: 'waterChlorophyllList', value: 'cList' }
+  ];
+
+  // 遍历 waterProperties，映射数据
+  waterProperties.forEach(({ key, value }) => {
+    waterChartData.dataList[key] = waterData[value];
+  });
 };
 
-//映射土壤数据
+// 映射土壤数据
 export const mappingSoil = (soilData, soilChartData) => {
+  // 先映射 collectTimeList 和 isSoilExcellent
   soilChartData.soilCollectTimeList = soilData.collectTimeList;
   soilChartData.isSoilExcellent = soilData.mapList;
-  soilChartData.dataList.soilPHList = soilData.pHList;
-  soilChartData.dataList.soilTemperatureList = soilData.stList;
-  soilChartData.dataList.soilMoistureList = soilData.smList;
-  soilChartData.dataList.soilConductivityList = soilData.scList;
-  soilChartData.dataList.soilNitrogenList = soilData.sncList;
-  soilChartData.dataList.soilPhosphorusList = soilData.sphcList;
-  soilChartData.dataList.soilPotassiumList = soilData.spocList;
+  
+  // 映射 dataList 中的土壤数据列表
+  const soilProperties = [
+    { key: 'soilPHList', value: 'pHList' },
+    { key: 'soilTemperatureList', value: 'stList' },
+    { key: 'soilMoistureList', value: 'smList' },
+    { key: 'soilConductivityList', value: 'scList' },
+    { key: 'soilNitrogenList', value: 'sncList' },
+    { key: 'soilPhosphorusList', value: 'sphcList' },
+    { key: 'soilPotassiumList', value: 'spocList' }
+  ];
+
+  // 遍历 soilProperties，映射数据
+  soilProperties.forEach(({ key, value }) => {
+    soilChartData.dataList[key] = soilData[value];
+  });
 };
 
-//映射环境数据
+// 映射环境数据
 export const mappingEnv = (envData, envChartData) => {
+  // 映射公共属性
   envChartData.envCollectTimeList = envData.collectTimeList;
   envChartData.isEnvExcellent = envData.mapList;
-  envChartData.dataList.airTemperatureList = envData.airTemperatureList;
-  envChartData.dataList.airHumidityList = envData.airHumidityList;
-  envChartData.dataList.pm25List = envData.pm2_5List;
-  envChartData.dataList.atmosphericPressureList =
-    envData.atmosphericPressureList;
-  envChartData.dataList.carbonDioxideList = envData.carbonDeviceList;
-  envChartData.dataList.sulfurDioxideList = envData.sulfurDioxideList;
-  envChartData.dataList.totalRadiationList = envData.totalRadiationList;
-  envChartData.dataList.windDirectionList = envData.windDirection360List;
-  envChartData.dataList.windSpeedList = envData.windSpeedList;
-  envChartData.dataList.rainfallList = envData.rainList;
+  
+  // 映射 dataList 中的环境数据列表
+  const envProperties = [
+    { key: 'airTemperatureList', value: 'airTemperatureList' },
+    { key: 'airHumidityList', value: 'airHumidityList' },
+    { key: 'pm25List', value: 'pm2_5List' },
+    { key: 'atmosphericPressureList', value: 'atmosphericPressureList' },
+    { key: 'carbonDioxideList', value: 'carbonDeviceList' },
+    { key: 'sulfurDioxideList', value: 'sulfurDioxideList' },
+    { key: 'totalRadiationList', value: 'totalRadiationList' },
+    { key: 'windDirectionList', value: 'windDirection360List' },
+    { key: 'windSpeedList', value: 'windSpeedList' },
+    { key: 'rainfallList', value: 'rainList' }
+  ];
+
+  // 遍历 envProperties，映射数据
+  envProperties.forEach(({ key, value }) => {
+    envChartData.dataList[key] = envData[value];
+  });
 };

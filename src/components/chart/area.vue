@@ -234,6 +234,7 @@ const updateChartOptions = (dataList, categories, isExcellent) => {
   // chartOptions.value.title.text = chartOptions.value.series.length > 0 ? chartOptions.value.series[0].name : '';
 }
 const updateYAxis = (globalMin, globalMax) => {
+ 
   // 调整最大值和最小值，并计算间隔
   const adjustedMax = Math.ceil(globalMax * 1.2);
   const adjustedMin = globalMin < 0 ? Math.floor(globalMin * 1.1) : 0;

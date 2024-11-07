@@ -535,6 +535,8 @@ const updateVideoDimensions = async () => {
       const rect = container.getBoundingClientRect();
       cameraWidth.value = Math.max(Math.floor(rect.width)); // 保证最小宽度为 100
       cameraHeight.value = Math.max(Math.floor(rect.height)); // 保证最小高度为 100
+      // cameraWidth.value = container.clientWidth; // 保证最小宽度为 100
+      // cameraHeight.value =container.clientHeight; // 保证最小高度为 100
       // console.log('Updated cameraWidth:', cameraWidth.value, 'cameraHeight:', cameraHeight.value);
     }
   });
